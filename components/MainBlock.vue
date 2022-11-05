@@ -46,7 +46,7 @@
                 drop-placeholder="Перетащите файл сюда..."
                 ></b-form-file>
                 <!-- <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/> -->
-                <b-button size="sm" v-on:click="submitFile()">Загрузиь изображение</b-button>
+                <b-button size="sm" v-on:click="submitFile()">Загрузить изображение</b-button>
             </template>
         </b-table>
         <b-pagination
@@ -148,7 +148,20 @@
         color: #30d5c8;
     }
     .page-item.active .page-link {
-        background-color: #30d5c8;
-        border-color: #30d5c8;
+        background-color: #1e8d84;
+        border-color: #1e8d84;
+    }
+    .custom-file{
+        width: 450px;
+    }
+
+    .btn{
+        background-color: #1e8d84;
+        border-color: #1e8d84;
+    }
+
+    .btn:hover{
+        background-color: #125853;
+        border-color: #125853;
     }
 </style>
