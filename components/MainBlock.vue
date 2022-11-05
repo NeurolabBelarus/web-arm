@@ -147,4 +147,8 @@
     .table-hover tbody tr:hover{
         color: #30d5c8;
     }
+    .page-item.active .page-link {
+        background-color: #30d5c8;
+        border-color: #30d5c8;
+    }
 </style>
