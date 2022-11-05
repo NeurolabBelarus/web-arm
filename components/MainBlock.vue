@@ -1,6 +1,6 @@
 <template>
     <div class="p-5 text-center">
-        <b-row align-v="center" class="m-0 pb-3 px-3">
+        <b-row align-v="center" class="m-0 pb-3">
             <div class="pr-3"><b>Фильтр:</b></div>
             <b-input-group class="w-25" size="sm">
                 <b-form-input
@@ -25,8 +25,8 @@
                 <b-form-checkbox value="diagnosis">Диагноз</b-form-checkbox>
             </b-form-checkbox-group>  
 
+            <div class="ml-auto"><b-button v-b-modal.modal-1>Добавить пациента</b-button></div>
         </b-row>
-
         <b-table bordered hover 
         :items="patientsItems" 
         :fields="h_fields" 
@@ -56,6 +56,24 @@
         pills
         align="center"
         ></b-pagination>
+
+
+
+        <b-modal id="modal-1" title="Добавить пациента" hide-footer @show="resetModal">
+            <b-form class="w-100 p-4" @submit="onSubmit">
+              <b-form-group id="input-group-1" label="ФИО пациента:" label-for="input-1">
+                <b-form-input
+                  id="input-1"
+                  v-model="form.name"
+                  required
+                ></b-form-input>
+              </b-form-group>
+              <b-row class="m-0 py-3" align-h="center">
+                <b-button variant="success" type="submit">Добавить пациента</b-button>
+              </b-row>
+              <b-alert :show="errorAlert" dismissible @dismissed="errorAlert=0" @dismiss-count-down="countDownErrorChanged" variant="danger">{{alertText}}</b-alert>
+            </b-form>
+        </b-modal>
     </div>
 </template>
   
@@ -75,7 +93,7 @@
                 h_fields: [
                     {
                         "key": "name",
-                        "label": "Имя",
+                        "label": "ФИО",
                         "filterByFormatted": true
                     },
                     {
@@ -103,8 +121,14 @@
                         "label": "Диагноз",
                         "filterByFormatted": true
                     }
-                ]
-              }
+                ],
+                form: {
+                    name: '',
+                },
+                errorAlert: 0,
+                dismissSecs: 5,
+                alertText: '',
+            }
           },
           created() {
               this.search();
@@ -132,6 +156,39 @@
                 onFiltered(filteredItems) {
                     this.totalRows = filteredItems.length
                     this.currentPage = 1
+                },
+                resetModal() {
+                    this.form.name = ''
+                    this.form.email = ''
+                    this.form.password = ''
+                    this.form.passwordRepeat = ''
+                },
+                async onSubmit(event) {
+                    try {
+                        event.preventDefault()
+                        var data = this.form
+                        this.$axios.post("/api/registration", {data}).then((response) => {
+                            if(response.data.status == 'OK'){
+                                this.$nextTick(() => {
+                                    this.$bvModal.hide('modal-1')
+                                })
+                                this.get_users()
+                            }
+                            else{
+                                this.alertText = response.data.message
+                                this.errorAlert = 5
+                            }
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        this.alertText = err
+                        this.errorAlert = 5
+                    });
+                    } catch (error) {
+                        console.log('Registration error:', error)
+                        this.alertText = error
+                        this.errorAlert = 5
+                    }
                 }
           },
           mounted(){
@@ -150,6 +207,15 @@
     .page-item.active .page-link {
         background-color: #1e8d84;
         border-color: #1e8d84;
+    }
+    .page-link{
+        color: #1e8d84;
+    }
+    .page-link:hover{
+        color: #1e8d84;
+    }
+    .page-link:focus{
+        box-shadow: 0 0 0 0;
     }
     .custom-file{
         width: 450px;
