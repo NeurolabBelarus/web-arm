@@ -164,4 +164,15 @@
         background-color: #125853;
         border-color: #125853;
     }
+
+    .btn:focus {
+        background-color: #125853;
+        border-color: #125853;
+        box-shadow: 0 0 0 0 !important;
+    }
+
+    .btn:active {
+        background-color: #125853 !important;
+        border-color: #125853 !important;
+    }
 </style>
