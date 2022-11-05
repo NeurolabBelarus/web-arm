@@ -1,58 +1,61 @@
 <template>
     <div class="p-5 text-center">
-        <div class="large-12 medium-12 small-12 cell">
-            <label>File
-                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-            </label>
-                <button v-on:click="submitFile()">Submit</button>
-        </div>
-            <b-row align-v="center" class="m-0 pb-3 px-3">
-                <div class="pr-3"><b>Фильтр:</b></div>
-                <b-input-group class="w-25" size="sm">
-                    <b-form-input
-                    id="filter-input"
-                    v-model="filter"
-                    type="search"
-                    size="sm"
-                    placeholder="Введите для поиска"
-                    ></b-form-input>
-                    <b-input-group-append>
-                    <b-button :disabled="!filter" @click="filter = ''">Очистить</b-button>
-                    </b-input-group-append>
-                </b-input-group>
-                
+        <b-row align-v="center" class="m-0 pb-3 px-3">
+            <div class="pr-3"><b>Фильтр:</b></div>
+            <b-input-group class="w-25" size="sm">
+                <b-form-input
+                id="filter-input"
+                v-model="filter"
+                type="search"
+                size="sm"
+                placeholder="Введите для поиска"
+                ></b-form-input>
+                <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''">Очистить</b-button>
+                </b-input-group-append>
+            </b-input-group>
             
-                <div class="px-3"><b>Фильтровать по:</b></div>
-                <b-form-checkbox-group v-model="filterOn">
-                    <b-form-checkbox value="name">ФИО</b-form-checkbox>
-                    <b-form-checkbox value="patient_id">ID пациента</b-form-checkbox>
-                    <b-form-checkbox value="datetime">Дата</b-form-checkbox>
-                    <b-form-checkbox value="status">Статус</b-form-checkbox>
-                    <b-form-checkbox value="diagnosis">Диагноз</b-form-checkbox>
-                </b-form-checkbox-group>  
-   
-            </b-row>
+        
+            <div class="px-3"><b>Фильтровать по:</b></div>
+            <b-form-checkbox-group v-model="filterOn">
+                <b-form-checkbox value="name">ФИО</b-form-checkbox>
+                <b-form-checkbox value="patient_id">ID пациента</b-form-checkbox>
+                <b-form-checkbox value="datetime">Дата</b-form-checkbox>
+                <b-form-checkbox value="status">Статус</b-form-checkbox>
+                <b-form-checkbox value="diagnosis">Диагноз</b-form-checkbox>
+            </b-form-checkbox-group>  
 
-            <b-table bordered hover 
-            :items="patientsItems" 
-            :fields="h_fields" 
-            :filter="filter" 
-            :filter-included-fields="filterOn"
-            :per-page="perPage" 
-            :current-page="currentPage" 
-            @filtered="onFiltered">
-                <template #cell(picture)="data">
-                    {{data.item.picture}}
-                    <b-button size="sm">Загрузиь изображение</b-button>
-                </template>
-            </b-table>
-            <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            pills
-            align="center"
-            ></b-pagination>
+        </b-row>
+
+        <b-table bordered hover 
+        :items="patientsItems" 
+        :fields="h_fields" 
+        :filter="filter" 
+        :filter-included-fields="filterOn"
+        :per-page="perPage" 
+        :current-page="currentPage" 
+        @filtered="onFiltered">
+            <!-- <template #cell(picture)="data"> -->
+            <template #cell(picture)>
+                <!-- {{data.item.picture}} -->
+                <b-form-file
+                v-model="file"
+                size="sm"
+                :state="Boolean(file)"
+                placeholder="Выберите файл или перетащите его сюда..."
+                drop-placeholder="Перетащите файл сюда..."
+                ></b-form-file>
+                <!-- <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/> -->
+                <b-button size="sm" v-on:click="submitFile()">Загрузиь изображение</b-button>
+            </template>
+        </b-table>
+        <b-pagination
+        v-model="currentPage"
+        :total-rows="totalRows"
+        :per-page="perPage"
+        pills
+        align="center"
+        ></b-pagination>
     </div>
 </template>
   
@@ -61,7 +64,7 @@
       export default {
           data() {
               return {
-                file: '',
+                file: null,
                 patients_items: [],
                 filter: null,
                 totalRows: 1,
@@ -117,14 +120,11 @@
             }
           },
           methods: {
-                handleFileUpload(){
-                    this.file = this.$refs.file.files[0]
-                },
                 submitFile(){
-                    let formData = new FormData()
-                    formData.append('file', this.file)
-                    console.log(this.file)
-                    this.$store.dispatch('sendMessage', this.file)
+                    if(this.file != null){
+                        console.log(this.file.name)
+                        this.$store.dispatch('sendMessage', this.file)
+                    }
                 },
                 search() {
                     this.patients_items = patients_json
