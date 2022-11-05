@@ -159,9 +159,6 @@
                 },
                 resetModal() {
                     this.form.name = ''
-                    this.form.email = ''
-                    this.form.password = ''
-                    this.form.passwordRepeat = ''
                 },
                 async onSubmit(event) {
                     try {
