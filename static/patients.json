@@ -87,6 +87,14 @@
             "picture": "test.png",
             "status": "В обработке",
             "diagnosis": "-"
+        },
+        {
+            "name": "Пугачева Алла Антоновна",
+            "patient_id": "patient_10",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
         }
     ]
 }

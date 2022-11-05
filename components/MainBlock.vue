@@ -27,6 +27,7 @@
 
             <div class="ml-auto"><b-button v-b-modal.modal-1>Добавить пациента</b-button></div>
         </b-row>
+        <div class="table-block">
         <b-table bordered hover 
         :items="patientsItems" 
         :fields="h_fields" 
@@ -49,6 +50,7 @@
                 <b-button size="sm" v-on:click="submitFile()">Загрузить изображение</b-button>
             </template>
         </b-table>
+        </div>
         <b-pagination
         v-model="currentPage"
         :total-rows="totalRows"
@@ -85,7 +87,6 @@
                 file: null,
                 patients_items: [],
                 filter: null,
-                totalRows: 1,
                 currentPage: 1,
                 perPage: 10,
                 filterOn: [],
@@ -134,9 +135,9 @@
               this.search();
           },
           computed: {
-            // totalRows(){
-            //     return this.patientsItems.length
-            // },
+            totalRows(){
+                return this.patientsItems.length
+            },
             patientsItems(){
                 var array = []
                 array = this.patients_items.patients_list
@@ -200,6 +201,9 @@
 <style>
     .table{
         color: rgb(209, 209, 209);
+    }
+    .table-block{
+        min-height: 630px;
     }
     .table-hover tbody tr:hover{
         color: #30d5c8;
