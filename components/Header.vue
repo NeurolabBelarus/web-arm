@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#">LOGO</b-navbar-brand>
+            <b-navbar-brand href="#"><b-row align-v="center" class="m-0 logo"><b-img center src="@/assets/img/logo.png"></b-img><div class="pl-2">WEB-ARM</div></b-row></b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -31,7 +31,14 @@
     .header{
         color: rgb(209, 209, 209);
     }
-    img{
+    .logo:hover{
+        color: #30d5c8;
+    }
+    .logo img{
+        width: 55px;
+        height: 55px;
+    }
+    .item img{
         width: 30px;
         height: 30px;
         filter: grayscale(1);
