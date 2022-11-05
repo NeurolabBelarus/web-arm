@@ -36,18 +36,14 @@
         :per-page="perPage" 
         :current-page="currentPage" 
         @filtered="onFiltered">
-            <!-- <template #cell(picture)="data"> -->
-            <template #cell(picture)>
-                <!-- {{data.item.picture}} -->
+            <template #cell(picture)="data">
                 <b-form-file
                 v-model="file"
                 size="sm"
-                :state="Boolean(file)"
                 placeholder="Выберите файл или перетащите его сюда..."
                 drop-placeholder="Перетащите файл сюда..."
                 ></b-form-file>
-                <!-- <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/> -->
-                <b-button size="sm" v-on:click="submitFile()">Загрузить изображение</b-button>
+                <b-button size="sm" v-on:click="submitFile(data.item)">Загрузить изображение</b-button>
             </template>
         </b-table>
         </div>
@@ -80,7 +76,7 @@
 </template>
   
   <script>
-      import patients_json from '~/static/patients.json'
+    //   import patients_json from '~/static/patients.json'
       export default {
           data() {
               return {
@@ -138,21 +134,32 @@
             totalRows(){
                 return this.patientsItems.length
             },
+            patients_json(){
+                console.log(this.$store.state.patients_json)
+                return this.$store.state.patients_json
+            },
             patientsItems(){
                 var array = []
-                array = this.patients_items.patients_list
+                if(this.patients_items != null){
+                    array = this.patients_items.patients_list
+                }
                 return array
             }
           },
           methods: {
-                submitFile(){
+                submitFile(item){
                     if(this.file != null){
-                        console.log(this.file.name)
-                        this.$store.dispatch('sendMessage', this.file)
+                        var p_data = {
+                            file: this.file,
+                            patient: item
+                        }
+                        this.$store.dispatch('sendMessage', p_data)
                     }
                 },
                 search() {
-                    this.patients_items = patients_json
+                    // console.log(this.$store.state.patients_json)
+                    this.patients_items = this.patients_json
+                    // console.log(this.patients_items)
                 },
                 onFiltered(filteredItems) {
                     this.totalRows = filteredItems.length

@@ -6,7 +6,10 @@ Vue.use(Vuex)
 
 const store = () => new Vuex.Store({
     state: {
-        connection: null
+        connection: null,
+        patients_json: {
+            patients_list: []
+        }
     },
     mutations: {
         openConnection(state){
@@ -21,6 +24,9 @@ const store = () => new Vuex.Store({
 
             state.connection.onmessage = function(event){
                 console.log(event)
+                // console.log(JSON.parse(event.data))
+                state.patients_json.patients_list = JSON.parse(event.data).patients_list
+                console.log(state.patients_json)
             }
 
             state.connection.onclose = function(event){
@@ -29,22 +35,24 @@ const store = () => new Vuex.Store({
             }
         },
         sendMessage(state, data){
-            // try {
-            //     this.$axios.post('/api/file',
-            //     data,
-            //     {
-            //       headers: {
-            //           'Content-Type': 'multipart/form-data'
-            //       }
-            //     }).then((response) => {
-            //     })
-            //     .catch((err) => {
-            //         console.error(err);
-            //     });
-            // } catch (error) {
-            //     console.log('Error:', error)
-            // }
-            state.connection.send(data)
+            function encodeImageFileAsURL(data, patient) {
+                var file = data;
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    console.log('RESULT', reader.result.split(',')[0])
+                    console.log('RESULT', reader.result.split(',')[1])
+                    var message = {
+                        patient_name: patient.name,
+                        patient_id: patient.patient_id,
+                        file_name: data.name,
+                        file_prefix: reader.result.split(',')[0],
+                        file: reader.result.split(',')[1]
+                    }
+                    state.connection.send(JSON.stringify(message))
+                }
+                reader.readAsDataURL(file);
+            }
+            encodeImageFileAsURL(data.file, data.patient)
         }
     },
     getters: {
