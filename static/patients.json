@@ -1,0 +1,28 @@
+{
+    "patients_list": [
+        {
+            "name": "Ольгина Ольга Ольгердовна",
+            "patient_id": "patient_01",
+            "datetime": "2022-09-21 19:19:15",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Ниновна Нина Николаевна",
+            "patient_id": "patient_02",
+            "datetime": "2022-10-01 15:15:19",
+            "picture": "test.png",
+            "status": "Готово",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Аннина Анна Анатольевна",
+            "patient_id": "patient_03",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        }
+    ]
+}
