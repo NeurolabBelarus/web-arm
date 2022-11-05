@@ -1,5 +1,11 @@
 <template>
     <div class="p-5 text-center">
+        <div class="large-12 medium-12 small-12 cell">
+            <label>File
+                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+            </label>
+                <button v-on:click="submitFile()">Submit</button>
+        </div>
             <b-row align-v="center" class="m-0 pb-3 px-3">
                 <div class="pr-3"><b>Фильтр:</b></div>
                 <b-input-group class="w-25" size="sm">
@@ -55,6 +61,7 @@
       export default {
           data() {
               return {
+                file: '',
                 patients_items: [],
                 filter: null,
                 totalRows: 1,
@@ -110,6 +117,15 @@
             }
           },
           methods: {
+                handleFileUpload(){
+                    this.file = this.$refs.file.files[0]
+                },
+                submitFile(){
+                    let formData = new FormData()
+                    formData.append('file', this.file)
+                    console.log(this.file)
+                    this.$store.dispatch('sendMessage', this.file)
+                },
                 search() {
                     this.patients_items = patients_json
                 },

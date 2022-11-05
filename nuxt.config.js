@@ -21,6 +21,14 @@ export default {
   css: [
   ],
 
+  axios: {
+    proxy: true // Can be also an object with default options
+  },
+  
+  proxy: {
+    '/api/': { target: 'http://localhost:8080/', pathRewrite: {'^/api/': '/'} }
+  },
+
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
   ],
@@ -35,8 +43,10 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
   ],
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }

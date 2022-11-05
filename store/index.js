@@ -10,7 +10,7 @@ const store = () => new Vuex.Store({
     },
     mutations: {
         openConnection(state){
-            state.connection = new WebSocket("wss://localhost:8080/ws")
+            state.connection = new WebSocket("ws://localhost:8080/ws")
             state.connection.onopen = function(event){
                 
             }
@@ -28,8 +28,23 @@ const store = () => new Vuex.Store({
                 console.log("Closed")
             }
         },
-        sendMessage(state){
-            state.connection.send('test')
+        sendMessage(state, data){
+            // try {
+            //     this.$axios.post('/api/file',
+            //     data,
+            //     {
+            //       headers: {
+            //           'Content-Type': 'multipart/form-data'
+            //       }
+            //     }).then((response) => {
+            //     })
+            //     .catch((err) => {
+            //         console.error(err);
+            //     });
+            // } catch (error) {
+            //     console.log('Error:', error)
+            // }
+            state.connection.send(data)
         }
     },
     getters: {
@@ -39,8 +54,8 @@ const store = () => new Vuex.Store({
         async openConnection({commit}){
             commit('openConnection')
         },
-        async sendMessage({commit}){
-            commit('sendMessage')
+        async sendMessage({commit}, data){
+            commit('sendMessage', data)
         }
     },
 })
