@@ -54,7 +54,7 @@
             align="center"
             ></b-pagination>
     </div>
-  </template>
+</template>
   
   <script>
       import patients_json from '~/static/patients.json'
@@ -139,3 +139,12 @@
           }
       }
   </script>
+
+<style>
+    .table{
+        color: rgb(209, 209, 209);
+    }
+    .table-hover tbody tr:hover{
+        color: #30d5c8;
+    }
+</style>
