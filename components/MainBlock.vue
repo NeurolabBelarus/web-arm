@@ -160,6 +160,9 @@
                 resetModal() {
                     this.form.name = ''
                 },
+                countDownErrorChanged(errorAlert) {
+                    this.errorAlert = errorAlert
+                },
                 async onSubmit(event) {
                     try {
                         event.preventDefault()
