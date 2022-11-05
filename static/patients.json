@@ -23,6 +23,70 @@
             "picture": "test.png",
             "status": "В обработке",
             "diagnosis": "-"
+        },
+        {
+            "name": "Калитка Иван Александрович",
+            "patient_id": "patient_04",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Зубенко Михаил Петрович",
+            "patient_id": "patient_05",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Гончар Гертруда Алексеевна",
+            "patient_id": "patient_06",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Смирнов Игорь Павлович",
+            "patient_id": "patient_07",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Сорняк Анастасия Витальевна",
+            "patient_id": "patient_08",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Тарасова Илона Николаевна",
+            "patient_id": "patient_09",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Комар Илья Викторович",
+            "patient_id": "patient_10",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
+        },
+        {
+            "name": "Скоробейникова Ирина Андреевна",
+            "patient_id": "patient_10",
+            "datetime": "2022-10-04 10:59:11",
+            "picture": "test.png",
+            "status": "В обработке",
+            "diagnosis": "-"
         }
     ]
 }

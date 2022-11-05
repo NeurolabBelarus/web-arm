@@ -1,0 +1,14 @@
+<template>
+    <div class="footer">
+        <b-row align-v="center" align-h="center" class="h-100 m-0">
+            ©2022 "WEB-ARM". All rights reserved.
+        </b-row>
+    </div>
+</template>
+
+<style scoped>
+    .footer{
+        background-color: #343a40;
+        height: 60px;
+    }
+</style>
