@@ -9,7 +9,14 @@
 <script>
     export default{
         mounted(){
-            this.$store.dispatch('openConnection')
+            setInterval(() => {
+                if(this.$store.state.connection == null){
+                    this.$store.dispatch('openConnection')
+                }
+                else if(this.$store.state.connection.readyState != WebSocket.OPEN && this.$store.state.connection.readyState != WebSocket.CONNECTING){
+                    this.$store.dispatch('openConnection')
+                }
+            }, 1000)
         }
     }
 </script>
