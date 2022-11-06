@@ -37,7 +37,6 @@
         :current-page="currentPage" 
         @filtered="onFiltered">
             <template #cell(picture)="data">
-                <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Посмотреть изображение</nuxt-link>
                 <b-form-file
                 v-model="file"
                 size="sm"
@@ -45,6 +44,7 @@
                 drop-placeholder="Перетащите файл сюда..."
                 ></b-form-file>
                 <b-button size="sm" v-on:click="submitFile(data.item)">Загрузить изображение</b-button>
+                <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Посмотреть изображение</nuxt-link>
             </template>
         </b-table>
         </div>
@@ -253,5 +253,12 @@
     .btn:active {
         background-color: #125853 !important;
         border-color: #125853 !important;
+    }
+
+    a{
+        color: #30d5c8
+    }
+    a:hover{
+        color:#125853
     }
 </style>
