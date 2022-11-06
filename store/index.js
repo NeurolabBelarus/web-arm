@@ -24,9 +24,16 @@ const store = () => new Vuex.Store({
 
             state.connection.onmessage = function(event){
                 console.log(event)
+                if(JSON.parse(event.data).type == 'getpatients'){
+                    state.patients_json.patients_list = JSON.parse(event.data).patients_list
+                }
+                else if(JSON.parse(event.data).type == 'getpatient'){
+                    console.log(JSON.parse(event.data).patient.patient_id)
+                    console.log(JSON.parse(event.data).patient.picture_prefix + JSON.parse(event.data).patient.picture)
+                }
                 // console.log(JSON.parse(event.data))
-                state.patients_json.patients_list = JSON.parse(event.data).patients_list
-                console.log(state.patients_json)
+                
+                // console.log(state.patients_json)
             }
 
             state.connection.onclose = function(event){
@@ -39,9 +46,10 @@ const store = () => new Vuex.Store({
                 var file = data;
                 var reader = new FileReader();
                 reader.onloadend = function() {
-                    console.log('RESULT', reader.result.split(',')[0])
-                    console.log('RESULT', reader.result.split(',')[1])
+                    // console.log('RESULT', reader.result.split(',')[0])
+                    // console.log('RESULT', reader.result.split(',')[1])
                     var message = {
+                        type: 'sendfile',
                         patient_name: patient.name,
                         patient_id: patient.patient_id,
                         file_name: data.name,
@@ -53,6 +61,15 @@ const store = () => new Vuex.Store({
                 reader.readAsDataURL(file);
             }
             encodeImageFileAsURL(data.file, data.patient)
+        },
+        getPicture(state, data){
+            var message = {
+                type: 'getpatient',
+                patient_id: data.patient
+            }
+            // console.log(JSON.stringify(message))
+            // console.log(state.connection)
+            state.connection.send(JSON.stringify(message))
         }
     },
     getters: {
@@ -64,6 +81,9 @@ const store = () => new Vuex.Store({
         },
         async sendMessage({commit}, data){
             commit('sendMessage', data)
+        },
+        async getPicture({commit}, data){
+            commit('getPicture', data)
         }
     },
 })

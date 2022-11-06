@@ -1,14 +1,14 @@
 <template>
     <div class="header">
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#"><b-row align-v="center" class="m-0 logo"><b-img center src="@/assets/img/logo.png"></b-img><div class="pl-2">WEB-ARM</div></b-row></b-navbar-brand>
+            <b-navbar-brand to="/"><b-row align-v="center" class="m-0 logo"><b-img center src="@/assets/img/logo.png"></b-img><div class="pl-2">WEB-ARM</div></b-row></b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
 
             <!-- Right aligned nav items -->
-            <b-navbar-nav class="ml-auto">
+            <!-- <b-navbar-nav class="ml-auto">
                 <b-col class="p-0 px-2 item">
                     <b-img center src="@/assets/img/chip.png"></b-img>
                     <div class="text text-center">ML</div>
@@ -21,7 +21,7 @@
                     <b-img center src="@/assets/img/user.png"></b-img>
                     <div class="text text-center">xxxx_xxxx</div>
                 </b-col>
-            </b-navbar-nav>
+            </b-navbar-nav> -->
             </b-collapse>
         </b-navbar>
     </div>

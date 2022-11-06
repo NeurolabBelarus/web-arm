@@ -37,6 +37,7 @@
         :current-page="currentPage" 
         @filtered="onFiltered">
             <template #cell(picture)="data">
+                <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Посмотреть изображение</nuxt-link>
                 <b-form-file
                 v-model="file"
                 size="sm"
@@ -135,7 +136,7 @@
                 return this.patientsItems.length
             },
             patients_json(){
-                console.log(this.$store.state.patients_json)
+                // console.log(this.$store.state.patients_json)
                 return this.$store.state.patients_json
             },
             patientsItems(){
@@ -193,7 +194,7 @@
                         this.errorAlert = 5
                     });
                     } catch (error) {
-                        console.log('Registration error:', error)
+                        // console.log('Registration error:', error)
                         this.alertText = error
                         this.errorAlert = 5
                     }
@@ -201,6 +202,7 @@
           },
           mounted(){
             // this.$store.dispatch('get_fields')
+            // console.log(this.$store.state.connection)
           }
       }
   </script>

@@ -6,6 +6,14 @@
     </div>
 </template>
 
+<script>
+    export default{
+        mounted(){
+            this.$store.dispatch('openConnection')
+        }
+    }
+</script>
+
 <style scoped>
  .default-layout{
     background-color: #29272e;
