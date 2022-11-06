@@ -54,13 +54,14 @@ const store = () => new Vuex.Store({
                 reader.onloadend = function() {
                     // console.log('RESULT', reader.result.split(',')[0])
                     // console.log('RESULT', reader.result.split(',')[1])
+                    var file_array = reader.result.split(',')
                     var message = {
                         type: 'sendfile',
                         patient_name: patient.name,
                         patient_id: patient.patient_id,
                         file_name: data.name,
-                        file_prefix: reader.result.split(',')[0],
-                        file: reader.result.split(',')[1]
+                        file_prefix: file_array[0] + ',',
+                        file: file_array[1]
                     }
                     state.connection.send(JSON.stringify(message))
                 }
