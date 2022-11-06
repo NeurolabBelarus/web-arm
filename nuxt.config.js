@@ -1,6 +1,10 @@
 export default {
   target: 'static',
 
+  router: {
+    base: '/web-arm/'
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'web-arm',

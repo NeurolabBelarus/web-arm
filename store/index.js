@@ -13,7 +13,8 @@ const store = () => new Vuex.Store({
     },
     mutations: {
         openConnection(state){
-            state.connection = new WebSocket("ws://localhost:8080/ws")
+            // state.connection = new WebSocket("ws://localhost:8081/ws")
+            state.connection = new WebSocket("wss://test.nlab.work/ws")
             state.connection.onopen = function(event){
                 
             }
@@ -77,6 +78,13 @@ const store = () => new Vuex.Store({
             // console.log(JSON.stringify(message))
             // console.log(state.connection)
             state.connection.send(JSON.stringify(message))
+        },
+        createPatient(state, data){
+            var message = {
+                type: 'createpatient',
+                patient_name: data.name
+            }
+            state.connection.send(JSON.stringify(message))
         }
     },
     getters: {
@@ -91,6 +99,9 @@ const store = () => new Vuex.Store({
         },
         async getPicture({commit}, data){
             commit('getPicture', data)
+        },
+        async createPatient({commit}, data){
+            commit('createPatient', data)
         }
     },
 })

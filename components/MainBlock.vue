@@ -173,31 +173,10 @@
                     this.errorAlert = errorAlert
                 },
                 async onSubmit(event) {
-                    try {
-                        event.preventDefault()
-                        var data = this.form
-                        this.$axios.post("/api/registration", {data}).then((response) => {
-                            if(response.data.status == 'OK'){
-                                this.$nextTick(() => {
-                                    this.$bvModal.hide('modal-1')
-                                })
-                                this.get_users()
-                            }
-                            else{
-                                this.alertText = response.data.message
-                                this.errorAlert = 5
-                            }
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        this.alertText = err
-                        this.errorAlert = 5
-                    });
-                    } catch (error) {
-                        // console.log('Registration error:', error)
-                        this.alertText = error
-                        this.errorAlert = 5
-                    }
+                    event.preventDefault()
+                    var data = this.form
+                    this.$store.dispatch('createPatient', data)
+                    this.$bvModal.hide('modal-1')
                 }
           },
           mounted(){
