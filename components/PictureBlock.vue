@@ -1,8 +1,8 @@
 <template>
     <div>
-        {{patient}}
-        {{connection}}
-        <!-- <img src="data:image/jpeg;base64," alt=""> -->
+        Connection: {{connection}}
+        Patient ID: {{patient.patient_id}}
+        <img v-if="patient != null && patient.picture_prefix != null && patient.picture != null" :src="patient.picture_prefix + patient.picture" alt="">
     </div>
 </template>
 
@@ -10,16 +10,13 @@
 export default {
     data(){
         return{
-            patient: null
+            patient_id: null
         }
     },
     computed:{
         connection(){
-            // console.log(this.$store.state.connection)
             if(this.$store.state.connection != null){
                 if(this.$store.state.connection.readyState != 0){
-                    // console.log('connection:')
-                    // console.log(this.$store.state.connection)
                     this.$store.dispatch('getPicture', this.$route.query) 
                 }
                 return this.$store.state.connection.readyState
@@ -27,10 +24,20 @@ export default {
             else{
                 return 'null'
             }
+        },
+        patient(){
+            var p_item = null
+            this.$store.state.patients_json.patients_list.forEach(element => {
+                if(element.patient_id == this.$route.query.patient){
+                    p_item = element
+                    // console.log("DONE")
+                }
+            });
+            return p_item
         }
     },
     mounted(){
-        this.patient = this.$route.query
+        this.patient_id = this.$route.query
         // this.$store.dispatch('getPicture', this.$route.query)
     }
 }

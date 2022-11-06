@@ -28,8 +28,14 @@ const store = () => new Vuex.Store({
                     state.patients_json.patients_list = JSON.parse(event.data).patients_list
                 }
                 else if(JSON.parse(event.data).type == 'getpatient'){
-                    console.log(JSON.parse(event.data).patient.patient_id)
-                    console.log(JSON.parse(event.data).patient.picture_prefix + JSON.parse(event.data).patient.picture)
+                    var p_item = JSON.parse(event.data).patient
+                    // console.log(p_item.patient_id)
+                    // console.log(p_item.picture_prefix + p_item.picture)
+                    state.patients_json.patients_list.forEach(element =>{
+                        if(element.patient_id == p_item.patient_id){
+                            element.picture = p_item.picture
+                        }
+                    })
                 }
                 // console.log(JSON.parse(event.data))
                 
