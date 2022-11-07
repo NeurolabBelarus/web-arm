@@ -18,7 +18,7 @@
                     </style>
                 </svg>
                 <div class="pl-1">FAUST VIEW</div></b-row></b-navbar-brand>
-
+                {{status}}
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
@@ -42,6 +42,16 @@
         </b-navbar>
     </div>
 </template>
+
+<script>
+export default {
+    computed:{
+        status(){
+            return this.$store.state.status
+        }
+    }
+}
+</script>
 
 <style scoped>
     .header{

@@ -9,12 +9,13 @@ const store = () => new Vuex.Store({
         connection: null,
         patients_json: {
             patients_list: []
-        }
+        },
+        status: ''
     },
     mutations: {
         openConnection(state){
-            state.connection = new WebSocket("ws://localhost:8081/ws")
-            // state.connection = new WebSocket("wss://test.nlab.work/ws")
+            // state.connection = new WebSocket("ws://localhost:8081/ws")
+            state.connection = new WebSocket("wss://test.nlab.work/ws")
             state.connection.onopen = function(event){
 
             }
@@ -70,6 +71,15 @@ const store = () => new Vuex.Store({
                         file: file_array[1]
                     }
                     state.connection.send(JSON.stringify(message))
+                    var interval = setInterval(function () {
+                        if(state.connection.bufferedAmount > 0){
+                            state.status = 'Идет загрузка...'
+                        }
+                        else{
+                            state.status = ''
+                            clearInterval(interval);
+                        }
+                    }, 100);
                 }
                 reader.readAsDataURL(file);
             }
@@ -81,6 +91,15 @@ const store = () => new Vuex.Store({
                 patient_id: data.patient
             }
             state.connection.send(JSON.stringify(message))
+            var interval = setInterval(function () {
+                if(state.connection.bufferedAmount > 0){
+                    state.status = 'Идет загрузка...'
+                }
+                else{
+                    state.status = ''
+                    clearInterval(interval);
+                }
+            }, 100);
         },
         createPatient(state, data){
             var message = {
@@ -88,6 +107,15 @@ const store = () => new Vuex.Store({
                 patient_name: data.name
             }
             state.connection.send(JSON.stringify(message))
+            var interval = setInterval(function () {
+                if(state.connection.bufferedAmount > 0){
+                    state.status = 'Идет загрузка...'
+                }
+                else{
+                    state.status = ''
+                    clearInterval(interval);
+                }
+            }, 100);
         }
     },
     getters: {
