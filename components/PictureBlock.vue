@@ -15,7 +15,7 @@
         </div>
 
 
-        <b-modal id="modal-1" title="Добавить изображение" hide-footer @show="resetModal">
+        <b-modal id="modal-1" title="Добавить изображение" hide-footer>
            <b-row class="m-0" align-h="center">
                 <b-form-file
                 v-model="file"
