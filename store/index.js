@@ -16,7 +16,7 @@ const store = () => new Vuex.Store({
             state.connection = new WebSocket("ws://localhost:8081/ws")
             // state.connection = new WebSocket("wss://test.nlab.work/ws")
             state.connection.onopen = function(event){
-                
+
             }
             state.connection.onerror = function(event){
                 console.log(event)

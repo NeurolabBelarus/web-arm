@@ -1,6 +1,6 @@
 <template>
     <div class="px-3">
-        Connection: {{connection}}
+        <!-- Connection: {{connection}} -->
         <b-row class="m-0" v-if="patient != null">
             <div class="pr-3"><b>Patient ID:</b> {{patient.patient_id}}</div>
             <div class="pr-3"><b>Patient Name:</b> {{patient.name}}</div>
@@ -24,7 +24,7 @@
                 drop-placeholder="Перетащите файл сюда..."
                 ></b-form-file>
                 <b-row class="m-0 py-3" align-h="center">
-                    <b-button size="sm" v-on:click="submitFile(file)">Добавить изображение</b-button>
+                    <b-button size="sm" v-on:click="submitFile(patient)">Добавить изображение</b-button>
                 </b-row>
             </b-row>
         </b-modal>
@@ -42,9 +42,9 @@ export default {
     computed:{
         connection(){
             if(this.$store.state.connection != null){
-                if(this.$store.state.connection.readyState == 1){
-                    this.$store.dispatch('getPicture', this.$route.query) 
-                }
+                // if(this.$store.state.connection.readyState == 1){
+                //     this.$store.dispatch('getPicture', this.$route.query) 
+                // }
                 return this.$store.state.connection.readyState
             }
             else{
@@ -70,12 +70,15 @@ export default {
                     patient: item
                 }
                 this.$store.dispatch('sendMessage', p_data)
+                this.$bvModal.hide('modal-1')
             }
         },
     },
     mounted(){
         this.patient_id = this.$route.query
-        // this.$store.dispatch('getPicture', this.$route.query)
+        setTimeout(() => {
+            this.$store.dispatch('getPicture', this.$route.query)
+        }, "2000")
     }
 }
 </script>
