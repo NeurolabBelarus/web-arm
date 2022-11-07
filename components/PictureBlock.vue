@@ -9,7 +9,10 @@
         </b-row>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">
-                <div v-for="item in patient.pictures" :key="item.id" class="p-3 img-item"><img :src="item.pict_prefix + item.pict"></div>
+                <div v-for="item in patient.pictures" :key="item.id" class="p-3 img-item">
+                    <Canvas :img="item.pict_prefix + item.pict" />
+                    <!-- <img :src="item.pict_prefix + item.pict"> -->
+                </div>
                 <b-row align-v="center" class="add-picture-button p-3 m-0"><b-button v-b-modal.modal-1>+</b-button></b-row>
             </b-row>
         </div>
