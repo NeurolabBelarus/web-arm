@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'web-arm',
+    title: 'FAUST VIEW',
     htmlAttrs: {
       lang: 'ru'
     },
@@ -18,7 +18,7 @@ export default {
       { name: 'keywords', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }
     ]
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
