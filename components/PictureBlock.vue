@@ -1,8 +1,20 @@
 <template>
-    <div>
+    <div class="px-3">
         Connection: {{connection}}
-        <div v-if="patient != null">
-            Patient ID: {{patient.patient_id}}
+        <b-row class="m-0" v-if="patient != null">
+            <div class="pr-3"><b>Patient ID:</b> {{patient.patient_id}}</div>
+            <div class="pr-3"><b>Patient Name:</b> {{patient.name}}</div>
+            <div class="pr-3"><b>Status:</b> {{patient.status}}</div>
+            <div class="pr-3"><b>Diagnosis:</b> {{patient.diagnosis}}</div>
+        </b-row>
+        <div>
+            <b-form-file
+            v-model="file"
+            size="sm"
+            placeholder="Выберите файл или перетащите его сюда..."
+            drop-placeholder="Перетащите файл сюда..."
+            ></b-form-file>
+            <b-button size="sm" v-on:click="submitFile(data.item)">Добавить изображение</b-button>
         </div>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">

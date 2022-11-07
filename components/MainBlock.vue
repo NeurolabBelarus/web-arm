@@ -36,15 +36,8 @@
         :per-page="perPage" 
         :current-page="currentPage" 
         @filtered="onFiltered">
-            <template #cell(picture)="data">
-                <b-form-file
-                v-model="file"
-                size="sm"
-                placeholder="Выберите файл или перетащите его сюда..."
-                drop-placeholder="Перетащите файл сюда..."
-                ></b-form-file>
-                <b-button size="sm" v-on:click="submitFile(data.item)">Загрузить изображение</b-button>
-                <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Посмотреть изображение</nuxt-link>
+            <template #cell(info)="data">
+                <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Подробнее</nuxt-link>
             </template>
         </b-table>
         </div>
@@ -105,19 +98,8 @@
                         "filterByFormatted": true
                     },
                     {
-                        "key": "picture",
-                        "label": "Изображение",
-                        "filterByFormatted": true
-                    },
-                    {
-                        "key": "status",
-                        "label": "Статус",
-                        "filterByFormatted": true
-                    },
-                    {
-                        "key": "diagnosis",
-                        "label": "Диагноз",
-                        "filterByFormatted": true
+                        "key": "info",
+                        "label": "Информация"
                     }
                 ],
                 form: {
