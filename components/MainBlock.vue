@@ -21,8 +21,6 @@
                 <b-form-checkbox value="name">ФИО</b-form-checkbox>
                 <b-form-checkbox value="patient_id">ID пациента</b-form-checkbox>
                 <b-form-checkbox value="datetime">Дата</b-form-checkbox>
-                <b-form-checkbox value="status">Статус</b-form-checkbox>
-                <b-form-checkbox value="diagnosis">Диагноз</b-form-checkbox>
             </b-form-checkbox-group>  
 
             <div class="ml-auto"><b-button v-b-modal.modal-1>Добавить пациента</b-button></div>

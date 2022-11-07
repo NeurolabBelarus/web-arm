@@ -73,6 +73,9 @@ export default {
                     patient: item
                 }
                 this.$store.dispatch('sendMessage', p_data)
+                setTimeout(() => {
+                    this.$store.dispatch('getPicture', this.$route.query)
+                }, "2000")
                 this.$bvModal.hide('modal-1')
             }
         },
