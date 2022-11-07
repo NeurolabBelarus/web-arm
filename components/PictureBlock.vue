@@ -5,7 +5,9 @@
             Patient ID: {{patient.patient_id}}
         </div>
         <div v-if="patient != null">
-            <img v-for="item in patient.pictures" :key="item.id" :src="item.pict_prefix + item.pict">
+            <b-row align-h="center" class="m-0 img-list">
+                <div v-for="item in patient.pictures" :key="item.id" class="p-3"><img :src="item.pict_prefix + item.pict"></div>
+            </b-row>
         </div>
     </div>
 </template>
@@ -46,3 +48,14 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .img-list img {
+        width: 100px;
+        height: 100px;
+        transition: 0.2s linear;
+    }
+    .img-list img:hover {
+        transform: scale(3);
+    }
+</style>
