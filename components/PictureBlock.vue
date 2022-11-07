@@ -7,20 +7,27 @@
             <div class="pr-3"><b>Status:</b> {{patient.status}}</div>
             <div class="pr-3"><b>Diagnosis:</b> {{patient.diagnosis}}</div>
         </b-row>
-        <div>
-            <b-form-file
-            v-model="file"
-            size="sm"
-            placeholder="Выберите файл или перетащите его сюда..."
-            drop-placeholder="Перетащите файл сюда..."
-            ></b-form-file>
-            <b-button size="sm" v-on:click="submitFile(data.item)">Добавить изображение</b-button>
-        </div>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">
-                <div v-for="item in patient.pictures" :key="item.id" class="p-3"><img :src="item.pict_prefix + item.pict"></div>
+                <div v-for="item in patient.pictures" :key="item.id" class="p-3 img-item"><img :src="item.pict_prefix + item.pict"></div>
+                <b-row align-v="center" class="add-picture-button p-3 m-0"><b-button v-b-modal.modal-1>+</b-button></b-row>
             </b-row>
         </div>
+
+
+        <b-modal id="modal-1" title="Добавить изображение" hide-footer @show="resetModal">
+           <b-row class="m-0" align-h="center">
+                <b-form-file
+                v-model="file"
+                size="sm"
+                placeholder="Выберите файл или перетащите его сюда..."
+                drop-placeholder="Перетащите файл сюда..."
+                ></b-form-file>
+                <b-row class="m-0 py-3" align-h="center">
+                    <b-button size="sm" v-on:click="submitFile(file)">Добавить изображение</b-button>
+                </b-row>
+            </b-row>
+        </b-modal>
     </div>
 </template>
 
@@ -28,6 +35,7 @@
 export default {
     data(){
         return{
+            file: null,
             patient_id: null
         }
     },
@@ -54,6 +62,17 @@ export default {
             return p_item
         }
     },
+    methods: {
+        submitFile(item){
+            if(this.file != null){
+                var p_data = {
+                    file: this.file,
+                    patient: item
+                }
+                this.$store.dispatch('sendMessage', p_data)
+            }
+        },
+    },
     mounted(){
         this.patient_id = this.$route.query
         // this.$store.dispatch('getPicture', this.$route.query)
@@ -62,12 +81,12 @@ export default {
 </script>
 
 <style scoped>
-    .img-list img {
+    .img-list .img-item img {
         width: 100px;
         height: 100px;
         transition: 0.2s linear;
     }
-    .img-list img:hover {
+    .img-list .img-item img:hover {
         transform: scale(3);
     }
 </style>

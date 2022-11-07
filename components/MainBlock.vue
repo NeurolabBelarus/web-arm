@@ -74,7 +74,6 @@
       export default {
           data() {
               return {
-                file: null,
                 patients_items: [],
                 filter: null,
                 currentPage: 1,
@@ -130,15 +129,6 @@
             }
           },
           methods: {
-                submitFile(item){
-                    if(this.file != null){
-                        var p_data = {
-                            file: this.file,
-                            patient: item
-                        }
-                        this.$store.dispatch('sendMessage', p_data)
-                    }
-                },
                 search() {
                     // console.log(this.$store.state.patients_json)
                     this.patients_items = this.patients_json
