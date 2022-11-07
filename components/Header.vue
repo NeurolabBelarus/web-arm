@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand to="/"><b-row align-v="center" class="m-0 logo"><b-img center src="assets/img/logo.png"></b-img><div class="pl-2">WEB-ARM</div></b-row></b-navbar-brand>
+            <b-navbar-brand to="/"><b-row align-v="center" class="m-0 logo"><b-img center src="assets/img/logo.png"></b-img><div class="pl-2">FAUST VIEW</div></b-row></b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
