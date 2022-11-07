@@ -1,5 +1,5 @@
 <template>
-    <div class="px-3">
+    <div class="px-3" style="min-height: 830px;">
         <!-- Connection: {{connection}} -->
         <b-row class="m-0" v-if="patient != null">
             <div class="pr-3"><b>Patient ID:</b> {{patient.patient_id}}</div>
