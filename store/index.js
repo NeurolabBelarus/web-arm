@@ -13,8 +13,8 @@ const store = () => new Vuex.Store({
     },
     mutations: {
         openConnection(state){
-            // state.connection = new WebSocket("ws://localhost:8081/ws")
-            state.connection = new WebSocket("wss://test.nlab.work/ws")
+            state.connection = new WebSocket("ws://localhost:8081/ws")
+            // state.connection = new WebSocket("wss://test.nlab.work/ws")
             state.connection.onopen = function(event){
                 
             }
@@ -30,13 +30,20 @@ const store = () => new Vuex.Store({
                 }
                 else if(JSON.parse(event.data).type == 'getpatient'){
                     var p_item = JSON.parse(event.data).patient
-                    // console.log(p_item.patient_id)
-                    // console.log(p_item.picture_prefix + p_item.picture)
+                    console.log(p_item)
+
                     state.patients_json.patients_list.forEach(element =>{
                         if(element.patient_id == p_item.patient_id){
-                            element.picture = p_item.picture
+                            element.pictures = p_item.pictures
                         }
                     })
+                    
+                    // var p_item = JSON.parse(event.data).patient
+                    // state.patients_json.patients_list.forEach(element =>{
+                    //     if(element.patient_id == p_item.patient_id){
+                    //         element.picture = p_item.picture
+                    //     }
+                    // })
                 }
                 // console.log(JSON.parse(event.data))
                 
@@ -53,8 +60,6 @@ const store = () => new Vuex.Store({
                 var file = data;
                 var reader = new FileReader();
                 reader.onloadend = function() {
-                    // console.log('RESULT', reader.result.split(',')[0])
-                    // console.log('RESULT', reader.result.split(',')[1])
                     var file_array = reader.result.split(',')
                     var message = {
                         type: 'sendfile',
@@ -75,8 +80,6 @@ const store = () => new Vuex.Store({
                 type: 'getpatient',
                 patient_id: data.patient
             }
-            // console.log(JSON.stringify(message))
-            // console.log(state.connection)
             state.connection.send(JSON.stringify(message))
         },
         createPatient(state, data){

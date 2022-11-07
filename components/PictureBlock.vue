@@ -1,10 +1,12 @@
 <template>
     <div>
         Connection: {{connection}}
-        <div v-if="patient!= null">
+        <div v-if="patient != null">
             Patient ID: {{patient.patient_id}}
         </div>
-        <img v-if="patient != null && patient.picture_prefix != null && patient.picture != null" :src="patient.picture_prefix + patient.picture" alt="">
+        <div v-if="patient != null">
+            <img v-for="item in patient.pictures" :key="item.id" :src="item.pict_prefix + item.pict">
+        </div>
     </div>
 </template>
 
