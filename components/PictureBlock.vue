@@ -19,42 +19,48 @@
 
 
         <b-modal id="modal-1" title="Добавить изображение" hide-footer>
-           <b-row class="m-0" align-h="center">
-                <b-form-file
-                v-model="file"
-                size="sm"
-                placeholder="Выберите файл или перетащите его сюда..."
-                drop-placeholder="Перетащите файл сюда..."
-                ></b-form-file>
-            </b-row>
-            <b-row class="m-0 pt-3">
-                <div class="pr-2">Разрешение:</div>
-                <b-form-radio-group
-                    v-model="selectedResolution"
-                    :options="resolutionOptions"
-                ></b-form-radio-group>
-                <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">W:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="resolutionW"></b-form-input></div></b-row>
-                <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">H:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="resolutionH"></b-form-input></div></b-row>
-            </b-row>
-            <b-row class="m-0 pt-3">
-                <div class="pr-2">Аппроксимация:</div>
-                <b-form-radio-group
-                    v-model="selectedApproximation"
-                    :options="resolutionOptions"
-                ></b-form-radio-group>
-                <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">W:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="approximationW"></b-form-input></div></b-row>
-                <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">H:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="approximationH"></b-form-input></div></b-row>
-            </b-row>
-            <b-row class="m-0 pt-3">
-                <div class="pr-2">Тип груди:</div>
-                <b-form-radio-group
-                    v-model="selectedBreastType"
-                    :options="breastTypeOptions"
-                ></b-form-radio-group>
-            </b-row>
-            <b-row class="m-0 pt-3" align-h="center">
-                <b-button size="sm" v-on:click="submitFile(patient)">Добавить изображение</b-button>
-            </b-row>
+            <b-form @submit="onSubmit">
+                <b-row class="m-0" align-h="center">
+                    <b-form-file
+                    v-model="form.file"
+                    size="sm"
+                    placeholder="Выберите файл или перетащите его сюда..."
+                    drop-placeholder="Перетащите файл сюда..."
+                    required
+                    ></b-form-file>
+                </b-row>
+                <b-row class="m-0 pt-3">
+                    <div class="pr-2">Разрешение:</div>
+                    <b-form-radio-group
+                        v-model="form.selectedResolution"
+                        :options="resolutionOptions"
+                        required
+                    ></b-form-radio-group>
+                    <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">W:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="form.resolutionW" required></b-form-input></div></b-row>
+                    <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">H:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="form.resolutionH" required></b-form-input></div></b-row>
+                </b-row>
+                <b-row class="m-0 pt-3">
+                    <div class="pr-2">Аппроксимация:</div>
+                    <b-form-radio-group
+                        v-model="form.selectedApproximation"
+                        :options="resolutionOptions"
+                        required
+                    ></b-form-radio-group>
+                    <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">W:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="form.approximationW" required></b-form-input></div></b-row>
+                    <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">H:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="form.approximationH" required></b-form-input></div></b-row>
+                </b-row>
+                <b-row class="m-0 pt-3">
+                    <div class="pr-2">Тип груди:</div>
+                    <b-form-radio-group
+                        v-model="form.selectedBreastType"
+                        :options="breastTypeOptions"
+                        required
+                    ></b-form-radio-group>
+                </b-row>
+                <b-row class="m-0 pt-3" align-h="center">
+                    <b-button size="sm" type="submit">Добавить изображение</b-button>
+                </b-row>
+            </b-form>
         </b-modal>
     </div>
 </template>
@@ -63,31 +69,30 @@
 export default {
     data(){
         return{
-            file: null,
             patient_id: null,
-            selectedResolution: 'micron',
-            selectedApproximation: 'micron',
+            form: {
+                file: null,
+                selectedResolution: null,
+                selectedApproximation: null,
+                selectedBreastType: null,
+                resolutionW: null,
+                resolutionH: null,
+                approximationW: null,
+                approximationH: null
+            },
             resolutionOptions: [
                 { text: 'Микрон', value: 'micron' },
                 { text: 'Пиксель', value: 'pixel' },
             ],
-            selectedBreastType: 'left',
             breastTypeOptions: [
                 { text: 'Левая', value: 'left' },
                 { text: 'Правая', value: 'right' },
-            ],
-            resolutionW: 0,
-            resolutionH: 0,
-            approximationW: 0,
-            approximationH: 0
+            ]
         }
     },
     computed:{
         connection(){
             if(this.$store.state.connection != null){
-                // if(this.$store.state.connection.readyState == 1){
-                //     this.$store.dispatch('getPicture', this.$route.query) 
-                // }
                 return this.$store.state.connection.readyState
             }
             else{
@@ -99,25 +104,27 @@ export default {
             this.$store.state.patients_json.patients_list.forEach(element => {
                 if(element.patient_id == this.$route.query.patient){
                     p_item = element
-                    // console.log("DONE")
                 }
             });
             return p_item
         }
     },
     methods: {
-        submitFile(item){
-            if(this.file != null){
-                var p_data = {
-                    file: this.file,
-                    patient: item
-                }
-                this.$store.dispatch('sendMessage', p_data)
-                setTimeout(() => {
-                    this.$store.dispatch('getPicture', this.$route.query)
-                }, "2000")
-                this.$bvModal.hide('modal-1')
-            }
+        onSubmit(event){
+            event.preventDefault()
+            console.log(this.form)
+        // submitFile(item){
+            // if(this.file != null){
+            //     var p_data = {
+            //         file: this.file,
+            //         patient: item
+            //     }
+            //     this.$store.dispatch('sendMessage', p_data)
+            //     setTimeout(() => {
+            //         this.$store.dispatch('getPicture', this.$route.query)
+            //     }, "2000")
+            //     this.$bvModal.hide('modal-1')
+            // }
         },
     },
     mounted(){
