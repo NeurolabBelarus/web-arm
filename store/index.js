@@ -58,7 +58,7 @@ const store = () => new Vuex.Store({
         },
         sendMessage(state, data){
             function encodeImageFileAsURL(data, patient) {
-                var file = data;
+                var file = data.file;
                 var reader = new FileReader();
                 reader.onloadend = function() {
                     var file_array = reader.result.split(',')
@@ -66,9 +66,18 @@ const store = () => new Vuex.Store({
                         type: 'sendfile',
                         patient_name: patient.name,
                         patient_id: patient.patient_id,
-                        file_name: data.name,
+                        file_name: data.file.name,
                         file_prefix: file_array[0] + ',',
-                        file: file_array[1]
+                        file: file_array[1],
+                        file_property:{
+                            selectedResolution: data.selectedResolution,
+                            selectedApproximation: data.selectedApproximation,
+                            selectedBreastType: data.selectedBreastType,
+                            resolutionW: data.resolutionW,
+                            resolutionH: data.resolutionH,
+                            approximationW: data.approximationW,
+                            approximationH: data.approximationH
+                        },
                     }
                     state.connection.send(JSON.stringify(message))
                     var interval = setInterval(function () {
@@ -83,7 +92,7 @@ const store = () => new Vuex.Store({
                 }
                 reader.readAsDataURL(file);
             }
-            encodeImageFileAsURL(data.file, data.patient)
+            encodeImageFileAsURL(data.form, data.patient)
         },
         getPicture(state, data){
             var message = {

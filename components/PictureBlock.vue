@@ -112,19 +112,15 @@ export default {
     methods: {
         onSubmit(event){
             event.preventDefault()
-            console.log(this.form)
-        // submitFile(item){
-            // if(this.file != null){
-            //     var p_data = {
-            //         file: this.file,
-            //         patient: item
-            //     }
-            //     this.$store.dispatch('sendMessage', p_data)
-            //     setTimeout(() => {
-            //         this.$store.dispatch('getPicture', this.$route.query)
-            //     }, "2000")
-            //     this.$bvModal.hide('modal-1')
-            // }
+            var p_data = {
+                form: this.form,
+                patient: this.patient
+            }
+            this.$store.dispatch('sendMessage', p_data)
+            setTimeout(() => {
+                    this.$store.dispatch('getPicture', this.$route.query)
+                }, "2000")
+            this.$bvModal.hide('modal-1')
         },
     },
     mounted(){
