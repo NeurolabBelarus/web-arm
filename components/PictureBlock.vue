@@ -26,9 +26,30 @@
                 placeholder="Выберите файл или перетащите его сюда..."
                 drop-placeholder="Перетащите файл сюда..."
                 ></b-form-file>
-                <b-row class="m-0 py-3" align-h="center">
-                    <b-button size="sm" v-on:click="submitFile(patient)">Добавить изображение</b-button>
-                </b-row>
+            </b-row>
+            <b-row class="m-0 pt-3">
+                <div class="pr-2">Разрешение:</div>
+                <b-form-radio-group
+                    v-model="selectedResolution"
+                    :options="resolutionOptions"
+                ></b-form-radio-group>
+            </b-row>
+            <b-row class="m-0 pt-3">
+                <div class="pr-2">Аппроксимация:</div>
+                <b-form-radio-group
+                    v-model="selectedApproximation"
+                    :options="resolutionOptions"
+                ></b-form-radio-group>
+            </b-row>
+                <b-row class="m-0 pt-3">
+                <div class="pr-2">Тип груди:</div>
+                <b-form-radio-group
+                    v-model="selectedBreastType"
+                    :options="breastTypeOptions"
+                ></b-form-radio-group>
+            </b-row>
+            <b-row class="m-0 pt-3" align-h="center">
+                <b-button size="sm" v-on:click="submitFile(patient)">Добавить изображение</b-button>
             </b-row>
         </b-modal>
     </div>
@@ -39,7 +60,18 @@ export default {
     data(){
         return{
             file: null,
-            patient_id: null
+            patient_id: null,
+            selectedResolution: 'micron',
+            selectedApproximation: 'micron',
+            resolutionOptions: [
+                { text: 'Микрон', value: 'micron' },
+                { text: 'Пиксель', value: 'pixel' },
+            ],
+            selectedBreastType: 'left',
+            breastTypeOptions: [
+                { text: 'Левая', value: 'left' },
+                { text: 'Правая', value: 'right' },
+            ]
         }
     },
     computed:{
@@ -97,5 +129,24 @@ export default {
     }
     .img-list .img-item img:hover {
         transform: scale(3);
+    }
+</style>
+
+<style>
+    .custom-control-input:checked ~ .custom-control-label::before {
+        color: #fff;
+        border-color: #1e8d84;
+        background-color: #1e8d84;
+    }
+    .custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+        background-image: none;
+    }
+    .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+        color: #fff;
+        background-color: #36bec2;
+        border-color: #36bec2;
+    }
+    .custom-control-input:focus ~ .custom-control-label::before {
+        box-shadow: 0 0 0 0;
     }
 </style>
