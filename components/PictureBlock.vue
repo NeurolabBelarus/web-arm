@@ -33,6 +33,8 @@
                     v-model="selectedResolution"
                     :options="resolutionOptions"
                 ></b-form-radio-group>
+                <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">W:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="resolutionW"></b-form-input></div></b-row>
+                <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">H:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="resolutionH"></b-form-input></div></b-row>
             </b-row>
             <b-row class="m-0 pt-3">
                 <div class="pr-2">Аппроксимация:</div>
@@ -40,8 +42,10 @@
                     v-model="selectedApproximation"
                     :options="resolutionOptions"
                 ></b-form-radio-group>
+                <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">W:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="approximationW"></b-form-input></div></b-row>
+                <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">H:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="approximationH"></b-form-input></div></b-row>
             </b-row>
-                <b-row class="m-0 pt-3">
+            <b-row class="m-0 pt-3">
                 <div class="pr-2">Тип груди:</div>
                 <b-form-radio-group
                     v-model="selectedBreastType"
@@ -71,7 +75,11 @@ export default {
             breastTypeOptions: [
                 { text: 'Левая', value: 'left' },
                 { text: 'Правая', value: 'right' },
-            ]
+            ],
+            resolutionW: 0,
+            resolutionH: 0,
+            approximationW: 0,
+            approximationH: 0
         }
     },
     computed:{
