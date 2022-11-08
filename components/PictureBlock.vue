@@ -12,10 +12,10 @@
                 <b-col cols="4" v-for="item in patient.pictures" :key="item.id" class="p-3 img-item">
                     <b-row class="m-0" align-h="center">
                         <Canvas :img="item.pict_prefix + item.pict" />
-                        <div class="pt-3">
-                            <div><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
-                            <div><b>Разрешение:</b> {{item.pict_property.resolutionW}}X{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
-                            <div><b>Аппроксимация:</b> {{item.pict_property.approximationW}}X{{item.pict_property.approximationH}} {{item.pict_property.selectedApproximation}}</div>
+                        <div class="pt-3 w-75">
+                            <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
+                            <div class="property p-1"><b>Разрешение:</b> {{item.pict_property.resolutionW}}x{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
+                            <div class="property p-1"><b>Аппроксимация:</b> {{item.pict_property.approximationW}}x{{item.pict_property.approximationH}} {{item.pict_property.selectedApproximation}}</div>
                         </div>
                     </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
@@ -141,6 +141,10 @@ export default {
 </script>
 
 <style scoped>
+    .property{
+        border: solid #1e8d84 1px;
+        font-size: 1.5rem;
+    }
     .img-list .img-item img {
         width: 100px;
         height: 100px;
