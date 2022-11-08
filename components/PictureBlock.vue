@@ -10,7 +10,14 @@
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">
                 <b-col cols="4" v-for="item in patient.pictures" :key="item.id" class="p-3 img-item">
-                    <b-row class="m-0" align-h="center"><Canvas :img="item.pict_prefix + item.pict" /></b-row>
+                    <b-row class="m-0" align-h="center">
+                        <Canvas :img="item.pict_prefix + item.pict" />
+                        <div class="pt-3">
+                            <div><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
+                            <div><b>Разрешение:</b> {{item.pict_property.resolutionW}}X{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
+                            <div><b>Аппроксимация:</b> {{item.pict_property.approximationW}}X{{item.pict_property.approximationH}} {{item.pict_property.selectedApproximation}}</div>
+                        </div>
+                    </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
                 </b-col>
                 <b-row align-v="center" class="add-picture-button p-3 m-0"><b-button v-b-modal.modal-1>+</b-button></b-row>
