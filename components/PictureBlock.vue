@@ -22,6 +22,7 @@
             <b-form @submit="onSubmit">
                 <b-row class="m-0" align-h="center">
                     <b-form-file
+                    accept="image/*, .dcm"
                     v-model="form.file"
                     size="sm"
                     placeholder="Выберите файл или перетащите его сюда..."
