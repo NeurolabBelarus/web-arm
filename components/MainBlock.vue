@@ -67,94 +67,93 @@
     </div>
 </template>
   
-  <script>
-    //   import patients_json from '~/static/patients.json'
-      export default {
-          data() {
-              return {
-                patients_items: [],
-                filter: null,
-                currentPage: 1,
-                perPage: 10,
-                filterOn: [],
-                ussd_sms: [],
-                h_fields: [
-                    {
-                        "key": "name",
-                        "label": "ФИО",
-                        "filterByFormatted": true
-                    },
-                    {
-                        "key": "patient_id",
-                        "label": "ID пациента",
-                        "filterByFormatted": true
-                    },
-                    {
-                        "key": "datetime",
-                        "label": "Дата",
-                        "filterByFormatted": true
-                    },
-                    {
-                        "key": "info",
-                        "label": "Информация"
-                    }
-                ],
-                form: {
-                    name: '',
+<script>
+    export default {
+        data() {
+            return {
+            patients_items: [],
+            filter: null,
+            currentPage: 1,
+            perPage: 10,
+            filterOn: [],
+            ussd_sms: [],
+            h_fields: [
+                {
+                    "key": "name",
+                    "label": "ФИО",
+                    "filterByFormatted": true
                 },
-                errorAlert: 0,
-                dismissSecs: 5,
-                alertText: '',
-            }
-          },
-          created() {
-              this.search();
-          },
-          computed: {
-            totalRows(){
-                return this.patientsItems.length
+                {
+                    "key": "patient_id",
+                    "label": "ID пациента",
+                    "filterByFormatted": true
+                },
+                {
+                    "key": "datetime",
+                    "label": "Дата",
+                    "filterByFormatted": true
+                },
+                {
+                    "key": "info",
+                    "label": "Информация"
+                }
+            ],
+            form: {
+                name: '',
             },
-            patients_json(){
+            errorAlert: 0,
+            dismissSecs: 5,
+            alertText: '',
+        }
+        },
+        created() {
+            this.search();
+        },
+        computed: {
+        totalRows(){
+            return this.patientsItems.length
+        },
+        patients_json(){
+            // console.log(this.$store.state.patients_json)
+            return this.$store.state.patients_json
+        },
+        patientsItems(){
+            var array = []
+            if(this.patients_items != null){
+                array = this.patients_items.patients_list
+            }
+            return array
+        }
+        },
+        methods: {
+            search() {
                 // console.log(this.$store.state.patients_json)
-                return this.$store.state.patients_json
+                this.patients_items = this.patients_json
+                // console.log(this.patients_items)
             },
-            patientsItems(){
-                var array = []
-                if(this.patients_items != null){
-                    array = this.patients_items.patients_list
-                }
-                return array
+            onFiltered(filteredItems) {
+                this.totalRows = filteredItems.length
+                this.currentPage = 1
+            },
+            resetModal() {
+                this.form.name = ''
+            },
+            countDownErrorChanged(errorAlert) {
+                this.errorAlert = errorAlert
+            },
+            async onSubmit(event) {
+                event.preventDefault()
+                var data = this.form
+                this.$store.dispatch('createPatient', data)
+                this.$bvModal.hide('modal-1')
             }
-          },
-          methods: {
-                search() {
-                    // console.log(this.$store.state.patients_json)
-                    this.patients_items = this.patients_json
-                    // console.log(this.patients_items)
-                },
-                onFiltered(filteredItems) {
-                    this.totalRows = filteredItems.length
-                    this.currentPage = 1
-                },
-                resetModal() {
-                    this.form.name = ''
-                },
-                countDownErrorChanged(errorAlert) {
-                    this.errorAlert = errorAlert
-                },
-                async onSubmit(event) {
-                    event.preventDefault()
-                    var data = this.form
-                    this.$store.dispatch('createPatient', data)
-                    this.$bvModal.hide('modal-1')
-                }
-          },
-          mounted(){
-            // this.$store.dispatch('get_fields')
-            // console.log(this.$store.state.connection)
-          }
-      }
-  </script>
+        },
+        mounted(){
+        // this.$store.dispatch('get_fields')
+        // console.log(this.$store.state.connection)
+        }
+    }
+</script>
 
 <style>
     .table{

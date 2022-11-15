@@ -58,7 +58,7 @@ export default {
 
   auth: {
     redirect: {
-      home: '/su',
+      home: '/',
       logout: '/login'
     },
     strategies: {
