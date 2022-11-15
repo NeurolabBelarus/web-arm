@@ -10,11 +10,13 @@
     export default{
         mounted(){
             setInterval(() => {
-                if(this.$store.state.connection == null){
-                    this.$store.dispatch('openConnection')
-                }
-                else if(this.$store.state.connection.readyState != WebSocket.OPEN && this.$store.state.connection.readyState != WebSocket.CONNECTING){
-                    this.$store.dispatch('openConnection')
+                if(this.$auth.loggedIn){
+                    if(this.$store.state.connection == null){
+                        this.$store.dispatch('openConnection')
+                    }
+                    else if(this.$store.state.connection.readyState != WebSocket.OPEN && this.$store.state.connection.readyState != WebSocket.CONNECTING){
+                        this.$store.dispatch('openConnection')
+                    }
                 }
             }, 1000)
         }

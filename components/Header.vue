@@ -8,14 +8,6 @@
                         <path class="cls-3" d="M65.71,40.85c-4.2,0-7.62-3.42-7.62-7.62s3.42-7.62,7.62-7.62c1.85,0,3.63,.67,5.02,1.89,.51,.45,.56,1.22,.11,1.74s-1.22,.56-1.74,.11c-.94-.82-2.15-1.28-3.4-1.28-2.85,0-5.16,2.32-5.16,5.16s2.32,5.16,5.16,5.16,5.16-2.32,5.16-5.16c0-.68,.55-1.23,1.23-1.23s1.23,.55,1.23,1.23c0,4.2-3.42,7.62-7.62,7.62Z"/>
                         <path class="cls-29" d="M65.71,35.68c-1.36,0-2.46-1.1-2.46-2.46s1.1-2.46,2.46-2.46,2.46,1.1,2.46,2.46-1.1,2.46-2.46,2.46Z"/>
                     </g>
-                    <style>
-                        .cls-29 {
-                            fill: #36bec2;
-                        }
-                        .cls-3 {
-                            fill: #fff;
-                        }
-                    </style>
                 </svg>
                 <div class="pl-1">FAUST VIEW</div></b-row></b-navbar-brand>
                 {{status}}
@@ -24,30 +16,48 @@
             <b-collapse id="nav-collapse" is-nav>
 
             <!-- Right aligned nav items -->
-            <!-- <b-navbar-nav class="ml-auto">
+            <b-navbar-nav class="ml-auto">
                 <b-col class="p-0 px-2 item">
-                    <b-img center src="@/assets/img/chip.png"></b-img>
-                    <div class="text text-center">ML</div>
+                    <div v-if="$auth.loggedIn">{{$auth.user.name}}</div>
+                    
+                    <!-- <b-img center src="@/assets/img/chip.png"></b-img>
+                    <div class="text text-center">ML</div> -->
                 </b-col>
                 <b-col class="p-0 px-2 item">
-                    <b-img center src="@/assets/img/docs.png"></b-img>
-                    <div class="text text-center">Исследования</div>
+                    <a v-on:click="logout_user()">Выход</a>
+                    <!-- <b-img center src="@/assets/img/docs.png"></b-img>
+                    <div class="text text-center">Исследования</div> -->
                 </b-col>
-                <b-col class="p-0 px-2 item">
+                <!-- <b-col class="p-0 px-2 item">
                     <b-img center src="@/assets/img/user.png"></b-img>
                     <div class="text text-center">xxxx_xxxx</div>
-                </b-col>
-            </b-navbar-nav> -->
+                </b-col> -->
+            </b-navbar-nav>
             </b-collapse>
         </b-navbar>
     </div>
 </template>
+
+<style>
+    .cls-29 {
+        fill: #36bec2;
+    }
+    .cls-3 {
+        fill: #fff;
+    }
+</style>
 
 <script>
 export default {
     computed:{
         status(){
             return this.$store.state.status
+        }
+    },
+    methods:{
+        logout_user(){
+            this.$auth.logout()
+            this.$store.state.connection.close()
         }
     }
 }

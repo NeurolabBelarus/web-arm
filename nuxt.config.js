@@ -30,7 +30,7 @@ export default {
   },
   
   proxy: {
-    '/api/': { target: 'http://localhost:8080/', pathRewrite: {'^/api/': '/'} }
+    '/api/': { target: 'http://localhost:8081/', pathRewrite: {'^/api/': '/'} }
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
