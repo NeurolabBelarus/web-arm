@@ -82,7 +82,7 @@ export default {
     .item{
         cursor: pointer;
     }
-    .item:hover .text{
+    .item:hover{
         color: #30d5c8;
     }
     .item:hover img{
