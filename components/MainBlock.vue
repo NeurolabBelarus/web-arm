@@ -186,22 +186,26 @@
     .btn{
         background-color: #1e8d84;
         border-color: #1e8d84;
+        color: white;
     }
 
     .btn:hover{
         background-color: #125853;
         border-color: #125853;
+        color: white;
     }
 
     .btn:focus {
         background-color: #125853;
         border-color: #125853;
         box-shadow: 0 0 0 0 !important;
+        color: white;
     }
 
     .btn:active {
         background-color: #125853 !important;
         border-color: #125853 !important;
+        color: white;
     }
 
     a{

@@ -27,7 +27,7 @@
                                     required
                                     ></b-form-input>
                                 </b-form-group>
-                                <div class="pt-3"><b-button class="logbtn" variant="warning" type="submit">Войти</b-button></div>
+                                <div class="pt-3"><b-button variant="warning" type="submit">Войти</b-button></div>
                             </b-form>
                             <!-- <p>Нет аккаунта? <NuxtLink to="/registration">Зарегистрируйся</NuxtLink></p> -->
                         </b-col>
@@ -97,16 +97,8 @@ export default {
 </script>
 
 <style scoped>
-a {
-    color: goldenrod;
-    text-decoration: none;
-}
-a:hover {
-    color: goldenrod;
-    text-decoration: underline;
-}
 .oneblock{
-    background-color: #281c62;
+    background-color: #29272e;
     border-radius: 20px;
     height: 400px;
 }
@@ -117,19 +109,5 @@ a:hover {
 }
 .loginform{
     text-align: left;
-}
-.logbtn{
-    color: #694900;
-    background-color: #febd00;
-    border-style: solid;
-    border-width: 0px 0px 3px 0px;
-    border-color: #be7900;
-    border-radius: 4px;
-}
-.logbtn:hover{
-    color: white;
-    background-color: #be7900;
-    border-color: #be7900;
-    
 }
 </style>
