@@ -1,9 +1,9 @@
 export default {
   target: 'static',
 
-  router: {
-    base: '/web-arm/'
-  },
+  // router: {
+  //   base: '/web-arm/'
+  // },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -49,9 +49,36 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+
+  auth: {
+    redirect: {
+      home: '/su',
+      logout: '/login'
+    },
+    strategies: {
+      local: {
+        token: {
+          property: 'token',
+          global: true,
+          // required: true,
+          type: ''
+        },
+        user: {
+          property: 'user',
+          // autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/api/auth/login', method: 'post' },
+          logout: false,
+          user: { url: '/api/auth/user', method: 'get' }
+        },
+      }
+    }
   }
 }
