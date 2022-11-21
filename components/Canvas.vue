@@ -1,6 +1,6 @@
 <template>
     <div>
-        <svg id="svg" width="500" height="500" viewBox="-270 -200 4050 4350" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" style="border:2px solid #36bec2">
+        <svg id="svg" width="500" height="500" :viewBox="'-270 -200 ' + data.resolutionW + ' ' + data.resolutionH" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" style="border:2px solid #36bec2">
    <defs> 
     
       <pattern id="p10" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -18,14 +18,14 @@
     <!-- Начало   -->
     <text x="-40" y="-40">0,0</text>
      <!-- Вертикальный блок цифр --> 
-      <text x="-230" y="500">500</text> 
-      <text x="-270" y="1000">1000</text>
-      <text x="-270" y="1500">1500</text>
-      <text x="-270" y="2000">2000</text>
-      <text x="-270" y="2500">2500</text>
-      <text x="-270" y="3000">3000</text>
-      <text x="-270" y="3500">3500</text>
-      <text x="-270" y="4000">4000</text>      
+      <text x="-210" y="500">500</text> 
+      <text x="-250" y="1000">1000</text>
+      <text x="-250" y="1500">1500</text>
+      <text x="-250" y="2000">2000</text>
+      <text x="-250" y="2500">2500</text>
+      <text x="-250" y="3000">3000</text>
+      <text x="-250" y="3500">3500</text>
+      <text x="-250" y="4000">4000</text>      
       
           <!-- Горизонтальный блок --> 
       <text x="500" y="-50">500</text>     
@@ -45,14 +45,15 @@
         <!-- <g>
           <circle cx="2000" cy="1050" r="300" fill="transparent" stroke="red" stroke-width="10" />
         </g> -->
-  </svg> 
+  </svg>
     </div>
 </template>
 
 <script>
 export default {
     props: {
-        img: String
+        img: String,
+        data: Object
     }
 }
 </script>
