@@ -29,11 +29,11 @@
                             <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
                             <div class="property p-1"><b>Разрешение:</b> {{item.pict_property.resolutionW}}x{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
                             <div class="property p-1"><b>Аппроксимация:</b> {{item.pict_property.approximationW}}x{{item.pict_property.approximationH}} {{item.pict_property.selectedApproximation}}</div>
-                            <div class="property p-1"><b>Фоновая ткань:</b> Жиро-железестая</div>
-                            <div class="property p-1"><b>Аномалия:</b> Четко определенные / ограниченные массы</div>
-                            <div class="property p-1"><b>Тип:</b> Доброкачественное</div>
-                            <div class="property p-1"><b>Координаты:</b> x=535 y=425 r=197</div>
-                            <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в ожидании' ? 'color:yellow' : 'color:red'">Не обработан</span></div>
+                            <div class="property p-1"><b>Фоновая ткань:</b> {{item.pict_property.back_fabric}}</div>
+                            <div class="property p-1"><b>Аномалия:</b> {{item.pict_property.anomaly}}</div>
+                            <div class="property p-1"><b>Тип:</b> {{item.pict_property.type}}</div>
+                            <div class="property p-1"><b>Координаты:</b> x={{item.pict_property.x_coord}} y={{item.pict_property.y_coord}} r={{item.pict_property.radius}}</div>
+                            <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в обработаке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
                         </div>
                     </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
@@ -88,6 +88,7 @@
                 </b-row>
             </b-form>
         </b-modal>
+        <b-button @click="info()">dd</b-button>
     </div>
 </template>
 
@@ -158,6 +159,9 @@ export default {
             }
             this.$store.dispatch('changeDiagnosis', data)
             this.change = !this.change
+        },
+        info(){
+            console.log(this.patient.pictures)
         }
     },
     mounted(){
