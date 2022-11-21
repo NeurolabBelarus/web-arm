@@ -121,7 +121,7 @@ const store = () => new Vuex.Store({
         async createPatient({commit, state}, data){
             var message = {
                 type: 'createpatient',
-                patient_name: data.name
+                data: data
             }
             state.connection.send(JSON.stringify(message))
             var interval = setInterval(function () {

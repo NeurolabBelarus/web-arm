@@ -143,7 +143,7 @@
             },
             async onSubmit(event) {
                 event.preventDefault()
-                var data = this.form
+                var data = {patient: this.form, user: this.$auth.user.name}
                 this.$store.dispatch('createPatient', data)
                 this.$bvModal.hide('modal-1')
             }
