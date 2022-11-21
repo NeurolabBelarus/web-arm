@@ -37,6 +37,7 @@ const store = () => new Vuex.Store({
                     state.patients_json.patients_list.forEach(element =>{
                         if(element.patient_id == p_item.patient_id){
                             element.pictures = p_item.pictures
+                            element.diagnosis = p_item.diagnosis
                         }
                     })
                     
