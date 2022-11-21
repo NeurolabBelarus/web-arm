@@ -161,7 +161,7 @@ const store = () => new Vuex.Store({
             }
             this.state.connection.send(JSON.stringify(message))
         },
-        async getPatients({commit}, data){
+        async changeDiagnosisCoords({commit}, data){
             var message = {
                 type: 'changeDiagnosisCoords',
                 data: data
