@@ -144,10 +144,10 @@ const store = () => new Vuex.Store({
         async createPatient({commit}, data){
             commit('createPatient', data)
         },
-        async changeDiagnosis(data){
+        async changeDiagnosis({commit}, data){
             var message = {
                 type: 'changeDiagnosis',
-                newDiagnosis: data
+                data: data
             }
             this.state.connection.send(JSON.stringify(message))
             // var interval = setInterval(function () {

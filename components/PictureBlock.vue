@@ -153,7 +153,6 @@ export default {
                 newDiagnosis: this.newDiagnosis,
                 patient_id: this.patient.patient_id
             }
-            console.log(this.data)
             this.$store.dispatch('changeDiagnosis', data)
             this.change = !this.change
         }
