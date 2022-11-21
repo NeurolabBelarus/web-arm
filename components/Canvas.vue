@@ -1,6 +1,6 @@
 <template>
     <div>
-        <svg id="svg" width="500" height="500" :viewBox="'-270 -200 ' + data.resolutionW + ' ' + data.resolutionH" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" style="border:2px solid #36bec2">
+        <svg id="svg" width="500" height="500" :viewBox="'-270 -200 ' + (data.resolutionW+270) + ' ' + (data.resolutionH+200)" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" style="border:2px solid #36bec2">
    <defs> 
     
       <pattern id="p10" width="10" height="10" patternUnits="userSpaceOnUse">
