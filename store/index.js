@@ -13,79 +13,6 @@ const store = () => new Vuex.Store({
         status: ''
     },
     mutations: {
-        openConnection(state){
-            
-        },
-        sendMessage(state, data){
-            function encodeImageFileAsURL(data, patient) {
-                var file = data.file;
-                var reader = new FileReader();
-                reader.onloadend = function() {
-                    var file_array = reader.result.split(',')
-                    var message = {
-                        type: 'sendfile',
-                        patient_name: patient.name,
-                        patient_id: patient.patient_id,
-                        file_name: data.file.name,
-                        file_prefix: file_array[0] + ',',
-                        file: file_array[1],
-                        file_property:{
-                            selectedResolution: data.selectedResolution,
-                            selectedApproximation: data.selectedApproximation,
-                            selectedBreastType: data.selectedBreastType,
-                            resolutionW: data.resolutionW,
-                            resolutionH: data.resolutionH,
-                            approximationW: data.approximationW,
-                            approximationH: data.approximationH
-                        },
-                    }
-                    state.connection.send(JSON.stringify(message))
-                    var interval = setInterval(function () {
-                        if(state.connection.bufferedAmount > 0){
-                            state.status = 'Идет загрузка...'
-                        }
-                        else{
-                            state.status = ''
-                            clearInterval(interval);
-                        }
-                    }, 100);
-                }
-                reader.readAsDataURL(file);
-            }
-            encodeImageFileAsURL(data.form, data.patient)
-        },
-        getPicture(state, data){
-            var message = {
-                type: 'getpatient',
-                patient_id: data.patient
-            }
-            state.connection.send(JSON.stringify(message))
-            var interval = setInterval(function () {
-                if(state.connection.bufferedAmount > 0){
-                    state.status = 'Идет загрузка...'
-                }
-                else{
-                    state.status = ''
-                    clearInterval(interval);
-                }
-            }, 100);
-        },
-        createPatient(state, data){
-            var message = {
-                type: 'createpatient',
-                patient_name: data.name
-            }
-            state.connection.send(JSON.stringify(message))
-            var interval = setInterval(function () {
-                if(state.connection.bufferedAmount > 0){
-                    state.status = 'Идет загрузка...'
-                }
-                else{
-                    state.status = ''
-                    clearInterval(interval);
-                }
-            }, 100);
-        }
     },
     getters: {
     
@@ -137,14 +64,75 @@ const store = () => new Vuex.Store({
                 console.log("Closed")
             }
         },
-        async sendMessage({commit}, data){
-            commit('sendMessage', data)
+        async sendMessage({commit, state}, data){
+            function encodeImageFileAsURL(data, patient) {
+                var file = data.file;
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    var file_array = reader.result.split(',')
+                    var message = {
+                        type: 'sendfile',
+                        patient_name: patient.name,
+                        patient_id: patient.patient_id,
+                        file_name: data.file.name,
+                        file_prefix: file_array[0] + ',',
+                        file: file_array[1],
+                        file_property:{
+                            selectedResolution: data.selectedResolution,
+                            selectedApproximation: data.selectedApproximation,
+                            selectedBreastType: data.selectedBreastType,
+                            resolutionW: data.resolutionW,
+                            resolutionH: data.resolutionH,
+                            approximationW: data.approximationW,
+                            approximationH: data.approximationH
+                        },
+                    }
+                    state.connection.send(JSON.stringify(message))
+                    var interval = setInterval(function () {
+                        if(state.connection.bufferedAmount > 0){
+                            state.status = 'Идет загрузка...'
+                        }
+                        else{
+                            state.status = ''
+                            clearInterval(interval);
+                        }
+                    }, 100);
+                }
+                reader.readAsDataURL(file);
+            }
+            encodeImageFileAsURL(data.form, data.patient)
         },
-        async getPicture({commit}, data){
-            commit('getPicture', data)
+        async getPicture({commit, state}, data){
+            var message = {
+                type: 'getpatient',
+                patient_id: data.patient
+            }
+            state.connection.send(JSON.stringify(message))
+            var interval = setInterval(function () {
+                if(state.connection.bufferedAmount > 0){
+                    state.status = 'Идет загрузка...'
+                }
+                else{
+                    state.status = ''
+                    clearInterval(interval);
+                }
+            }, 100);
         },
-        async createPatient({commit}, data){
-            commit('createPatient', data)
+        async createPatient({commit, state}, data){
+            var message = {
+                type: 'createpatient',
+                patient_name: data.name
+            }
+            state.connection.send(JSON.stringify(message))
+            var interval = setInterval(function () {
+                if(state.connection.bufferedAmount > 0){
+                    state.status = 'Идет загрузка...'
+                }
+                else{
+                    state.status = ''
+                    clearInterval(interval);
+                }
+            }, 100);
         },
         async changeDiagnosis({commit}, data){
             var message = {
