@@ -10,7 +10,8 @@ const store = () => new Vuex.Store({
         patients_json: {
             patients_list: []
         },
-        status: ''
+        status: '',
+        load: false
     },
     mutations: {
     },
@@ -39,6 +40,7 @@ const store = () => new Vuex.Store({
                 else if(JSON.parse(event.data).type == 'getpatient'){
                     var p_item = JSON.parse(event.data).patient
                     console.log(p_item)
+                    state.load = false
 
                     state.patients_json.patients_list.forEach(element =>{
                         if(element.patient_id == p_item.patient_id){
@@ -53,6 +55,11 @@ const store = () => new Vuex.Store({
                     //         element.picture = p_item.picture
                     //     }
                     // })
+                }
+                else if(JSON.parse(event.data).type == 'onLoad'){
+                    if(JSON.parse(event.data).count > 0){
+                        state.load = true
+                    }
                 }
                 // console.log(JSON.parse(event.data))
                 

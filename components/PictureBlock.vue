@@ -1,6 +1,7 @@
 <template>
     <div class="px-3" style="min-height: 830px;">
         <!-- Connection: {{connection}} -->
+        <span v-if="on_load">Идет загрузка изображения</span>
         <b-row align-v="center" class="m-0" v-if="patient != null">
             <div class="pr-3"><b>Patient ID:</b> {{patient.patient_id}}</div>
             <div class="pr-3"><b>Patient Name:</b> {{patient.name}}</div>
@@ -128,6 +129,9 @@ export default {
         },
         patient(){
             return this.$store.state.patients_json.patients_list.find(el => el.patient_id == this.patient_id)
+        },
+        on_load(){
+            return this.$store.state.load
         }
     },
     methods: {
