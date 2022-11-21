@@ -143,8 +143,24 @@ const store = () => new Vuex.Store({
         },
         async createPatient({commit}, data){
             commit('createPatient', data)
-        }
-    },
+        },
+        async changeDiagnosis(data){
+            var message = {
+                type: 'changeDiagnosis',
+                newDiagnosis: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+            // var interval = setInterval(function () {
+            //     if(this.state.connection.bufferedAmount > 0){
+            //         this.state.status = 'Идет загрузка...'
+            //     }
+            //     else{
+            //         this.state.status = ''
+            //         clearInterval(interval);
+            //     }
+            // }, 100);
+            }
+        },
 })
 
 export default store
