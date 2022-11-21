@@ -186,7 +186,8 @@ export default {
                 new_x: item.x_coord_upd,
                 new_y: item.y_coord_upd,
                 new_r: item.radius_upd,
-                pict_id: item.pict_id
+                pict_id: item.pict_id,
+                patient_id: this.patient.patient_id
             }
             this.$store.dispatch('changeDiagnosisCoords', data)
             this.cancel(item)
