@@ -149,6 +149,7 @@
             }
         },
         mounted(){
+            this.$store.dispatch('getPatients', $auth.user.name)
         // this.$store.dispatch('get_fields')
         // console.log(this.$store.state.connection)
         }
