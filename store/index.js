@@ -151,33 +151,15 @@ const store = () => new Vuex.Store({
                 data: data
             }
             this.state.connection.send(JSON.stringify(message))
-            // var interval = setInterval(function () {
-            //     if(this.state.connection.bufferedAmount > 0){
-            //         this.state.status = 'Идет загрузка...'
-            //     }
-            //     else{
-            //         this.state.status = ''
-            //         clearInterval(interval);
-            //     }
-            // }, 100);
-            }
-        },
+            },
         async getPatients({commit}, user){
             var message = {
                 type: 'getPatients',
                 user: user
             }
             this.state.connection.send(JSON.stringify(message))
-            // var interval = setInterval(function () {
-            //     if(this.state.connection.bufferedAmount > 0){
-            //         this.state.status = 'Идет загрузка...'
-            //     }
-            //     else{
-            //         this.state.status = ''
-            //         clearInterval(interval);
-            //     }
-            // }, 100);
-            }
+        }
+    }
 })
 
 export default store
