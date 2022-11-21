@@ -32,6 +32,7 @@
                             <div class="property p-1"><b>Аномалия:</b> Четко определенные / ограниченные массы</div>
                             <div class="property p-1"><b>Тип:</b> Доброкачественное</div>
                             <div class="property p-1"><b>Координаты:</b> x=535 y=425 r=197</div>
+                            <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в ожидании' ? 'color:yellow' : 'color:red'">Не обработан</span></div>
                         </div>
                     </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
