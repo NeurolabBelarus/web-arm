@@ -94,6 +94,10 @@
                     "filterByFormatted": true
                 },
                 {
+                    "key": "status",
+                    "label": "Статус"
+                },
+                {
                     "key": "info",
                     "label": "Информация"
                 }
