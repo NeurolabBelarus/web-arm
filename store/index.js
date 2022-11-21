@@ -147,17 +147,24 @@ const store = () => new Vuex.Store({
                 }
             }, 100);
         },
-        async changeDiagnosis({commit}, data){
-            var message = {
-                type: 'changeDiagnosis',
-                data: data
-            }
-            this.state.connection.send(JSON.stringify(message))
-        },
+        // async changeDiagnosis({commit}, data){
+        //     var message = {
+        //         type: 'changeDiagnosis',
+        //         data: data
+        //     }
+        //     this.state.connection.send(JSON.stringify(message))
+        // },
         async getPatients({commit}, user){
             var message = {
                 type: 'getPatients',
                 user: user
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
+        async getPatients({commit}, data){
+            var message = {
+                type: 'changeDiagnosisCoords',
+                data: data
             }
             this.state.connection.send(JSON.stringify(message))
         }

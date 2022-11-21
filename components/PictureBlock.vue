@@ -6,19 +6,19 @@
             <div class="pr-3"><b>Patient ID:</b> {{patient.patient_id}}</div>
             <div class="pr-3"><b>Patient Name:</b> {{patient.name}}</div>
             <div class="pr-3"><b>Status:</b> {{patient.status}}</div>
-            <div class="pr-3 d-flex"><b>Diagnosis:</b> 
-                <div v-if="!change"> {{patient.diagnosis}}</div>
+            <div class="pr-3 d-flex"><b>Diagnosis: {{patient.diagnosis}}</b> 
+                <!-- <div v-if="!change"> {{patient.diagnosis}}</div>
                 <div v-else>
                     <b-form-input v-model="newDiagnosis" placeholder="Enter new diagnosis"></b-form-input>
-                </div>
+                </div> -->
             </div>
-            <div v-if="!change" class="change-btn">
+            <!-- <div v-if="!change" class="change-btn">
                 <img @click="changeMode()" src="@/assets/img/change.png">
             </div>
             <div v-else class="change-btn">
                 <img @click="confirm()" src="@/assets/img/confirm.png">
                 <img @click="changeMode()" src="@/assets/img/cancel.png">
-            </div>
+            </div> -->
         </b-row>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">
@@ -44,7 +44,7 @@
                                     <b-form-input type="number" v-model="item.y_coord_upd" class="w-25"></b-form-input>
                                     <b-form-input type="number" v-model="item.radius_upd" class="w-25"></b-form-input>
                                     <div class="pl-3 change-btn">
-                                        <img src="@/assets/img/confirm.png">
+                                        <img @click="confirmEdit(item)" src="@/assets/img/confirm.png">
                                         <img @click="cancel(item)" src="@/assets/img/cancel.png">
                                     </div>    
                                 </b-row>
@@ -163,23 +163,31 @@ export default {
                 }, "2000")
             this.$bvModal.hide('modal-1')
         },
-        changeMode(){
-            this.newDiagnosis = ''
-            this.change = !this.change
-        },
-        confirm(){
-             var data = {
-                newDiagnosis: this.newDiagnosis,
-                patient_id: this.patient.patient_id
-            }
-            this.$store.dispatch('changeDiagnosis', data)
-            this.changeMode()
-        },
+        // changeMode(){
+        //     this.newDiagnosis = ''
+        //     this.change = !this.change
+        // },
+        // confirm(){
+        //      var data = {
+        //         newDiagnosis: this.newDiagnosis,
+        //         patient_id: this.patient.patient_id
+        //     }
+        //     this.$store.dispatch('changeDiagnosis', data)
+        //     this.changeMode()
+        // },
         edit(item) {
             item.editing = true
         },
         cancel(item) {
             item.editing = false
+        },
+        confirmEdit(item){
+            var data = {
+                new_x: item.x_coord_upd,
+                new_y: item.y_coord_upd,
+                new_r: item.radius_upd
+            }
+            this.$store.dispatch('changeDiagnosisCoords', data)
         }
     },
     mounted(){
