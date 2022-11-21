@@ -40,9 +40,9 @@
                                     </div>
                                 </b-row>
                                 <b-row v-else class="m-0">
-                                    <b-form-input type="number" v-model="item.x_coord_upd" class="w-25"></b-form-input>
-                                    <b-form-input type="number" v-model="item.y_coord_upd" class="w-25"></b-form-input>
-                                    <b-form-input type="number" v-model="item.radius_upd" class="w-25"></b-form-input>
+                                    <b-form-input min="0" type="number" v-model="item.x_coord_upd" class="w-25"></b-form-input>
+                                    <b-form-input min="0" type="number" v-model="item.y_coord_upd" class="w-25"></b-form-input>
+                                    <b-form-input min="0" type="number" v-model="item.radius_upd" class="w-25"></b-form-input>
                                     <div class="pl-3 change-btn">
                                         <img @click="confirmEdit(item)" src="@/assets/img/confirm.png">
                                         <img @click="cancel(item)" src="@/assets/img/cancel.png">
@@ -185,9 +185,11 @@ export default {
             var data = {
                 new_x: item.x_coord_upd,
                 new_y: item.y_coord_upd,
-                new_r: item.radius_upd
+                new_r: item.radius_upd,
+                pict_id: item.pict_id
             }
             this.$store.dispatch('changeDiagnosisCoords', data)
+            this.cancel(item)
         }
     },
     mounted(){
