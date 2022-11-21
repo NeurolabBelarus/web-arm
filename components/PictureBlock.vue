@@ -28,6 +28,10 @@
                             <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
                             <div class="property p-1"><b>Разрешение:</b> {{item.pict_property.resolutionW}}x{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
                             <div class="property p-1"><b>Аппроксимация:</b> {{item.pict_property.approximationW}}x{{item.pict_property.approximationH}} {{item.pict_property.selectedApproximation}}</div>
+                            <div class="property p-1"><b>Фоновая ткань:</b> Жиро-железестая</div>
+                            <div class="property p-1"><b>Аномалия:</b> Четко определенные / ограниченные массы</div>
+                            <div class="property p-1"><b>Тип:</b> Доброкачественное</div>
+                            <div class="property p-1"><b>Координаты:</b> x=535 y=425 r=197</div>
                         </div>
                     </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
