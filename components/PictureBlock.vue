@@ -24,7 +24,7 @@
             <b-row align-h="center" class="m-0 img-list">
                 <b-col cols="4" v-for="item in patient.pictures" :key="item.id" class="p-3 img-item">
                     <b-row class="m-0" align-h="center">
-                        <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" />
+                        <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" :edit="{editing: item.editing, x_coord_upd: item.x_coord_upd, y_coord_upd: item.y_coord_upd, radius_upd: item.radius_upd}" />
                         <div style="width: 500px">
                             <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
                             <div class="property p-1"><b>Разрешение:</b> {{item.pict_property.resolutionW}}x{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
@@ -32,7 +32,23 @@
                             <div class="property p-1"><b>Фоновая ткань:</b> {{item.pict_property.back_fabric}}</div>
                             <div class="property p-1"><b>Аномалия:</b> {{item.pict_property.anomaly}}</div>
                             <div class="property p-1"><b>Тип:</b> {{item.pict_property.type}}</div>
-                            <div class="property p-1"><b>Координаты:</b> x={{item.pict_property.x_coord}} y={{item.pict_property.y_coord}} r={{item.pict_property.radius}}</div>
+                            <div class="property p-1">
+                                <b-row v-if="!item.editing" class="m-0">
+                                    <b>Координаты:</b> x={{item.pict_property.x_coord}} y={{item.pict_property.y_coord}} r={{item.pict_property.radius}}
+                                    <div class="pl-3 change-btn">
+                                        <img @click="edit(item)" src="@/assets/img/change.png">
+                                    </div>
+                                </b-row>
+                                <b-row v-else class="m-0">
+                                    <b-form-input type="number" v-model="item.x_coord_upd" class="w-25"></b-form-input>
+                                    <b-form-input type="number" v-model="item.y_coord_upd" class="w-25"></b-form-input>
+                                    <b-form-input type="number" v-model="item.radius_upd" class="w-25"></b-form-input>
+                                    <div class="pl-3 change-btn">
+                                        <img src="@/assets/img/confirm.png">
+                                        <img @click="cancel(item)" src="@/assets/img/cancel.png">
+                                    </div>    
+                                </b-row>
+                            </div>
                             <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в обработаке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
                         </div>
                     </b-row>
@@ -88,7 +104,6 @@
                 </b-row>
             </b-form>
         </b-modal>
-        <b-button @click="info()">dd</b-button>
     </div>
 </template>
 
@@ -158,10 +173,13 @@ export default {
                 patient_id: this.patient.patient_id
             }
             this.$store.dispatch('changeDiagnosis', data)
-            this.change = !this.change
+            this.changeMode()
         },
-        info(){
-            console.log(this.patient.pictures)
+        edit(item) {
+            item.editing = true
+        },
+        cancel(item) {
+            item.editing = false
         }
     },
     mounted(){
@@ -186,14 +204,6 @@ export default {
     .property{
         border: solid #36bec2 1px;
         font-size: 1.5rem;
-    }
-    .img-list .img-item img {
-        width: 100px;
-        height: 100px;
-        transition: 0.2s linear;
-    }
-    .img-list .img-item img:hover {
-        transform: scale(3);
     }
 </style>
 

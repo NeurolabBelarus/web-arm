@@ -43,7 +43,8 @@
         <image :href="img" />
         </g>
         <g>
-          <circle :cx="data.x_coord" :cy="data.y_coord" :r="data.radius" fill="transparent" stroke="red" stroke-width="10" />
+          <circle v-if="!edit.editing" :cx="data.x_coord" :cy="data.y_coord" :r="data.radius" fill="transparent" stroke="red" stroke-width="10" />
+          <circle v-else :cx="edit.x_coord_upd" :cy="edit.y_coord_upd" :r="edit.radius_upd" fill="transparent" stroke="red" stroke-width="10" />
         </g>
   </svg>
     </div>
@@ -53,7 +54,8 @@
 export default {
     props: {
         img: String,
-        data: Object
+        data: Object,
+        edit: Object
     }
 }
 </script>
