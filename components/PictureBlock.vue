@@ -5,8 +5,8 @@
             <div class="pr-3"><b>Patient ID:</b> {{patient.patient_id}}</div>
             <div class="pr-3"><b>Patient Name:</b> {{patient.name}}</div>
             <div class="pr-3"><b>Status:</b> {{patient.status}}</div>
-            <div class="pr-3 d-flex"><b>Diagnosis: </b> 
-                <div v-if="!change">{{patient.diagnosis}}</div>
+            <div class="pr-3 d-flex"><b>Diagnosis:</b> 
+                <div v-if="!change"> {{patient.diagnosis}}</div>
                 <div v-else>
                     <b-form-input v-model="newDiagnosis" placeholder="Enter new diagnosis"></b-form-input>
                 </div>
@@ -122,13 +122,7 @@ export default {
             }
         },
         patient(){
-            var p_item = null
-            this.$store.state.patients_json.patients_list.forEach(element => {
-                if(element.patient_id == this.$route.query.patient){
-                    p_item = element
-                }
-            });
-            return p_item
+            return this.$store.state.patients_json.patients_list.find(el => el.patient_id == this.patient_id)
         }
     },
     methods: {
@@ -158,7 +152,7 @@ export default {
         }
     },
     mounted(){
-        this.patient_id = this.$route.query
+        this.patient_id = this.$route.query.patient
         setTimeout(() => {
             this.$store.dispatch('getPicture', this.$route.query)
         }, "2000")
