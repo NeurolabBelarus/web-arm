@@ -209,6 +209,13 @@ const store = () => new Vuex.Store({
                 data: data
             }
             this.state.connection.send(JSON.stringify(message))
+        },
+        async printDocument({commit}, data){
+            var message = {
+                type: 'printDocument',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
         }
     }
 })

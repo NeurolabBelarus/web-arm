@@ -32,6 +32,7 @@
                     <b-row class="m-0" align-h="center">
                         <b-row style="width: 500px" align-h="end" class="m-0">
                             <div class="pb-1 change-btn">
+                                <img @click="printDocument(item)" src="@/assets/img/print.png" title="Печать PDF">
                                 <img v-if="item.pict_property.archived == 0" @click="addToArchive(item)" src="@/assets/img/addArchive.png" title="Добавить в архив">
                                 <img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить">
                             </div>
@@ -227,6 +228,13 @@ export default {
         hideArchive(){
             this.$store.dispatch('getPicture', this.$route.query)
             this.archive = false
+        },
+        printDocument(item){
+            var data = {
+                patient_id: this.patient.patient_id,
+                pict_id: item.pict_id
+            }
+            this.$store.dispatch('printDocument', data)
         }
     },
     mounted(){
