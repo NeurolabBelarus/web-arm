@@ -34,63 +34,98 @@ const store = () => new Vuex.Store({
 
             state.connection.onmessage = function(event){
                 console.log(event)
-                if(JSON.parse(event.data).type == 'getpatients'){
-                    state.patients_json.patients_list = JSON.parse(event.data).patients_list
-                }
-                else if(JSON.parse(event.data).type == 'getpatient'){
-                    var p_item = JSON.parse(event.data).patient
-                    console.log(p_item)
-                    state.load = false
-
-                    state.patients_json.patients_list.forEach(element =>{
-                        
-                            if(element.patient_id == p_item.patient_id){
-                                if(p_item.pictures != null){
-                                    p_item.pictures.forEach(element => {
-                                        element.editing = false
-                                        element.x_coord_upd = element.pict_property.x_coord
-                                        element.y_coord_upd = element.pict_property.y_coord
-                                        element.radius_upd = element.pict_property.radius
-                                    });
-                                    element.pictures = p_item.pictures
-                                    element.diagnosis = p_item.diagnosis
-                                }
-                            }
-                    })
-                    
-                    // var p_item = JSON.parse(event.data).patient
-                    // state.patients_json.patients_list.forEach(element =>{
-                    //     if(element.patient_id == p_item.patient_id){
-                    //         element.picture = p_item.picture
-                    //     }
-                    // })
-                }
-                else if(JSON.parse(event.data).type == 'onLoad'){
-                    if(JSON.parse(event.data).count > 0){
-                        state.load = true
+                if(!(event.data instanceof Blob)){
+                    if(JSON.parse(event.data).type == 'getpatients'){
+                        state.patients_json.patients_list = JSON.parse(event.data).patients_list
                     }
-                }
-                // else if(JSON.parse(event.data).type == 'get_archived_patient'){
-                //     var p_item = JSON.parse(event.data).patient
-                //     console.log(p_item)
-                //     state.load = false
+                    else if(JSON.parse(event.data).type == 'getpatient'){
+                        var p_item = JSON.parse(event.data).patient
+                        console.log(p_item)
+                        state.load = false
 
-                //     // if(p_item.pictures != null){
-                //     //     state.patients_json.patients_list = state.patients_json.patients_list.concat(p_item.pictures)
-                //     // }
-
-                //     state.patients_json.patients_list.forEach(element =>{
+                        state.patients_json.patients_list.forEach(element =>{
+                            
+                                if(element.patient_id == p_item.patient_id){
+                                    if(p_item.pictures != null){
+                                        p_item.pictures.forEach(element => {
+                                            element.editing = false
+                                            element.x_coord_upd = element.pict_property.x_coord
+                                            element.y_coord_upd = element.pict_property.y_coord
+                                            element.radius_upd = element.pict_property.radius
+                                        });
+                                        element.pictures = p_item.pictures
+                                        element.diagnosis = p_item.diagnosis
+                                    }
+                                }
+                        })
                         
-                //         if(element.patient_id == p_item.patient_id){
-                //             if(p_item.pictures != null){
-                //                 element.pictures = element.pictures.concat(p_item.pictures)
-                //             }
-                //         }
-                //     })
-                // }
-                // console.log(JSON.parse(event.data))
+                        // var p_item = JSON.parse(event.data).patient
+                        // state.patients_json.patients_list.forEach(element =>{
+                        //     if(element.patient_id == p_item.patient_id){
+                        //         element.picture = p_item.picture
+                        //     }
+                        // })
+                    }
+                    else if(JSON.parse(event.data).type == 'onLoad'){
+                        if(JSON.parse(event.data).count > 0){
+                            state.load = true
+                        }
+                    }
+                    // else if(JSON.parse(event.data).type == 'get_archived_patient'){
+                    //     var p_item = JSON.parse(event.data).patient
+                    //     console.log(p_item)
+                    //     state.load = false
+
+                    //     // if(p_item.pictures != null){
+                    //     //     state.patients_json.patients_list = state.patients_json.patients_list.concat(p_item.pictures)
+                    //     // }
+
+                    //     state.patients_json.patients_list.forEach(element =>{
+                            
+                    //         if(element.patient_id == p_item.patient_id){
+                    //             if(p_item.pictures != null){
+                    //                 element.pictures = element.pictures.concat(p_item.pictures)
+                    //             }
+                    //         }
+                    //     })
+                    // }
+                    // console.log(JSON.parse(event.data))
+                    
+                    // console.log(state.patients_json)
+                }
+                else{
+                    var file_name = Math.random().toString(36).substring(6) + '_name.pdf'; //e.g ueq6ge1j_name.pdf
+                    var file_object = new File([event.data], file_name, {type: 'application/pdf'});
+                    // console.log(file_object); //Output
+
                 
-                // console.log(state.patients_json)
+                    // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
+                    const blobUrl = URL.createObjectURL(file_object);
+                    
+                    // Create a link element
+                    const link = document.createElement("a");
+                    
+                    // Set link's href to point to the Blob URL
+                    link.href = blobUrl;
+                    link.target = "_blank";
+                    // link.download = file_name;
+                    
+                    // Append link to the body
+                    document.body.appendChild(link);
+                    
+                    // Dispatch click event on the link
+                    // This is necessary as link.click() does not work on the latest firefox
+                    link.dispatchEvent(
+                        new MouseEvent('click', { 
+                        bubbles: true, 
+                        cancelable: true, 
+                        view: window 
+                        })
+                    );
+                    
+                    // Remove link from body
+                    document.body.removeChild(link);
+                }
             }
 
             state.connection.onclose = function(event){
