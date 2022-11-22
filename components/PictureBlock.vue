@@ -29,7 +29,7 @@
                     <b-row class="m-0" align-h="center">
                         <b-row style="width: 500px" align-h="end" class="m-0">
                             <div class="pb-1 change-btn">
-                                <img @click="addToArchive(item)" src="@/assets/img/docs.png" title="Добавить в архив">
+                                <img v-if="item.pict_property.archived == 0" @click="addToArchive(item)" src="@/assets/img/docs.png" title="Добавить в архив">
                                 <img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить">
                             </div>
                         </b-row>

@@ -70,6 +70,24 @@ const store = () => new Vuex.Store({
                         state.load = true
                     }
                 }
+                // else if(JSON.parse(event.data).type == 'get_archived_patient'){
+                //     var p_item = JSON.parse(event.data).patient
+                //     console.log(p_item)
+                //     state.load = false
+
+                //     // if(p_item.pictures != null){
+                //     //     state.patients_json.patients_list = state.patients_json.patients_list.concat(p_item.pictures)
+                //     // }
+
+                //     state.patients_json.patients_list.forEach(element =>{
+                        
+                //         if(element.patient_id == p_item.patient_id){
+                //             if(p_item.pictures != null){
+                //                 element.pictures = element.pictures.concat(p_item.pictures)
+                //             }
+                //         }
+                //     })
+                // }
                 // console.log(JSON.parse(event.data))
                 
                 // console.log(state.patients_json)
