@@ -21,7 +21,7 @@
                     <img @click="changeMode()" src="@/assets/img/cancel.png">
                 </div> -->
             </b-row>
-            <div class="change-btn"><img src="@/assets/img/docs.png" title="Показать архивные записи"></div>
+            <div class="change-btn"><img @click="showArchive()" src="@/assets/img/docs.png" title="Показать архивные записи"></div>
         </b-row>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">
@@ -215,6 +215,9 @@ export default {
                 pict_id: item.pict_id
             }
             this.$store.dispatch('deleteRecord', data)
+        },
+        showArchive(){
+            this.$store.dispatch('showArchive', this.patient.patient_id)
         }
     },
     mounted(){

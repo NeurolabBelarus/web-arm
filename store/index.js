@@ -184,6 +184,13 @@ const store = () => new Vuex.Store({
                 data: data
             }
             this.state.connection.send(JSON.stringify(message))
+        },
+        async showArchive({commit}, data){
+            var message = {
+                type: 'showArchive',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
         }
     }
 })
