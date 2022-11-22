@@ -50,6 +50,7 @@
                                 </b-row>
                             </div>
                             <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в обработаке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
+                            <div class="property p-1"><b>Примечание:</b> {{item.pict_property.remark}}</div>
                         </div>
                     </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
