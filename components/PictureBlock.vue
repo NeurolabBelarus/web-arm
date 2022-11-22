@@ -36,7 +36,7 @@
                                 <b-row v-if="!item.editing" class="m-0">
                                     <b>Координаты:</b> x={{item.pict_property.x_coord}} y={{item.pict_property.y_coord}} r={{item.pict_property.radius}}
                                     <div class="pl-3 change-btn">
-                                        <img @click="edit(item)" src="@/assets/img/change.png">
+                                        <img @click="edit(item)" src="@/assets/img/change.png" title="Изменить координаты">
                                     </div>
                                 </b-row>
                                 <b-row v-else class="m-0">
@@ -44,8 +44,8 @@
                                     <b-form-input min="0" type="number" v-model="item.y_coord_upd" class="w-25"></b-form-input>
                                     <b-form-input min="0" type="number" v-model="item.radius_upd" class="w-25"></b-form-input>
                                     <div class="pl-3 change-btn">
-                                        <img @click="confirmEdit(item)" src="@/assets/img/confirm.png">
-                                        <img @click="cancel(item)" src="@/assets/img/cancel.png">
+                                        <img @click="confirmEdit(item)" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                                        <img @click="cancel(item)" src="@/assets/img/cancel.png" title="Отменить изменения">
                                     </div>    
                                 </b-row>
                             </div>
@@ -212,6 +212,7 @@ export default {
     }
     .change-btn img:hover{
         filter: grayscale(0);
+        scale: 1.1;
     }
     .property{
         border: solid #36bec2 1px;
