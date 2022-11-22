@@ -21,7 +21,10 @@
                     <img @click="changeMode()" src="@/assets/img/cancel.png">
                 </div> -->
             </b-row>
-            <div class="change-btn"><img @click="showArchive()" src="@/assets/img/docs.png" title="Показать архивные записи"></div>
+            <div class="change-btn">
+                <img v-if="!archive" @click="showArchive()" src="@/assets/img/docs.png" title="Показать архивные записи">
+                <img v-else @click="hideArchive()" src="@/assets/img/hideArchive.png" title="Скрыть архивные записи">
+            </div>
         </b-row>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">
@@ -29,7 +32,7 @@
                     <b-row class="m-0" align-h="center">
                         <b-row style="width: 500px" align-h="end" class="m-0">
                             <div class="pb-1 change-btn">
-                                <img v-if="item.pict_property.archived == 0" @click="addToArchive(item)" src="@/assets/img/docs.png" title="Добавить в архив">
+                                <img v-if="item.pict_property.archived == 0" @click="addToArchive(item)" src="@/assets/img/addArchive.png" title="Добавить в архив">
                                 <img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить">
                             </div>
                         </b-row>
@@ -121,6 +124,7 @@
 export default {
     data(){
         return{
+            archive: false,
             patient_id: null,
             change: false,
             newDiagnosis: '',
@@ -218,6 +222,11 @@ export default {
         },
         showArchive(){
             this.$store.dispatch('showArchive', this.patient.patient_id)
+            this.archive = true
+        },
+        hideArchive(){
+            this.$store.dispatch('getPicture', this.$route.query)
+            this.archive = false
         }
     },
     mounted(){
