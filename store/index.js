@@ -170,6 +170,20 @@ const store = () => new Vuex.Store({
                 data: data
             }
             this.state.connection.send(JSON.stringify(message))
+        },
+        async addToArchive({commit}, data){
+            var message = {
+                type: 'addToArchive',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
+        async deleteRecord({commit}, data){
+            var message = {
+                type: 'deleteRecord',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
         }
     }
 })
