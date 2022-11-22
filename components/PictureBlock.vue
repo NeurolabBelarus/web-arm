@@ -31,10 +31,10 @@
                 <b-col cols="4" v-for="item in patient.pictures" :key="item.id" class="p-3 img-item">
                     <b-row class="m-0" align-h="center">
                         <b-row style="width: 500px" align-h="end" class="m-0">
-                            <div class="pb-1 change-btn">
-                                <img @click="printDocument(item)" src="@/assets/img/print.png" title="Печать PDF">
-                                <img v-if="item.pict_property.archived == 0" @click="addToArchive(item)" src="@/assets/img/addArchive.png" title="Добавить в архив">
-                                <img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить">
+                            <div class="pb-1 change-btn d-flex">
+                                <div class="pr-3"><img @click="printDocument(item)" src="@/assets/img/print.png" title="Печать PDF"></div>
+                                <div class="pr-3"><img v-if="item.pict_property.archived == 0" @click="addToArchive(item)" src="@/assets/img/addArchive.png" title="Добавить в архив"></div>
+                                <div><img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить"></div>
                             </div>
                         </b-row>
                         <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" :edit="{editing: item.editing, x_coord_upd: item.x_coord_upd, y_coord_upd: item.y_coord_upd, radius_upd: item.radius_upd}" />
