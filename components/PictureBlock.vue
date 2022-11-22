@@ -2,23 +2,26 @@
     <div class="px-3" style="min-height: 830px;">
         <!-- Connection: {{connection}} -->
         <span v-if="on_load">Идет загрузка изображения</span>
-        <b-row align-v="center" class="m-0" v-if="patient != null">
-            <div class="pr-3"><b>Patient ID:</b> {{patient.patient_id}}</div>
-            <div class="pr-3"><b>Patient Name:</b> {{patient.name}}</div>
-            <div class="pr-3"><b>Status:</b> {{patient.status}}</div>
-            <div class="pr-3 d-flex"><b>Diagnosis: {{patient.diagnosis}}</b> 
-                <!-- <div v-if="!change"> {{patient.diagnosis}}</div>
-                <div v-else>
-                    <b-form-input v-model="newDiagnosis" placeholder="Enter new diagnosis"></b-form-input>
+        <b-row align-v="center" align-h="between" class="m-0 p-3" v-if="patient != null">
+            <b-row class="m-0">
+                <div class="pr-3"><b>ID:</b> {{patient.patient_id}}</div>
+                <div class="pr-3"><b>Имя пациента:</b> {{patient.name}}</div>
+                <div class="pr-3"><b>Статус:</b> {{patient.status}}</div>
+                <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div>
+                <div class="pr-3 d-flex"><b>Комментарий: </b>{{patient.comment}}</div>
+                    <!-- <div v-if="!change"> {{patient.diagnosis}}</div>
+                    <div v-else>
+                        <b-form-input v-model="newDiagnosis" placeholder="Enter new diagnosis"></b-form-input>
+                    </div> -->
+                <!-- <div v-if="!change" class="change-btn">
+                    <img @click="changeMode()" src="@/assets/img/change.png">
+                </div>
+                <div v-else class="change-btn">
+                    <img @click="confirm()" src="@/assets/img/confirm.png">
+                    <img @click="changeMode()" src="@/assets/img/cancel.png">
                 </div> -->
-            </div>
-            <!-- <div v-if="!change" class="change-btn">
-                <img @click="changeMode()" src="@/assets/img/change.png">
-            </div>
-            <div v-else class="change-btn">
-                <img @click="confirm()" src="@/assets/img/confirm.png">
-                <img @click="changeMode()" src="@/assets/img/cancel.png">
-            </div> -->
+            </b-row>
+            <div class="change-btn"><img src="@/assets/img/docs.png" title="Показать архивные записи"></div>
         </b-row>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">

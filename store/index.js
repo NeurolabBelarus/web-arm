@@ -173,7 +173,7 @@ const store = () => new Vuex.Store({
         },
         async addToArchive({commit}, data){
             var message = {
-                type: 'addToArchive',
+                type: 'archivingRecords',
                 data: data
             }
             this.state.connection.send(JSON.stringify(message))
