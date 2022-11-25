@@ -21,6 +21,8 @@
                     <img @click="changeMode()" src="@/assets/img/cancel.png">
                 </div> -->
             </b-row>
+            <h3 v-if="archive">Записи о пациенте в архиве</h3>
+            <h3 v-else>Записи о пациенте</h3>
             <div class="change-btn">
                 <img v-if="!archive" @click="showArchive()" src="@/assets/img/docs.png" title="Показать архивные записи">
                 <img v-else @click="hideArchive()" src="@/assets/img/hideArchive.png" title="Скрыть архивные записи">
