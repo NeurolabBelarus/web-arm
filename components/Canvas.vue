@@ -1,6 +1,6 @@
 <template>
     <div>
-        <svg id="svg" width="500" height="500" viewBox="-270 -200 4000 4000" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" style="border:2px solid #36bec2">
+        <svg id="svg" width="500" height="500" :viewBox="'-270 -200 ' + (img_width+270) + ' ' + (img_height+200)" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" style="border:2px solid #36bec2">
    <defs> 
     
       <pattern id="p10" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -56,6 +56,22 @@ export default {
         img: String,
         data: Object,
         edit: Object
+    },
+    data(){
+      return{
+        img_height: 4000,
+        img_width: 4000
+      }
+    },
+    mounted(){
+      var image = new Image()
+      image.src = this.img
+      var that = this
+      image.onload = function() {
+        that.img_width = this.width
+        that.img_height = this.height
+        // console.log(this.width + 'x' + this.height);
+      }
     }
 }
 </script>
