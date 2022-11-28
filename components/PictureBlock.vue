@@ -1,6 +1,11 @@
 <template>
     <div class="px-3" style="min-height: 830px;">
         <!-- Connection: {{connection}} -->
+        <b-row align-v="center" align-h="center" class="m-0 pt-3">
+            <h3 v-if="archive">Записи о пациенте в архиве</h3>
+            <h3 v-else>Записи о пациенте</h3>
+        </b-row>
+        <nuxt-link to="/">На главную</nuxt-link>
         <span v-if="on_load">Идет загрузка изображения</span>
         <b-row align-v="center" align-h="between" class="m-0 p-3" v-if="patient != null">
             <b-row class="m-0">
@@ -21,8 +26,6 @@
                     <img @click="changeMode()" src="@/assets/img/cancel.png">
                 </div> -->
             </b-row>
-            <h3 v-if="archive">Записи о пациенте в архиве</h3>
-            <h3 v-else>Записи о пациенте</h3>
             <div class="change-btn">
                 <img v-if="!archive" @click="showArchive()" src="@/assets/img/docs.png" title="Показать архивные записи">
                 <img v-else @click="hideArchive()" src="@/assets/img/hideArchive.png" title="Скрыть архивные записи">
