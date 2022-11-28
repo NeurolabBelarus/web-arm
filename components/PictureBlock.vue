@@ -11,7 +11,7 @@
             <b-row class="m-0">
                 <div class="pr-3"><b>ID:</b> {{patient.patient_id}}</div>
                 <div class="pr-3"><b>Имя пациента:</b> {{patient.name}}</div>
-                <div class="pr-3"><b>Статус:</b> {{patient.status}}</div>
+                <!-- <div class="pr-3"><b>Статус:</b> {{patient.status}}</div> -->
                 <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div>
                 <div class="pr-3 d-flex"><b>Комментарий: </b>{{patient.comment}}</div>
                     <!-- <div v-if="!change"> {{patient.diagnosis}}</div>
@@ -225,6 +225,7 @@ export default {
                 pict_id: item.pict_id
             }
             this.$store.dispatch('deleteRecord', data)
+            // this.$store.dispatch('getPicture', this.$route.query)
         },
         showArchive(){
             this.$store.dispatch('showArchive', this.patient.patient_id)
@@ -244,9 +245,15 @@ export default {
     },
     mounted(){
         this.patient_id = this.$route.query.patient
-        setTimeout(() => {
+        if(this.$store.state.connection != null){
             this.$store.dispatch('getPicture', this.$route.query)
-        }, "2000")
+        }
+        else{
+            setTimeout(() => {
+                this.$store.dispatch('getPicture', this.$route.query)
+            }, "2000")
+        }
+        
     }
 }
 </script>

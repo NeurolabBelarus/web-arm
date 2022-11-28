@@ -37,6 +37,13 @@
             <template #cell(info)="data">
                 <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Подробнее</nuxt-link>
             </template>
+            <template #cell(status)="data">
+                <b-row align-v="center" align-h="center">
+                    <b-col v-for="element in data.item.status" :key="element.id" class="p-0" cols="2">
+                        <div id="circle" :style="[element.status == 'Не обработан' ? {'background': 'red'} : {'background': 'yellow'}]"></div>
+                    </b-col>
+                </b-row>
+            </template>
         </b-table>
         </div>
         <b-pagination
@@ -157,14 +164,21 @@
             }
         },
         mounted(){
-            //this.$store.dispatch('getPatients', this.$auth.user.name)
-        // this.$store.dispatch('get_fields')
-        // console.log(this.$store.state.connection)
+            if(this.$store.state.connection != null){
+                this.$store.dispatch('getPatients', this.$auth.user.name)
+            }
         }
     }
 </script>
 
 <style>
+    #circle {
+        width: 25px;
+        height: 25px;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+    }
     .table{
         color: rgb(209, 209, 209);
     }
