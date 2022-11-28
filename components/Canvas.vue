@@ -29,12 +29,12 @@
       
           <!-- Горизонтальный блок --> 
       <text x="500" y="-50">500</text>     
-      <text x="990" y="-50">1000</text>
-      <text x="1490" y="-50">1500</text>
-      <text x="1990" y="-50">2000</text>
-      <text x="2490" y="-50">2500</text>
-      <text x="2990" y="-50">3000</text>
-      <text x="3490" y="-50">3500</text>
+      <text x="1000" y="-50">1000</text>
+      <text x="1500" y="-50">1500</text>
+      <text x="2000" y="-50">2000</text>
+      <text x="2500" y="-50">2500</text>
+      <text x="3000" y="-50">3000</text>
+      <text x="3500" y="-50">3500</text>
       <!-- Ракета      -->
       <g transform="scale(1)" fill="purple">
         <!-- <path  d="m308.167 241.52c0-28.766-23.403-52.169-52.17-52.169s-52.17 23.403-52.17 52.169c0 28.767 23.403 52.17 52.17 52.17s52.17-23.404 52.17-52.17zm-52.169 22.169c-12.225 0-22.17-9.945-22.17-22.17 0-12.224 9.945-22.169 22.17-22.169s22.17 9.945 22.17 22.169c-.001 12.225-9.946 22.17-22.17 22.17z"/>
@@ -46,6 +46,24 @@
           <circle v-if="!edit.editing" :cx="data.x_coord" :cy="data.y_coord" :r="data.radius" fill="transparent" stroke="red" stroke-width="10" />
           <circle v-else :cx="edit.x_coord_upd" :cy="edit.y_coord_upd" :r="edit.radius_upd" fill="transparent" stroke="red" stroke-width="10" />
         </g>
+      <!-- Вертикальные линии -->
+      <line x1="-10" y1="500" x2="40" y2="500" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="-10" y1="1000" x2="40" y2="1000" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="-10" y1="1500" x2="40" y2="1500" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="-10" y1="2000" x2="40" y2="2000" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="-10" y1="2500" x2="40" y2="2500" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="-10" y1="3000" x2="40" y2="3000" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="-10" y1="3500" x2="40" y2="3500" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="-10" y1="4000" x2="40" y2="4000" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <!-- Горизональные линии -->
+      <line x1="500" y1="-10" x2="500" y2="40" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="1000" y1="-10" x2="1000" y2="40" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="1500" y1="-10" x2="1500" y2="40" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="2000" y1="-10" x2="2000" y2="40" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="2500" y1="-10" x2="2500" y2="40" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="3000" y1="-10" x2="3000" y2="40" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="3500" y1="-10" x2="3500" y2="40" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
+      <line x1="4000" y1="-10" x2="4000" y2="40" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
   </svg>
     </div>
 </template>
