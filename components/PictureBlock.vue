@@ -6,7 +6,8 @@
             <h3 v-else>Записи о пациенте</h3>
         </b-row>
         <nuxt-link to="/">На главную</nuxt-link>
-        <span v-if="on_load">Идет загрузка изображения</span>
+        <b-alert :show="on_load" variant="info" class="alert_block">Идет загрузка изображения</b-alert>
+        <b-alert :show="wait_pdf" variant="info" class="alert_block">Идет создание pdf файла</b-alert>
         <b-row align-v="center" align-h="between" class="m-0 p-3" v-if="patient != null">
             <b-row class="m-0">
                 <div class="pr-3"><b>ID:</b> {{patient.patient_id}}</div>
@@ -203,6 +204,9 @@ export default {
         },
         on_load(){
             return this.$store.state.load
+        },
+        wait_pdf(){
+            return this.$store.state.waitPDF
         }
     },
     methods: {
@@ -306,6 +310,10 @@ export default {
 </script>
 
 <style scoped>
+    .alert_block{
+        position: fixed;
+        bottom: 0;
+    }
     .change-btn img {
         width: 30px;
         height: 30px;

@@ -12,6 +12,7 @@ const store = () => new Vuex.Store({
         },
         status: '',
         load: false,
+        waitPDF: false,
         events: []
     },
     mutations: {
@@ -74,6 +75,9 @@ const store = () => new Vuex.Store({
                             state.load = true
                         }
                     }
+                    else if(JSON.parse(event.data).type == 'waitPDF'){
+                        state.waitPDF = true
+                    }
                     else if(JSON.parse(event.data).type == 'eventLog'){
                         console.log(JSON.parse(event.data))
                         var data = JSON.parse(event.data)
@@ -102,6 +106,7 @@ const store = () => new Vuex.Store({
                     // console.log(state.patients_json)
                 }
                 else{
+                    state.waitPDF = false
                     var file_name = Math.random().toString(36).substring(6) + '_name.pdf'; //e.g ueq6ge1j_name.pdf
                     var file_object = new File([event.data], file_name, {type: 'application/pdf'});
                     // console.log(file_object); //Output
