@@ -55,6 +55,8 @@ const store = () => new Vuex.Store({
                                         });
                                         element.pictures = p_item.pictures
                                         element.diagnosis = p_item.diagnosis
+                                        element.status = p_item.status
+                                        element.pictures_count = p_item.pictures_count
                                     }
                                 }
                         })

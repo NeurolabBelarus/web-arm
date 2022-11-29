@@ -11,7 +11,15 @@
             <b-row class="m-0">
                 <div class="pr-3"><b>ID:</b> {{patient.patient_id}}</div>
                 <div class="pr-3"><b>Имя пациента:</b> {{patient.name}}</div>
-                <!-- <div class="pr-3"><b>Статус:</b> {{patient.status}}</div> -->
+                <div class="pr-1"><b>Статус:</b></div>
+                <div class="mr-6" id="circle" v-for="element in patient.status" :key="element.id" :style="[element.status == 'Не обработан' ? {'background': 'red'} : {'background': 'yellow'}, {'margin-right': '10px'}]"></div>
+                <div class="pr-3">
+                    <b>Количество изображений пациента:</b> {{patient.pictures_count.all}}
+                    <span v-if="patient.pictures_count.all != 0">
+                        <b>Не в архиве:</b> {{patient.pictures_count.pict}}
+                        <b>В архиве:</b> {{patient.pictures_count.archived}}
+                    </span>
+                </div>
                 <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div>
                 <div class="pr-3 d-flex"><b>Комментарий: </b>{{patient.comment}}</div>
                     <!-- <div v-if="!change"> {{patient.diagnosis}}</div>
