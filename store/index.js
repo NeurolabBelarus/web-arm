@@ -11,7 +11,8 @@ const store = () => new Vuex.Store({
             patients_list: []
         },
         status: '',
-        load: false
+        load: false,
+        events: []
     },
     mutations: {
     },
@@ -75,6 +76,8 @@ const store = () => new Vuex.Store({
                     }
                     else if(JSON.parse(event.data).type == 'eventLog'){
                         console.log(JSON.parse(event.data))
+                        var data = JSON.parse(event.data)
+                        state.events = data.event_list
                     }
                     // else if(JSON.parse(event.data).type == 'get_archived_patient'){
                     //     var p_item = JSON.parse(event.data).patient

@@ -136,6 +136,11 @@
                 </b-row>
             </b-form>
         </b-modal>
+
+
+        <b-modal id="modal-2" title="Журнал" hide-footer>
+            <b-table :items="events" :fields="fields" bordered></b-table>
+        </b-modal>
     </div>
 </template>
 
@@ -164,6 +169,20 @@ export default {
             breastTypeOptions: [
                 { text: 'Левая', value: 'left' },
                 { text: 'Правая', value: 'right' },
+            ],
+            fields: [
+                {
+                    "key": "event",
+                    "label": "Событие"
+                },
+                {
+                    "key": "datetime",
+                    "label": "Дата"
+                },
+                {
+                    "key": "user",
+                    "label": "Пользователь"
+                },
             ]
         }
     },
@@ -178,6 +197,9 @@ export default {
         },
         patient(){
             return this.$store.state.patients_json.patients_list.find(el => el.patient_id == this.patient_id)
+        },
+        events(){
+            return this.$store.state.events
         },
         on_load(){
             return this.$store.state.load
@@ -265,6 +287,7 @@ export default {
                 pict_id: item.pict_id
             }
             this.$store.dispatch('getEventLog', data)
+            this.$bvModal.show('modal-2')
         }
     },
     mounted(){
@@ -296,6 +319,9 @@ export default {
     .property{
         border: solid #36bec2 1px;
         font-size: 1.5rem;
+    }
+    .table{
+        color: black;
     }
 </style>
 
