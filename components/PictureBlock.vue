@@ -78,8 +78,8 @@
                                     </b-row>
                                 </div>
                                 <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в обработаке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
-                                <div class="property p-1"><b-row class="m-0" align-h="between"><b-button>Подтвердить диагноз</b-button><b-button>Отклонить диагноз</b-button></b-row></div>
-                                <div class="property p-1">Подтвержден врачом 29.11.2022 12.41</div>
+                                <div class="property p-1" v-if="item.status == 'обработан' && !item.statusConfirm"><b-row class="m-0" align-h="between"><b-button>Подтвердить диагноз</b-button><b-button>Отклонить диагноз</b-button></b-row></div>
+                                <div class="property p-1" v-if="item.statusConfirm">{{item.statusConfirm}}</div>
                                 <div class="property p-1"><b>Примечание:</b> {{item.pict_property.remark}}</div>
                             </b-collapse>
                             <b-row class="m-0" align-h="center"><b-button v-b-toggle="'collapse-' + item.pict_id"><span class="when-open">&#9650;</span><span class="when-closed">&#9660;</span></b-button></b-row>
