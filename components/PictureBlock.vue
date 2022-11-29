@@ -20,8 +20,8 @@
                         <b>(В архиве:</b> {{patient.pictures_count.archived}})
                     </span>
                 </div>
-                <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div>
-                <div class="pr-3 d-flex"><b>Комментарий: </b>{{patient.comment}}</div>
+                <!-- <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div> -->
+                <!-- <div class="pr-3 d-flex"><b>Комментарий: </b>{{patient.comment}}</div> -->
                     <!-- <div v-if="!change"> {{patient.diagnosis}}</div>
                     <div v-else>
                         <b-form-input v-model="newDiagnosis" placeholder="Enter new diagnosis"></b-form-input>
@@ -78,8 +78,9 @@
                                     </b-row>
                                 </div>
                                 <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в обработаке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
-                                <div class="property p-1" v-if="item.status == 'обработан' && !item.statusConfirm"><b-row class="m-0" align-h="between"><b-button @click="userConfirmDiagnosis(item, true)">Подтвердить диагноз</b-button><b-button @click="userConfirmDiagnosis(item, false)">Отклонить диагноз</b-button></b-row></div>
-                                <div class="property p-1" v-if="item.statusConfirm">{{item.statusConfirm}}</div>
+                                <div class="property p-1" v-if="item.pict_property.status == 'Обработан'"><b-row class="m-0" align-h="between"><b-button @click="userConfirmDiagnosis(item, true)">Подтвердить диагноз</b-button><b-button @click="userConfirmDiagnosis(item, false)">Отклонить диагноз</b-button></b-row></div>
+                                <div class="property p-1" v-if="item.pict_property.statusConfirm == 1">Подтвержден врачом</div>
+                                <div class="property p-1" v-else-if="item.pict_property.statusConfirm == 0">Опровергнут врачом</div>
                                 <div class="property p-1"><b>Примечание:</b> {{item.pict_property.remark}}</div>
                             </b-collapse>
                             <b-row class="m-0" align-h="center"><b-button v-b-toggle="'collapse-' + item.pict_id"><span class="when-open">&#9650;</span><span class="when-closed">&#9660;</span></b-button></b-row>
