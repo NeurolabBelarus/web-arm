@@ -73,6 +73,9 @@ const store = () => new Vuex.Store({
                             state.load = true
                         }
                     }
+                    else if(JSON.parse(event.data).type == 'eventLog'){
+                        console.log(JSON.parse(event.data))
+                    }
                     // else if(JSON.parse(event.data).type == 'get_archived_patient'){
                     //     var p_item = JSON.parse(event.data).patient
                     //     console.log(p_item)
