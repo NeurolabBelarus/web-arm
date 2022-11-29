@@ -51,7 +51,7 @@
                                 <div><img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить"></div>
                             </div>
                         </b-row>
-                        <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" :edit="{editing: item.editing, x_coord_upd: item.x_coord_upd, y_coord_upd: item.y_coord_upd, radius_upd: item.radius_upd}" />
+                        <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" :edit="{editing: item.diagnosisEditing, x_coord_upd: item.x_coord_upd, y_coord_upd: item.y_coord_upd, radius_upd: item.radius_upd}" />
                         <div style="width: 500px">
                             <b-collapse :id="'collapse-' + item.pict_id">
                                 <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
@@ -61,10 +61,10 @@
                                 <div class="property p-1"><b>Аномалия:</b> {{item.pict_property.anomaly}}</div>
                                 <div class="property p-1"><b>Тип:</b> {{item.pict_property.type}}</div>
                                 <div class="property p-1">
-                                    <b-row v-if="!item.editing" class="m-0">
+                                    <b-row v-if="!item.diagnosisEditing" class="m-0">
                                         <b>Координаты:</b> x={{item.pict_property.x_coord}} y={{item.pict_property.y_coord}} r={{item.pict_property.radius}}
                                         <div class="pl-3 change-btn">
-                                            <img @click="edit(item)" src="@/assets/img/change.png" title="Изменить координаты">
+                                            <img @click="diagnosisEdit(item)" src="@/assets/img/change.png" title="Изменить координаты">
                                         </div>
                                     </b-row>
                                     <b-row v-else class="m-0">
@@ -72,8 +72,8 @@
                                         <b-form-input min="0" type="number" v-model="item.y_coord_upd" class="w-25"></b-form-input>
                                         <b-form-input min="0" type="number" v-model="item.radius_upd" class="w-25"></b-form-input>
                                         <div class="pl-3 change-btn">
-                                            <img @click="confirmEdit(item)" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
-                                            <img @click="cancel(item)" src="@/assets/img/cancel.png" title="Отменить изменения">
+                                            <img @click="diagnosisConfirm(item)" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                                            <img @click="diagnosisCancel(item)" src="@/assets/img/cancel.png" title="Отменить изменения">
                                         </div>    
                                     </b-row>
                                 </div>
@@ -81,7 +81,21 @@
                                 <div class="property p-1" v-if="item.pict_property.status == 'Обработан'"><b-row class="m-0" align-h="between"><b-button @click="userConfirmDiagnosis(item, true)">Подтвердить диагноз</b-button><b-button @click="userConfirmDiagnosis(item, false)">Отклонить диагноз</b-button></b-row></div>
                                 <div class="property p-1" v-if="item.pict_property.statusConfirm == 1">Подтвержден врачом</div>
                                 <div class="property p-1" v-else-if="item.pict_property.statusConfirm == 0">Опровергнут врачом</div>
-                                <div class="property p-1"><b>Примечание:</b> {{item.pict_property.remark}}</div>
+                                <div class="property p-1">
+                                     <b-row v-if="!item.remarkEditing" class="m-0">
+                                        <b>Примечание:</b> {{item.pict_property.remark}}
+                                        <div class="pl-3 change-btn">
+                                            <img @click="remarkEdit(item)" src="@/assets/img/change.png" title="Изменить примечание">
+                                        </div>
+                                    </b-row>
+                                    <b-row v-else class="m-0">
+                                        <b-form-input v-model="item.remark" class="w-75"></b-form-input>
+                                        <div class="pl-3 change-btn">
+                                            <img @click="remarkConfirm(item)" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                                            <img @click="remarkCancel(item)" src="@/assets/img/cancel.png" title="Отменить изменения">
+                                        </div>    
+                                    </b-row>
+                                </div>
                             </b-collapse>
                             <b-row class="m-0" align-h="center"><b-button v-b-toggle="'collapse-' + item.pict_id"><span class="when-open">&#9650;</span><span class="when-closed">&#9660;</span></b-button></b-row>
                         </div>
@@ -236,13 +250,16 @@ export default {
         //     this.$store.dispatch('changeDiagnosis', data)
         //     this.changeMode()
         // },
-        edit(item) {
-            item.editing = true
+        diagnosisEdit(item) {
+            this.$set(item, 'diagnosisEditing', true)
+            this.$set(item, 'x_coord_upd', item.pict_property.x_coord)
+            this.$set(item, 'y_coord_upd', item.pict_property.y_coord)
+            this.$set(item, 'radius_upd', item.pict_property.radius)
         },
-        cancel(item) {
-            item.editing = false
+        diagnosisCancel(item) {
+            this.$set(item, 'diagnosisEditing', false)
         },
-        confirmEdit(item){
+        diagnosisConfirm(item){
             var data = {
                 new_x: item.x_coord_upd,
                 new_y: item.y_coord_upd,
@@ -252,7 +269,7 @@ export default {
                 user: this.$auth.user.name
             }
             this.$store.dispatch('changeDiagnosisCoords', data)
-            this.cancel(item)
+            this.diagnosisCancel(item)
         },
         addToArchive(item){
             var data = {
@@ -302,7 +319,24 @@ export default {
                 user: this.$auth.user.name
             }
             this.$store.dispatch('userConfirmDiagnosis', data)
-        }
+        },
+        remarkEdit(item){
+            this.$set(item, 'remarkEditing', true)
+            this.$set(item, 'remark', item.pict_property.remark)
+        },
+        remarkCancel(item) {
+            this.$set(item, 'remarkEditing', false)
+        },
+        remarkConfirm(item){
+            var data = {
+                new_remark: item.remark,
+                pict_id: item.pict_id,
+                patient_id: this.patient.patient_id,
+                user: this.$auth.user.name
+            }
+            this.$store.dispatch('changeRemark', data)
+            this.remarkCancel(item)
+        },
     },
     mounted(){
         this.patient_id = this.$route.query.patient
