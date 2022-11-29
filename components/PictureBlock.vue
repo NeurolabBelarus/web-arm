@@ -81,7 +81,7 @@
                                 <div class="property p-1">Подтвержден врачом 29.11.2022 12.41</div>
                                 <div class="property p-1"><b>Примечание:</b> {{item.pict_property.remark}}</div>
                             </b-collapse>
-                            <b-button v-b-toggle.collapse-1>Toggle Collapse</b-button>
+                            <b-row class="m-0" align-h="center"><b-button v-b-toggle.collapse-1><span class="when-open">&#9650;</span><span class="when-closed">&#9660;</span></b-button></b-row>
                         </div>
                     </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
@@ -308,5 +308,9 @@ export default {
     }
     .custom-control-input:focus ~ .custom-control-label::before {
         box-shadow: 0 0 0 0;
+    }
+    .collapsed > .when-open,
+    .not-collapsed > .when-closed {
+        display: none;
     }
 </style>
