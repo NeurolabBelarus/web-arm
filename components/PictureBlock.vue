@@ -296,7 +296,8 @@ export default {
         userConfirmDiagnosis(item, value){
             var data = {
                 pict_id: item.pict_id,
-                value: value
+                value: value,
+                user: this.$auth.user.name
             }
             this.$store.dispatch('userConfirmDiagnosis', data)
         }
