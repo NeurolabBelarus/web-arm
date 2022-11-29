@@ -78,7 +78,7 @@
                                     </b-row>
                                 </div>
                                 <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в обработаке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
-                                <div class="property p-1" v-if="item.status == 'обработан' && !item.statusConfirm"><b-row class="m-0" align-h="between"><b-button>Подтвердить диагноз</b-button><b-button>Отклонить диагноз</b-button></b-row></div>
+                                <div class="property p-1" v-if="item.status == 'обработан' && !item.statusConfirm"><b-row class="m-0" align-h="between"><b-button @click="userConfirmDiagnosis(item, true)">Подтвердить диагноз</b-button><b-button @click="userConfirmDiagnosis(item, false)">Отклонить диагноз</b-button></b-row></div>
                                 <div class="property p-1" v-if="item.statusConfirm">{{item.statusConfirm}}</div>
                                 <div class="property p-1"><b>Примечание:</b> {{item.pict_property.remark}}</div>
                             </b-collapse>
@@ -286,12 +286,19 @@ export default {
             this.$store.dispatch('printDocument', data)
         },
         getEventLog(item){
-             var data = {
+            var data = {
                 patient_id: this.patient.patient_id,
                 pict_id: item.pict_id
             }
             this.$store.dispatch('getEventLog', data)
             this.$bvModal.show('modal-2')
+        },
+        userConfirmDiagnosis(item, value){
+            var data = {
+                pict_id: item.pict_id,
+                value: value
+            }
+            this.$store.dispatch('userConfirmDiagnosis', data)
         }
     },
     mounted(){
