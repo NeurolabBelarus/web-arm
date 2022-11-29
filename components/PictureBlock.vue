@@ -53,7 +53,7 @@
                         </b-row>
                         <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" :edit="{editing: item.editing, x_coord_upd: item.x_coord_upd, y_coord_upd: item.y_coord_upd, radius_upd: item.radius_upd}" />
                         <div style="width: 500px">
-                            <b-collapse id="collapse-1">
+                            <b-collapse :id="'collapse-' + item.pict_id">
                                 <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
                                 <div class="property p-1"><b>Разрешение:</b> {{item.pict_property.resolutionW}}x{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
                                 <div class="property p-1"><b>Аппроксимация:</b> {{item.pict_property.approximationW}}x{{item.pict_property.approximationH}} {{item.pict_property.selectedApproximation}}</div>
@@ -82,7 +82,7 @@
                                 <div class="property p-1">Подтвержден врачом 29.11.2022 12.41</div>
                                 <div class="property p-1"><b>Примечание:</b> {{item.pict_property.remark}}</div>
                             </b-collapse>
-                            <b-row class="m-0" align-h="center"><b-button v-b-toggle.collapse-1><span class="when-open">&#9650;</span><span class="when-closed">&#9660;</span></b-button></b-row>
+                            <b-row class="m-0" align-h="center"><b-button v-b-toggle="'collapse-' + item.pict_id"><span class="when-open">&#9650;</span><span class="when-closed">&#9660;</span></b-button></b-row>
                         </div>
                     </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
