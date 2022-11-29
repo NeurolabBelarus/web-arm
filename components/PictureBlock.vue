@@ -14,10 +14,9 @@
                 <div class="pr-1"><b>Статус:</b></div>
                 <div class="mr-6" id="circle" v-for="element in patient.status" :key="element.id" :style="[element.status == 'Не обработан' ? {'background': 'red'} : {'background': 'yellow'}, {'margin-right': '10px'}]"></div>
                 <div class="pr-3">
-                    <b>Количество изображений пациента:</b> {{patient.pictures_count.all}}
+                    <b>Записей:</b> {{patient.pictures_count.all}}
                     <span v-if="patient.pictures_count.all != 0">
-                        <b>Не в архиве:</b> {{patient.pictures_count.pict}}
-                        <b>В архиве:</b> {{patient.pictures_count.archived}}
+                        <b>(В архиве:</b> {{patient.pictures_count.archived}})
                     </span>
                 </div>
                 <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div>
@@ -45,8 +44,9 @@
                     <b-row class="m-0" align-h="center">
                         <b-row style="width: 500px" align-h="end" class="m-0">
                             <div class="pb-1 change-btn d-flex">
-                                <div class="pr-3"><img @click="printDocument(item)" src="@/assets/img/print.png" title="Печать PDF"></div>
                                 <div class="pr-3"><img v-if="item.pict_property.archived == 0" @click="addToArchive(item)" src="@/assets/img/addArchive.png" title="Добавить в архив"></div>
+                                <div class="pr-3"><img @click="getEventLog(item)" src="@/assets/img/log.png" title="Журнал"></div>
+                                <div class="pr-3"><img @click="printDocument(item)" src="@/assets/img/print.png" title="Печать PDF"></div>
                                 <div><img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить"></div>
                             </div>
                         </b-row>
@@ -86,7 +86,7 @@
                     </b-row>
                     <!-- <img :src="item.pict_prefix + item.pict"> -->
                 </b-col>
-                <b-row align-v="center" class="add-picture-button p-3 m-0"><b-button v-b-modal.modal-1>+</b-button></b-row>
+                <b-row align-v="center" class="add-picture-button p-3 m-0" v-if="!archive"><b-button v-b-modal.modal-1>+</b-button></b-row>
             </b-row>
         </div>
 
@@ -258,6 +258,13 @@ export default {
                 pict_id: item.pict_id
             }
             this.$store.dispatch('printDocument', data)
+        },
+        getEventLog(item){
+             var data = {
+                patient_id: this.patient.patient_id,
+                pict_id: item.pict_id
+            }
+            this.$store.dispatch('getEventLog', data)
         }
     },
     mounted(){
