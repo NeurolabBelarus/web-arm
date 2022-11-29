@@ -136,7 +136,7 @@ const store = () => new Vuex.Store({
             }
         },
         async sendMessage({commit, state}, data){
-            function encodeImageFileAsURL(data, patient) {
+            function encodeImageFileAsURL(data, patient, user) {
                 var file = data.file;
                 var reader = new FileReader();
                 reader.onloadend = function() {
@@ -157,6 +157,7 @@ const store = () => new Vuex.Store({
                             approximationW: data.approximationW,
                             approximationH: data.approximationH
                         },
+                        user: user
                     }
                     state.connection.send(JSON.stringify(message))
                     var interval = setInterval(function () {
@@ -171,7 +172,7 @@ const store = () => new Vuex.Store({
                 }
                 reader.readAsDataURL(file);
             }
-            encodeImageFileAsURL(data.form, data.patient)
+            encodeImageFileAsURL(data.form, data.patient, data.user)
         },
         async getPicture({commit, state}, data){
             var message = {
