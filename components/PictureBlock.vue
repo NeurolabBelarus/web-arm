@@ -295,6 +295,7 @@ export default {
         },
         userConfirmDiagnosis(item, value){
             var data = {
+                patient_id: this.patient.patient_id,
                 pict_id: item.pict_id,
                 value: value,
                 user: this.$auth.user.name
