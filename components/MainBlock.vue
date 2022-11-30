@@ -225,7 +225,7 @@
         color: rgb(209, 209, 209);
     }
     .table-block{
-        min-height: 630px;
+        min-height: 650px;
     }
     .table-hover tbody tr:hover{
         color: #30d5c8;
