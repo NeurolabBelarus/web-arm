@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <b-navbar toggleable="lg" type="dark" variant="dark">
+        <b-navbar toggleable="lg" type="dark" style="background-color: #24282c">
             <b-navbar-brand to="/"><b-row align-v="center" class="m-0 logo">
                 <svg viewBox="38 7 50 50">
                     <g xmlns="http://www.w3.org/2000/svg">

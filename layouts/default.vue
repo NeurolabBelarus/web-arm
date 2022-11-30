@@ -25,7 +25,7 @@
 
 <style scoped>
  .default-layout{
-    background-color: #29272e;
+    background-color: #1a1c20;
     color: rgb(209, 209, 209);
  }
 </style>
