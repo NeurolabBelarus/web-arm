@@ -6,7 +6,7 @@
             <h3 v-else>Записи о пациенте</h3>
         </b-row>
         <nuxt-link to="/">На главную</nuxt-link>
-        <b-alert :show="on_load" variant="info" class="alert_block">Идет загрузка изображения</b-alert>
+        <b-alert :show="on_load" variant="info" class="alert_block">Загрузка</b-alert>
         <b-alert :show="wait_pdf" variant="info" class="alert_block">Идет создание pdf файла</b-alert>
         <b-row align-v="center" align-h="between" class="m-0 p-3" v-if="patient != null">
             <b-row class="m-0">

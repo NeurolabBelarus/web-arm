@@ -65,9 +65,9 @@ const store = () => new Vuex.Store({
                         // })
                     }
                     else if(JSON.parse(event.data).type == 'onLoad'){
-                        if(JSON.parse(event.data).count > 0){
+                        // if(JSON.parse(event.data).count > 0){
                             state.load = true
-                        }
+                        // }
                     }
                     else if(JSON.parse(event.data).type == 'waitPDF'){
                         state.waitPDF = true
