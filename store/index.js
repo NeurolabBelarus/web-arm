@@ -239,6 +239,13 @@ const store = () => new Vuex.Store({
             }
             this.state.connection.send(JSON.stringify(message))
         },
+        async changeComment({commit}, data){
+            var message = {
+                type: 'changeComment',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
         async addToArchive({commit}, data){
             var message = {
                 type: 'archivingRecords',

@@ -40,8 +40,23 @@
             <template #cell(status)="data">
                 <b-row align-v="center" align-h="center">
                     <b-col v-for="element in data.item.status" :key="element.id" class="p-0" cols="2">
-                        <div id="circle" :style="[element.status == 'Не обработан' ? {'background': 'red'} : {'background': 'yellow'}]"></div>
+                        <div class="circle" :style="[element.status == 'Не обработан' ? {'background': 'red'} : {'background': 'yellow'}]"></div>
                     </b-col>
+                </b-row>
+            </template>
+            <template #cell(comment)="data">
+                <b-row v-if="!data.item.commentEditing" align-h="center" class="m-0">
+                    <div>{{data.item.comment}}</div>
+                    <div class="pl-3 change-btn">
+                        <img @click="commentEdit(data.item)" src="@/assets/img/change.png" title="Изменить комментарий">
+                    </div>
+                </b-row>
+                <b-row v-else class="m-0" align-h="center">
+                    <b-form-input v-model="data.item.commentUpd" class="w-75"></b-form-input>
+                    <div class="pl-3 change-btn">
+                        <img @click="commentConfirm(data.item)" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                        <img @click="commentCancel(data.item)" src="@/assets/img/cancel.png" title="Отменить изменения">
+                    </div>    
                 </b-row>
             </template>
         </b-table>
@@ -161,7 +176,24 @@
                 var data = {patient: this.form, user: this.$auth.user.name}
                 this.$store.dispatch('createPatient', data)
                 this.$bvModal.hide('modal-1')
-            }
+            },
+            commentEdit(item){
+                console.log(item)
+                this.$set(item, 'commentEditing', true)
+                this.$set(item, 'commentUpd', item.comment)
+            },
+            commentCancel(item) {
+                this.$set(item, 'commentEditing', false)
+            },
+            commentConfirm(item){
+                var data = {
+                    new_comment: item.commentUpd,
+                    patient_id: item.patient_id,
+                    user: this.$auth.user.name
+                }
+                this.$store.dispatch('changeComment', data)
+                this.commentCancel(item)
+            },
         },
         mounted(){
             if(this.$store.state.connection != null){
@@ -172,7 +204,17 @@
 </script>
 
 <style>
-    #circle {
+    .change-btn img {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        filter: grayscale(1);
+    }
+    .change-btn img:hover{
+        filter: grayscale(0);
+        scale: 1.1;
+    }
+    .circle {
         width: 25px;
         height: 25px;
         -webkit-border-radius: 25px;

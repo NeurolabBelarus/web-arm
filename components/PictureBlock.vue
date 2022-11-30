@@ -63,7 +63,7 @@
                                 <div class="property p-1">
                                     <b-row v-if="!item.diagnosisEditing" class="m-0">
                                         <b>Координаты:</b> x={{item.pict_property.x_coord}} y={{item.pict_property.y_coord}} r={{item.pict_property.radius}}
-                                        <div class="pl-3 change-btn">
+                                        <div v-if="!archive" class="pl-3 change-btn">
                                             <img @click="diagnosisEdit(item)" src="@/assets/img/change.png" title="Изменить координаты">
                                         </div>
                                     </b-row>
@@ -84,7 +84,7 @@
                                 <div class="property p-1">
                                      <b-row v-if="!item.remarkEditing" class="m-0">
                                         <b>Примечание:</b> {{item.pict_property.remark}}
-                                        <div class="pl-3 change-btn">
+                                        <div v-if="!archive" class="pl-3 change-btn">
                                             <img @click="remarkEdit(item)" src="@/assets/img/change.png" title="Изменить примечание">
                                         </div>
                                     </b-row>
@@ -357,16 +357,6 @@ export default {
     .alert_block{
         position: fixed;
         bottom: 0;
-    }
-    .change-btn img {
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        filter: grayscale(1);
-    }
-    .change-btn img:hover{
-        filter: grayscale(0);
-        scale: 1.1;
     }
     .property{
         border: solid #36bec2 1px;
