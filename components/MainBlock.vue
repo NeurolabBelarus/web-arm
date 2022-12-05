@@ -150,6 +150,10 @@
                     "label": "Диагноз"
                 },
                 {
+                    "key": "ai_diagnosis",
+                    "label": "AI-Диагноз"
+                },
+                {
                     "key": "info",
                     "label": "Информация"
                 },
