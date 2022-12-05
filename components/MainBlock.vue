@@ -44,6 +44,13 @@
                     </b-col>
                 </b-row>
             </template>
+            <template #cell(statusConfirm)="data">
+                <b-row align-v="center" align-h="center">
+                    <b-col v-for="element in data.item.statusConfirm" :key="element.id" class="p-0" cols="2">
+                        <div class="circle" :style="[element.statusConfirm == 1 ? {'background': 'green'} : {'background': 'red'}]"></div>
+                    </b-col>
+                </b-row>
+            </template>
             <template #cell(comment)="data">
                 <b-row v-if="!data.item.commentEditing" align-h="center" class="m-0">
                     <div>{{data.item.comment}}</div>
@@ -117,7 +124,11 @@
                 },
                 {
                     "key": "status",
-                    "label": "Статус"
+                    "label": "Вычитка 1"
+                },
+                {
+                    "key": "statusConfirm",
+                    "label": "Вычитка 2"
                 },
                 {
                     "key": "info",
