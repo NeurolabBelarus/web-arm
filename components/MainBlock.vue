@@ -66,6 +66,21 @@
                     </div>    
                 </b-row>
             </template>
+            <template #cell(diagnosis)="data">
+                <b-row v-if="!data.item.diagnosisEditing" align-h="center" class="m-0">
+                    <div>{{data.item.diagnosis}}</div>
+                    <div class="pl-3 change-btn">
+                        <img @click="diagnosisEdit(data.item)" src="@/assets/img/change.png" title="Изменить диагноз">
+                    </div>
+                </b-row>
+                <b-row v-else class="m-0" align-h="center">
+                    <b-form-input v-model="data.item.diagnosisUpd" class="w-75"></b-form-input>
+                    <div class="pl-3 change-btn">
+                        <img @click="diagnosisConfirm(data.item)" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                        <img @click="diagnosisCancel(data.item)" src="@/assets/img/cancel.png" title="Отменить изменения">
+                    </div>    
+                </b-row>
+            </template>
         </b-table>
         </div>
         <b-pagination
@@ -208,6 +223,23 @@
                 }
                 this.$store.dispatch('changeComment', data)
                 this.commentCancel(item)
+            },
+            diagnosisEdit(item){
+                console.log(item)
+                this.$set(item, 'diagnosisEditing', true)
+                this.$set(item, 'diagnosisUpd', item.diagnosis)
+            },
+            diagnosisCancel(item) {
+                this.$set(item, 'diagnosisEditing', false)
+            },
+            diagnosisConfirm(item){
+                var data = {
+                    new_diagnosis: item.diagnosisUpd,
+                    patient_id: item.patient_id,
+                    user: this.$auth.user.name
+                }
+                this.$store.dispatch('changeDiagnosis', data)
+                this.diagnosisCancel(item)
             },
         },
         mounted(){
