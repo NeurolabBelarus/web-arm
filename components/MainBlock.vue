@@ -40,7 +40,7 @@
             <template #cell(status)="data">
                 <b-row align-v="center" align-h="center">
                     <b-col v-for="element in data.item.status" :key="element.id" class="p-0" cols="2">
-                        <div class="circle" :style="[element.status == 'Не обработан' ? {'background': 'red'} : {'background': 'yellow'}]"></div>
+                        <div class="circle" :style="[element.status == 'Не обработан' ? {'background': 'red'} : element.status == 'В обработке' ? {'background': 'yellow'} : {'background': 'green'}]"></div>
                     </b-col>
                 </b-row>
             </template>
