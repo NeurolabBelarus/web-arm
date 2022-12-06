@@ -111,6 +111,10 @@
               <b-alert :show="errorAlert" dismissible @dismissed="errorAlert=0" @dismiss-count-down="countDownErrorChanged" variant="danger">{{alertText}}</b-alert>
             </b-form>
         </b-modal>
+
+        <b-modal id="modal-2" title="Журнал" hide-footer>
+            <b-table :items="events" :fields="fields" bordered></b-table>
+        </b-modal>
     </div>
 </template>
   
@@ -171,6 +175,20 @@
             errorAlert: 0,
             dismissSecs: 5,
             alertText: '',
+            fields: [
+                {
+                    "key": "event",
+                    "label": "Событие"
+                },
+                {
+                    "key": "datetime",
+                    "label": "Дата"
+                },
+                {
+                    "key": "user",
+                    "label": "Пользователь"
+                },
+            ]
         }
         },
         created() {
@@ -190,7 +208,10 @@
                 array = this.patients_items.patients_list
             }
             return array
-        }
+        },
+        events(){
+            return this.$store.state.events
+        },
         },
         methods: {
             search() {
@@ -284,6 +305,9 @@
     }
     .table{
         color: rgb(209, 209, 209);
+    }
+    .modal-body .table{
+        color: black;
     }
     .table-block{
         min-height: 650px;

@@ -362,9 +362,6 @@ export default {
         border: solid #36bec2 1px;
         font-size: 1.5rem;
     }
-    .table{
-        color: black;
-    }
 </style>
 
 <style>
