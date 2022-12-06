@@ -35,7 +35,10 @@
         :current-page="currentPage" 
         @filtered="onFiltered">
             <template #cell(info)="data">
-                <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Подробнее</nuxt-link>
+                <b-row class="m-0" align-h="center">
+                    <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Подробнее</nuxt-link>
+                    <div class="pl-3 change-btn"><img @click="getEventLogPatient(data.item)" src="@/assets/img/log.png" title="Журнал"></div>
+                </b-row>
             </template>
             <template #cell(status)="data">
                 <b-row align-v="center" align-h="center">
@@ -244,6 +247,13 @@
                 }
                 this.$store.dispatch('changeDiagnosis', data)
                 this.diagnosisCancel(item)
+            },
+            getEventLogPatient(item){
+                var data = {
+                    patient_id: item.patient_id,
+                }
+                this.$store.dispatch('getEventLogPatient', data)
+                this.$bvModal.show('modal-2')
             },
         },
         mounted(){

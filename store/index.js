@@ -288,6 +288,13 @@ const store = () => new Vuex.Store({
             }
             this.state.connection.send(JSON.stringify(message))
         },
+        async getEventLogPatient({commit}, data){
+            var message = {
+                type: 'getEventLogPatient',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
         async userConfirmDiagnosis({commit}, data){
             var message = {
                 type: 'userConfirmDiagnosis',
