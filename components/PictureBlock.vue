@@ -77,7 +77,7 @@
                                         </div>    
                                     </b-row>
                                 </div>
-                                <div class="property p-1"><b>Статус:</b> <span :style="item.status == 'обработан' ? 'color: green' : item.status == 'в обработаке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
+                                <div class="property p-1"><b>Статус:</b> <span :style="item.pict_property.status == 'Обработан' ? 'color: green' : item.pict_property.status == 'В обработке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
                                 <div class="property p-1" v-if="item.pict_property.status == 'Обработан'"><b-row class="m-0" align-h="between"><b-button @click="userConfirmDiagnosis(item, true)">Подтвердить диагноз</b-button><b-button @click="userConfirmDiagnosis(item, false)">Отклонить диагноз</b-button></b-row></div>
                                 <div class="property p-1" v-if="item.pict_property.statusConfirm == 1">Подтвержден врачом</div>
                                 <div class="property p-1" v-else-if="item.pict_property.statusConfirm == 0">Опровергнут врачом</div>
