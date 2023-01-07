@@ -119,7 +119,7 @@
                     required
                     ></b-form-file>
                 </b-row>
-                <b-row class="m-0 pt-3">
+                <!-- <b-row class="m-0 pt-3">
                     <div class="pr-2">Разрешение:</div>
                     <b-form-radio-group
                         v-model="form.selectedResolution"
@@ -128,7 +128,7 @@
                     ></b-form-radio-group>
                     <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">W:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="form.resolutionW" required></b-form-input></div></b-row>
                     <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">H:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="form.resolutionH" required></b-form-input></div></b-row>
-                </b-row>
+                </b-row> -->
                 <b-row class="m-0 pt-3">
                     <div class="pr-2">Аппроксимация:</div>
                     <b-form-radio-group
@@ -170,13 +170,13 @@ export default {
             newDiagnosis: '',
             form: {
                 file: null,
-                selectedResolution: null,
-                selectedApproximation: null,
+                selectedResolution: 'pixel',
+                selectedApproximation: 'pixel',
                 selectedBreastType: null,
-                resolutionW: null,
-                resolutionH: null,
-                approximationW: null,
-                approximationH: null,
+                resolutionW: 4000,
+                resolutionH: 4000,
+                approximationW: 1,
+                approximationH: 1,
             },
             resolutionOptions: [
                 { text: 'Микрон', value: 'micron' },
@@ -203,6 +203,9 @@ export default {
         }
     },
     computed:{
+        watch_file(){
+            return this.form.file
+        },
         connection(){
             if(this.$store.state.connection != null){
                 return this.$store.state.connection.readyState
