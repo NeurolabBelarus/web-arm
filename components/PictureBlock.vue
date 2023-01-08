@@ -51,7 +51,7 @@
                                 <div><img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить"></div>
                             </div>
                         </b-row>
-                        <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" :edit="{editing: item.diagnosisEditing, x_coord_upd: item.x_coord_upd, y_coord_upd: item.y_coord_upd, radius_upd: item.radius_upd}" />
+                        <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" :p_prop="item" :edit="{editing: item.diagnosisEditing, x_coord_upd: item.x_coord_upd, y_coord_upd: item.y_coord_upd, radius_upd: item.radius_upd}" />
                         <div style="width: 500px">
                             <b-collapse :id="'collapse-' + item.pict_id">
                                 <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
