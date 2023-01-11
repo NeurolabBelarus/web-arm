@@ -258,9 +258,11 @@ export default {
             this.$set(item, 'x_coord_upd', item.pict_property.x_coord)
             this.$set(item, 'y_coord_upd', item.pict_property.y_coord)
             this.$set(item, 'radius_upd', item.pict_property.radius)
+            document.getElementById('g_circle').classList.add('draggable')
         },
         diagnosisCancel(item) {
             this.$set(item, 'diagnosisEditing', false)
+             document.getElementById('g_circle').classList.remove('draggable')
         },
         diagnosisConfirm(item){
             var data = {

@@ -41,7 +41,7 @@
         <path  d="m240.998 483.495h30v28.5h-30z"/>  -->
         <image id="svg_image" :href="img"/>
       </g>
-      <g id="g_circle" class="draggable">
+      <g id="g_circle" class="">
         <circle v-if="!edit.editing" :cx="data.x_coord" :cy="data.y_coord" :r="data.radius" fill="transparent" stroke="red" stroke-width="10" />
         <circle id="circle2" v-else :cx="edit.x_coord_upd" :cy="edit.y_coord_upd" :r="edit.radius_upd" fill="transparent" stroke="red" stroke-width="10" />
       </g>
