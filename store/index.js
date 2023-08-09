@@ -22,7 +22,8 @@ const store = () => new Vuex.Store({
     },
     actions: {
         async openConnection({commit, dispatch, state}){
-            state.connection = new WebSocket("ws://localhost:8081/ws")
+            // state.connection = new WebSocket("ws://localhost:8081/ws")
+            state.connection = new WebSocket("ws://95.143.188.184:8081/ws")
             // state.connection = new WebSocket("wss://test.nlab.work/ws")
             // state.connection = new WebSocket("wss://faust.metatron.by/ws")
             var user = this.$auth.user.name
@@ -141,43 +142,76 @@ const store = () => new Vuex.Store({
             }
         },
         async sendMessage({commit, state}, data){
-            function encodeImageFileAsURL(data, patient, user) {
-                var file = data.file;
+            var message = {
+                type: 'sendfile',
+                patient_name: data.patient.name,
+                patient_id: data.patient.patient_id,
+                files:{
+                    file1: {
+                        file_name: null,
+                        file_prefix: null,
+                        file: null,
+                        selectedBreastType: 'right'
+                    },
+                    file2: {
+                        file_name: null,
+                        file_prefix: null,
+                        file: null,
+                        selectedBreastType: 'left'
+                    },
+                    file3: {
+                        file_name: null,
+                        file_prefix: null,
+                        file: null,
+                        selectedBreastType: 'right'
+                    },
+                    file4: {
+                        file_name: null,
+                        file_prefix: null,
+                        file: null,
+                        selectedBreastType: 'left'
+                    }
+                },
+                files_property:{
+                    selectedResolution: data.form.selectedResolution,
+                    selectedApproximation: data.form.selectedApproximation,
+                    // selectedBreastType: data.form.selectedBreastType,
+                    resolutionW: data.form.resolutionW,
+                    resolutionH: data.form.resolutionH,
+                    approximationW: data.form.approximationW,
+                    approximationH: data.form.approximationH
+                },
+                user: data.user
+            }
+            function encodeImageFileAsURL(file, file_type, breast_type) {
                 var reader = new FileReader();
                 reader.onloadend = function() {
                     var file_array = reader.result.split(',')
-                    var message = {
-                        type: 'sendfile',
-                        patient_name: patient.name,
-                        patient_id: patient.patient_id,
-                        file_name: data.file.name,
+                    message.files[file_type] = {
+                        file_name: file.name,
                         file_prefix: file_array[0] + ',',
                         file: file_array[1],
-                        file_property:{
-                            selectedResolution: data.selectedResolution,
-                            selectedApproximation: data.selectedApproximation,
-                            selectedBreastType: data.selectedBreastType,
-                            resolutionW: data.resolutionW,
-                            resolutionH: data.resolutionH,
-                            approximationW: data.approximationW,
-                            approximationH: data.approximationH
-                        },
-                        user: user
+                        selectedBreastType: breast_type
                     }
-                    state.connection.send(JSON.stringify(message))
-                    var interval = setInterval(function () {
-                        if(state.connection.bufferedAmount > 0){
-                            state.status = 'Идет загрузка...'
-                        }
-                        else{
-                            state.status = ''
-                            clearInterval(interval);
-                        }
-                    }, 100);
                 }
                 reader.readAsDataURL(file);
             }
-            encodeImageFileAsURL(data.form, data.patient, data.user)
+            encodeImageFileAsURL(data.form.file1, 'file1', 'right')
+            encodeImageFileAsURL(data.form.file2, 'file2', 'left')
+            encodeImageFileAsURL(data.form.file3, 'file3', 'right')
+            encodeImageFileAsURL(data.form.file4, 'file4', 'left')
+            setTimeout(() => {
+                state.connection.send(JSON.stringify(message))
+                var interval = setInterval(function () {
+                    if(state.connection.bufferedAmount > 0){
+                        state.status = 'Идет загрузка...'
+                    }
+                    else{
+                        state.status = ''
+                        clearInterval(interval);
+                    }
+                }, 100);
+            }, "1000")
         },
         async getPicture({commit, state}, data){
             var message = {

@@ -109,10 +109,44 @@
 
         <b-modal id="modal-1" title="Добавить изображение" hide-footer>
             <b-form @submit="onSubmit">
-                <b-row class="m-0" align-h="center">
+                <label for="file1">Проекция R-CC:</label>
+                <b-row id="file1" class="m-0" align-h="center">
                     <b-form-file
                     accept="image/*, .dcm"
-                    v-model="form.file"
+                    v-model="form.file1"
+                    size="sm"
+                    placeholder="Выберите файл или перетащите его сюда..."
+                    drop-placeholder="Перетащите файл сюда..."
+                    required
+                    ></b-form-file>
+                </b-row>
+                <label for="file2">Проекция L-CC:</label>
+                <b-row id="file2" class="m-0" align-h="center">
+                    <b-form-file
+                    accept="image/*, .dcm"
+                    v-model="form.file2"
+                    size="sm"
+                    placeholder="Выберите файл или перетащите его сюда..."
+                    drop-placeholder="Перетащите файл сюда..."
+                    required
+                    ></b-form-file>
+                </b-row>
+                <label for="file3">Проекция R-ML:</label>
+                <b-row id="file3" class="m-0" align-h="center">
+                    <b-form-file
+                    accept="image/*, .dcm"
+                    v-model="form.file3"
+                    size="sm"
+                    placeholder="Выберите файл или перетащите его сюда..."
+                    drop-placeholder="Перетащите файл сюда..."
+                    required
+                    ></b-form-file>
+                </b-row>
+                <label for="file4">Проекция L-ML:</label>
+                <b-row id="file4" class="m-0" align-h="center">
+                    <b-form-file
+                    accept="image/*, .dcm"
+                    v-model="form.file4"
                     size="sm"
                     placeholder="Выберите файл или перетащите его сюда..."
                     drop-placeholder="Перетащите файл сюда..."
@@ -139,14 +173,14 @@
                     <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">W:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="form.approximationW" required></b-form-input></div></b-row>
                     <b-row align-v="center" class="m-0 pt-2"><div class="pr-1">H:</div><div class="w-50"><b-form-input type="number" size="sm" v-model="form.approximationH" required></b-form-input></div></b-row>
                 </b-row>
-                <b-row class="m-0 pt-3">
+                <!-- <b-row class="m-0 pt-3">
                     <div class="pr-2">Тип груди:</div>
                     <b-form-radio-group
                         v-model="form.selectedBreastType"
                         :options="breastTypeOptions"
                         required
                     ></b-form-radio-group>
-                </b-row>
+                </b-row> -->
                 <b-row class="m-0 pt-3" align-h="center">
                     <b-button size="sm" type="submit">Добавить изображение</b-button>
                 </b-row>
@@ -169,10 +203,13 @@ export default {
             change: false,
             newDiagnosis: '',
             form: {
-                file: null,
+                file1: null,
+                file2: null,
+                file3: null,
+                file4: null,
                 selectedResolution: 'pixel',
                 selectedApproximation: 'pixel',
-                selectedBreastType: null,
+                // selectedBreastType: null,
                 resolutionW: 4000,
                 resolutionH: 4000,
                 approximationW: 1,
@@ -204,7 +241,7 @@ export default {
     },
     computed:{
         watch_file(){
-            return this.form.file
+            return this.form.file1
         },
         connection(){
             if(this.$store.state.connection != null){
