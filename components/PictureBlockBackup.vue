@@ -16,9 +16,9 @@
                 <div class="mr-6 circle" v-for="element in patient.status" :key="element.id" :style="[element.status == 'Не обработан' ? {'background': 'red'} : element.status == 'В обработке' ? {'background': 'yellow'} : {'background': 'green'}, {'margin-right': '10px'}]"></div>
                 <div class="pr-3">
                     <b>Записей:</b> {{patient.pictures_count.all}}
-                    <!-- <span v-if="patient.pictures_count.all != 0">
+                    <span v-if="patient.pictures_count.all != 0">
                         <b>(В архиве:</b> {{patient.pictures_count.archived}})
-                    </span> -->
+                    </span>
                 </div>
                 <!-- <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div> -->
                 <!-- <div class="pr-3 d-flex"><b>Комментарий: </b>{{patient.comment}}</div> -->
@@ -34,25 +34,75 @@
                     <img @click="changeMode()" src="@/assets/img/cancel.png">
                 </div> -->
             </b-row>
-            <!-- <div class="change-btn">
+            <div class="change-btn">
                 <img v-if="!archive" @click="showArchive()" src="@/assets/img/docs.png" title="Показать архивные записи">
                 <img v-else @click="hideArchive()" src="@/assets/img/hideArchive.png" title="Скрыть архивные записи">
-            </div> -->
+            </div>
         </b-row>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">
-                <b-col cols="6" v-for="(item, index) in patient.pictures" :key="item.id" class="p-0 img-item">
-                    <b-row class="m-0" :align-h="index % 2 == 0 ? 'end': 'start'">
-                        <div style="position: relative;">
-                            <span v-if="index == 0" style="position: absolute; left: 0; font-weight: bold;">R-CC</span>
-                            <span v-else-if="index == 1" style="position: absolute; right: 0; font-weight: bold;">L-CC</span>
-                            <span v-else-if="index == 2" style="position: absolute; left: 0; font-weight: bold;">R-MLO</span>
-                            <span v-else-if="index == 3" style="position: absolute; right: 0; font-weight: bold;">L-MLO</span>
-                            <img @click="zoomImg(index)" :src="item.pict_prefix + item.pict" alt="" width="auto" height="400px" style="cursor: pointer;">
+                <b-col cols="4" v-for="item in patient.pictures" :key="item.id" class="p-3 img-item">
+                    <b-row class="m-0" align-h="center">
+                        <b-row style="width: 500px" align-h="end" class="m-0">
+                            <div class="pb-1 change-btn d-flex">
+                                <div class="pr-3"><img v-if="item.pict_property.archived == 0" @click="addToArchive(item)" src="@/assets/img/addArchive.png" title="Добавить в архив"></div>
+                                <div class="pr-3"><img @click="getEventLog(item)" src="@/assets/img/log.png" title="Журнал"></div>
+                                <div class="pr-3"><img @click="printDocument(item)" src="@/assets/img/print.png" title="Печать PDF"></div>
+                                <div><img @click="deleteRecord(item)" src="@/assets/img/cancel.png" title="Удалить"></div>
+                            </div>
+                        </b-row>
+                        <Canvas :img="item.pict_prefix + item.pict" :data="item.pict_property" :p_prop="item" :edit="{editing: item.diagnosisEditing, x_coord_upd: item.x_coord_upd, y_coord_upd: item.y_coord_upd, radius_upd: item.radius_upd}" />
+                        <div style="width: 500px">
+                            <b-collapse :id="'collapse-' + item.pict_id">
+                                <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
+                                <div class="property p-1"><b>Разрешение:</b> {{item.pict_property.resolutionW}}x{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
+                                <div class="property p-1"><b>Аппроксимация:</b> {{item.pict_property.approximationW}}x{{item.pict_property.approximationH}} {{item.pict_property.selectedApproximation}}</div>
+                                <!-- <div class="property p-1"><b>Фоновая ткань:</b> {{item.pict_property.back_fabric}}</div> -->
+                                <!-- <div class="property p-1"><b>Аномалия:</b> {{item.pict_property.anomaly}}</div> -->
+                                <!-- <div class="property p-1"><b>Тип:</b> {{item.pict_property.type}}</div> -->
+                                <!-- <div class="property p-1">
+                                    <b-row v-if="!item.diagnosisEditing" class="m-0">
+                                        <b>Координаты:</b> x={{item.pict_property.x_coord}} y={{item.pict_property.y_coord}} r={{item.pict_property.radius}}
+                                        <div v-if="!archive" class="pl-3 change-btn">
+                                            <img @click="diagnosisEdit(item)" src="@/assets/img/change.png" title="Изменить координаты">
+                                        </div>
+                                    </b-row>
+                                    <b-row v-else class="m-0">
+                                        <b-form-input min="0" type="number" v-model="item.x_coord_upd" class="w-25"></b-form-input>
+                                        <b-form-input min="0" type="number" v-model="item.y_coord_upd" class="w-25"></b-form-input>
+                                        <b-form-input min="0" type="number" v-model="item.radius_upd" class="w-25"></b-form-input>
+                                        <div class="pl-3 change-btn">
+                                            <img @click="diagnosisConfirm(item)" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                                            <img @click="diagnosisCancel(item)" src="@/assets/img/cancel.png" title="Отменить изменения">
+                                        </div>    
+                                    </b-row>
+                                </div> -->
+                                <div class="property p-1"><b>Статус:</b> <span :style="item.pict_property.status == 'Обработан' ? 'color: green' : item.pict_property.status == 'В обработке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
+                                <div class="property p-1" v-if="item.pict_property.status == 'Обработан'"><b-row class="m-0" align-h="between"><b-button @click="userConfirmDiagnosis(item, true)">Подтвердить диагноз</b-button><b-button @click="userConfirmDiagnosis(item, false)">Отклонить диагноз</b-button></b-row></div>
+                                <div class="property p-1" v-if="item.pict_property.statusConfirm == 1">Подтвержден врачом</div>
+                                <div class="property p-1" v-else-if="item.pict_property.statusConfirm == 0">Опровергнут врачом</div>
+                                <div class="property p-1">
+                                     <b-row v-if="!item.remarkEditing" class="m-0">
+                                        <b>Примечание:</b> {{item.pict_property.remark}}
+                                        <div v-if="!archive" class="pl-3 change-btn">
+                                            <img @click="remarkEdit(item)" src="@/assets/img/change.png" title="Изменить примечание">
+                                        </div>
+                                    </b-row>
+                                    <b-row v-else class="m-0">
+                                        <b-form-input v-model="item.remark" class="w-75"></b-form-input>
+                                        <div class="pl-3 change-btn">
+                                            <img @click="remarkConfirm(item)" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                                            <img @click="remarkCancel(item)" src="@/assets/img/cancel.png" title="Отменить изменения">
+                                        </div>    
+                                    </b-row>
+                                </div>
+                            </b-collapse>
+                            <b-row class="m-0" align-h="center"><b-button v-b-toggle="'collapse-' + item.pict_id"><span class="when-open">&#9650;</span><span class="when-closed">&#9660;</span></b-button></b-row>
                         </div>
                     </b-row>
+                    <!-- <img :src="item.pict_prefix + item.pict"> -->
                 </b-col>
-                <b-row align-v="center" class="add-picture-button p-3 m-0" v-if="!archive && patient.pictures_count.all < 4"><b-button v-b-modal.modal-1>+</b-button></b-row>
+                <b-row align-v="center" class="add-picture-button p-3 m-0" v-if="!archive"><b-button v-b-modal.modal-1>+</b-button></b-row>
             </b-row>
         </div>
 
@@ -137,38 +187,9 @@
             </b-form>
         </b-modal>
 
+
         <b-modal id="modal-2" title="Журнал" hide-footer>
             <b-table :items="events" :fields="fields" bordered></b-table>
-        </b-modal>
-
-        <b-modal id="modal-3" title="Картинка" size="xl" hide-footer hide-header v-if="zoom_image_index != null">
-            <b-tabs content-class="mt-3">
-                <b-tab title="First" active>
-                    <img :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%">
-                </b-tab>
-                <b-tab title="Этапы обработки">
-                    <img @click="zoomStep(patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict)" :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%" id="zoomStep" style="cursor: pointer;">
-                    <div class="p-3" v-if="patient.pictures[zoom_image_index].pict_property.status != 'Обработан'">
-                        <b>Диагноз:</b> Здесь будет диагноз
-                        <b-row class="m-0">
-                            <b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], true)" class="mr-1 mt-1">Подтвердить диагноз</b-button>
-                            <b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], false)" class="ml-1 mt-1">Отклонить диагноз</b-button>
-                        </b-row>
-                    </div>
-                </b-tab>
-                <b-tab title="Сведения">
-                    <div><b>Статус:</b> {{ patient.pictures[zoom_image_index].pict_property.status }}</div>
-                    <div><b>Размер изображения:</b> {{ patient.pictures[zoom_image_index].pict_property.resolutionH }} X {{ patient.pictures[zoom_image_index].pict_property.resolutionW }} пикселей</div>
-                    <div><b>Тип апроксимации:</b> {{ patient.pictures[zoom_image_index].pict_property.selectedApproximation }}</div>
-                    <div>
-                        <b>Тип груди:</b>
-                        <span v-if="zoom_image_index == 0">R-CC</span>
-                        <span v-else-if="zoom_image_index == 1">L-CC</span>
-                        <span v-else-if="zoom_image_index == 2">R-MLO</span>
-                        <span v-else-if="zoom_image_index == 3">L-MLO</span>
-                    </div>
-                </b-tab>
-            </b-tabs>
         </b-modal>
     </div>
 </template>
@@ -178,7 +199,6 @@ export default {
     data(){
         return{
             archive: false,
-            zoom_image_index: null,
             patient_id: null,
             change: false,
             newDiagnosis: '',
@@ -245,31 +265,6 @@ export default {
         }
     },
     methods: {
-        zoomStep(blobUrl){
-            // const blobUrl = document.getElementById('zoomStep').getAttribute('src')
-            // const link = document.createElement("a");
-            // link.href = blobUrl;
-            // link.target = "_blank";
-            // document.body.appendChild(link);
-            // link.dispatchEvent(
-            //     new MouseEvent('click', { 
-            //     bubbles: true, 
-            //     cancelable: true, 
-            //     view: window 
-            //     })
-            // );
-            // document.body.removeChild(link);
-            var image = new Image();
-            image.src = blobUrl;
-
-            var w = window.open("");
-            w.document.write(image.outerHTML);
-        },
-        zoomImg(index){
-            this.zoom_image_index = index
-            console.log(this.patient)
-            this.$bvModal.show('modal-3')
-        },
         onSubmit(event){
             event.preventDefault()
             var p_data = {
@@ -408,9 +403,6 @@ export default {
     .property{
         border: solid #36bec2 1px;
         font-size: 1.5rem;
-    }
-    .img_modal{
-        background-color: #36bec2;
     }
 </style>
 

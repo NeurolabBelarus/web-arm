@@ -37,7 +37,7 @@
             <template #cell(info)="data">
                 <b-row class="m-0" align-h="center">
                     <nuxt-link size="sm" :to="{ path: 'pict', query: { patient: data.item.patient_id }}">Подробнее</nuxt-link>
-                    <div class="pl-3 change-btn"><img @click="getEventLogPatient(data.item)" src="@/assets/img/log.png" title="Журнал"></div>
+                    <!-- <div class="pl-3 change-btn"><img @click="getEventLogPatient(data.item)" src="@/assets/img/log.png" title="Журнал"></div> -->
                 </b-row>
             </template>
             <template #cell(status)="data">
@@ -156,10 +156,10 @@
                     "key": "diagnosis",
                     "label": "Диагноз"
                 },
-                {
-                    "key": "ai_diagnosis",
-                    "label": "AI-Диагноз"
-                },
+                // {
+                //     "key": "ai_diagnosis",
+                //     "label": "AI-Диагноз"
+                // },
                 {
                     "key": "info",
                     "label": "Информация"
