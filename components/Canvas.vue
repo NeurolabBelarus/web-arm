@@ -113,7 +113,7 @@ export default {
     mounted(){
       let svg = SVG('#svg' + this.p_prop.pict_id)
       this.g_circle = svg.findOne('g#g_circle')
-      var that = this
+      // var that = this
       // this.g_circle.on('dragend', function (event) {
       //   var c_x = parseInt(that.g_circle.x() + that.data.radius, 10)
       //   var c_y = parseInt(that.g_circle.y() + that.data.radius, 10)
@@ -134,8 +134,8 @@ export default {
       var image = new Image()
       image.src = this.img
       image.onload = function() {
-        that.img_width = this.width
-        that.img_height = this.height
+        this.img_width = this.width
+        this.img_height = this.height
         // console.log(this.width + 'x' + this.height);
       }
     }
