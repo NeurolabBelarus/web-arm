@@ -148,11 +148,24 @@
                 </b-tab>
                 <b-tab title="Этапы обработки">
                     <img @click="zoomStep(patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict)" :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%" id="zoomStep" style="cursor: pointer;">
-                    <div class="p-3" v-if="patient.pictures[zoom_image_index].pict_property.status != 'Обработан'">
+                    <b-row v-if="!patient.pictures[zoom_image_index].remarkEditing" class="m-0 py-3">
+                        <b>Примечание:</b> {{patient.pictures[zoom_image_index].pict_property.remark}}
+                        <div v-if="!archive" class="pl-3 change-btn">
+                            <img @click="remarkEdit(patient.pictures[zoom_image_index])" src="@/assets/img/change.png" title="Изменить примечание">
+                        </div>
+                    </b-row>
+                    <b-row v-else class="m-0 py-3">
+                        <b-form-input v-model="patient.pictures[zoom_image_index].remark" class="w-75"></b-form-input>
+                        <div class="pl-3 change-btn">
+                            <img @click="remarkConfirm(patient.pictures[zoom_image_index])" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                            <img @click="remarkCancel(patient.pictures[zoom_image_index])" src="@/assets/img/cancel.png" title="Отменить изменения">
+                        </div>    
+                    </b-row>
+                    <div class="py-3" v-if="patient.pictures[zoom_image_index].pict_property.status != 'Обработан'">
                         <b>Диагноз:</b> Здесь будет диагноз
-                        <b-row class="m-0">
-                            <b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], true)" class="mr-1 mt-1">Подтвердить диагноз</b-button>
-                            <b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], false)" class="ml-1 mt-1">Отклонить диагноз</b-button>
+                        <b-row class="m-0 py-3">
+                            <b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], true)" class="mr-1">Подтвердить диагноз</b-button>
+                            <b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], false)" class="ml-1">Отклонить диагноз</b-button>
                         </b-row>
                     </div>
                 </b-tab>

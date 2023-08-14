@@ -82,7 +82,7 @@
                                 <div class="property p-1" v-if="item.pict_property.statusConfirm == 1">Подтвержден врачом</div>
                                 <div class="property p-1" v-else-if="item.pict_property.statusConfirm == 0">Опровергнут врачом</div>
                                 <div class="property p-1">
-                                     <b-row v-if="!item.remarkEditing" class="m-0">
+                                    <b-row v-if="!item.remarkEditing" class="m-0">
                                         <b>Примечание:</b> {{item.pict_property.remark}}
                                         <div v-if="!archive" class="pl-3 change-btn">
                                             <img @click="remarkEdit(item)" src="@/assets/img/change.png" title="Изменить примечание">
