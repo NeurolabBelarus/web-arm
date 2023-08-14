@@ -57,10 +57,10 @@
                                 <div class="property p-1"><b>Тип груди:</b> {{item.pict_property.selectedBreastType == 'left' ? 'Левая':'Правая'}}</div>
                                 <div class="property p-1"><b>Разрешение:</b> {{item.pict_property.resolutionW}}x{{item.pict_property.resolutionH}} {{item.pict_property.selectedResolution}}</div>
                                 <div class="property p-1"><b>Аппроксимация:</b> {{item.pict_property.approximationW}}x{{item.pict_property.approximationH}} {{item.pict_property.selectedApproximation}}</div>
-                                <div class="property p-1"><b>Фоновая ткань:</b> {{item.pict_property.back_fabric}}</div>
-                                <div class="property p-1"><b>Аномалия:</b> {{item.pict_property.anomaly}}</div>
-                                <div class="property p-1"><b>Тип:</b> {{item.pict_property.type}}</div>
-                                <div class="property p-1">
+                                <!-- <div class="property p-1"><b>Фоновая ткань:</b> {{item.pict_property.back_fabric}}</div> -->
+                                <!-- <div class="property p-1"><b>Аномалия:</b> {{item.pict_property.anomaly}}</div> -->
+                                <!-- <div class="property p-1"><b>Тип:</b> {{item.pict_property.type}}</div> -->
+                                <!-- <div class="property p-1">
                                     <b-row v-if="!item.diagnosisEditing" class="m-0">
                                         <b>Координаты:</b> x={{item.pict_property.x_coord}} y={{item.pict_property.y_coord}} r={{item.pict_property.radius}}
                                         <div v-if="!archive" class="pl-3 change-btn">
@@ -76,7 +76,7 @@
                                             <img @click="diagnosisCancel(item)" src="@/assets/img/cancel.png" title="Отменить изменения">
                                         </div>    
                                     </b-row>
-                                </div>
+                                </div> -->
                                 <div class="property p-1"><b>Статус:</b> <span :style="item.pict_property.status == 'Обработан' ? 'color: green' : item.pict_property.status == 'В обработке' ? 'color:yellow' : 'color:red'">{{item.pict_property.status}}</span></div>
                                 <div class="property p-1" v-if="item.pict_property.status == 'Обработан'"><b-row class="m-0" align-h="between"><b-button @click="userConfirmDiagnosis(item, true)">Подтвердить диагноз</b-button><b-button @click="userConfirmDiagnosis(item, false)">Отклонить диагноз</b-button></b-row></div>
                                 <div class="property p-1" v-if="item.pict_property.statusConfirm == 1">Подтвержден врачом</div>

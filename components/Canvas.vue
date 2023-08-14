@@ -41,10 +41,10 @@
         <path  d="m240.998 483.495h30v28.5h-30z"/>  -->
         <image id="svg_image" :href="img"/>
       </g>
-      <g id="g_circle" class="">
+      <!-- <g id="g_circle" class="">
         <circle v-if="!edit.editing" :cx="data.x_coord" :cy="data.y_coord" :r="data.radius" fill="transparent" stroke="red" stroke-width="10" />
         <circle id="circle2" v-else :cx="edit.x_coord_upd" :cy="edit.y_coord_upd" :r="edit.radius_upd" fill="transparent" stroke="red" stroke-width="10" />
-      </g>
+      </g> -->
       <!-- Вертикальные линии -->
       <line x1="-10" y1="500" x2="40" y2="500" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
       <line x1="-10" y1="1000" x2="40" y2="1000" style="stroke-linecap: round; stroke: white; stroke-width:15px;" />
@@ -84,52 +84,52 @@ export default {
         g_circle: null
       }
     },
-    computed:{
-      if_edit(){
-        if(this.edit.editing){
-          this.g_circle.draggable(true)
-        }
-        else{
-          this.g_circle.draggable(false)
-        }
-      }
-    },
-    watch: {
-      edit: function (val) {
-        if(val.editing){
-          this.g_circle.draggable(true)
-        }
-        else{
-          this.g_circle.draggable(false)
-        }
+    // computed:{
+    //   if_edit(){
+    //     if(this.edit.editing){
+    //       this.g_circle.draggable(true)
+    //     }
+    //     else{
+    //       this.g_circle.draggable(false)
+    //     }
+    //   }
+    // },
+    // watch: {
+    //   edit: function (val) {
+    //     if(val.editing){
+    //       this.g_circle.draggable(true)
+    //     }
+    //     else{
+    //       this.g_circle.draggable(false)
+    //     }
         
-      },
-      g_circle: function(val){
-        if(val == null){
-          val.draggable(false)
-        }
-      }
-    },
+    //   },
+    //   g_circle: function(val){
+    //     if(val == null){
+    //       val.draggable(false)
+    //     }
+    //   }
+    // },
     mounted(){
       let svg = SVG('#svg' + this.p_prop.pict_id)
       this.g_circle = svg.findOne('g#g_circle')
       var that = this
-      this.g_circle.on('dragend', function (event) {
-        var c_x = parseInt(that.g_circle.x() + that.data.radius, 10)
-        var c_y = parseInt(that.g_circle.y() + that.data.radius, 10)
+      // this.g_circle.on('dragend', function (event) {
+      //   var c_x = parseInt(that.g_circle.x() + that.data.radius, 10)
+      //   var c_y = parseInt(that.g_circle.y() + that.data.radius, 10)
 
-        var data = {
-          new_x: c_x,
-          new_y: c_y,
-          new_r: that.data.radius,
-          pict_id: that.p_prop.pict_id,
-          patient_id: that.p_prop.patient_id,
-          user: that.$auth.user.name
-        }
-        that.edit.editing = false
-        that.$store.dispatch('changeDiagnosisCoords', data)
+      //   var data = {
+      //     new_x: c_x,
+      //     new_y: c_y,
+      //     new_r: that.data.radius,
+      //     pict_id: that.p_prop.pict_id,
+      //     patient_id: that.p_prop.patient_id,
+      //     user: that.$auth.user.name
+      //   }
+      //   that.edit.editing = false
+      //   that.$store.dispatch('changeDiagnosisCoords', data)
 
-      })
+      // })
 
       var image = new Image()
       image.src = this.img

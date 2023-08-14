@@ -22,8 +22,8 @@ const store = () => new Vuex.Store({
     },
     actions: {
         async openConnection({commit, dispatch, state}){
-            // state.connection = new WebSocket("ws://localhost:8081/ws")
-            state.connection = new WebSocket("ws://95.143.188.184:8081/ws")
+            state.connection = new WebSocket("ws://localhost:8081/ws")
+            // state.connection = new WebSocket("ws://95.143.188.184:8081/ws")
             // state.connection = new WebSocket("wss://test.nlab.work/ws")
             // state.connection = new WebSocket("wss://faust.metatron.by/ws")
             var user = this.$auth.user.name
