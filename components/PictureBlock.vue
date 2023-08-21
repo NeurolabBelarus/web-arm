@@ -174,12 +174,23 @@
                             <img @click="remarkCancel(patient.pictures[zoom_image_index])" src="@/assets/img/cancel.png" title="Отменить изменения">
                         </div>    
                     </b-row>
-                    <div class="py-3" v-if="patient.pictures[zoom_image_index].pict_property.status != 'Обработан'">
-                        <b>Диагноз:</b> Здесь будет диагноз
-                        <b-row class="m-0 py-3">
-                            <b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], true)" class="mr-1">Подтвердить диагноз</b-button>
-                            <b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], false)" class="ml-1">Отклонить диагноз</b-button>
+                    <div class="py-3" v-if="patient.pictures[zoom_image_index].pict_property.status == 'Обработан'">
+                        <!-- <b>Диагноз:</b> {{patient.pictures[zoom_image_index].pict_property.anomaly}} -->
+                        <b-row v-if="!patient.pictures[zoom_image_index].diagnosisEditing" class="m-0">
+                            <b>Диагноз:</b> {{patient.pictures[zoom_image_index].pict_property.anomaly}}
+                            <div v-if="!archive" class="pl-3 change-btn">
+                                <img @click="diagnosisEdit(patient.pictures[zoom_image_index])" src="@/assets/img/change.png" title="Изменить диагноз">
+                            </div>
                         </b-row>
+                        <b-row v-else class="m-0">
+                            <b-form-input min="0" type="text" v-model="patient.pictures[zoom_image_index].diag_upd" class="w-75"></b-form-input>
+                            <div class="pl-3 change-btn">
+                                <img @click="diagnosisConfirm(patient.pictures[zoom_image_index])" src="@/assets/img/confirm.png"  title="Подтвердить изменения">
+                                <img @click="diagnosisCancel(patient.pictures[zoom_image_index])" src="@/assets/img/cancel.png" title="Отменить изменения">
+                            </div>    
+                        </b-row>
+                        <div class="py-1" v-if="patient.pictures[zoom_image_index].pict_property.status == 'Обработан' && patient.pictures[zoom_image_index].pict_property.statusConfirm != 1"><b-row class="m-0" align-h="between"><b-button @click="userConfirmDiagnosis(patient.pictures[zoom_image_index], true)">Подтвердить диагноз</b-button></b-row></div>
+                        <div class="py-1" v-if="patient.pictures[zoom_image_index].pict_property.statusConfirm == 1" style="color: green; font-weight: bold;">Подтвержден врачом</div>
                     </div>
                 </b-tab>
                 <b-tab title="Сведения">
@@ -340,24 +351,21 @@ export default {
         // },
         diagnosisEdit(item) {
             this.$set(item, 'diagnosisEditing', true)
-            this.$set(item, 'x_coord_upd', item.pict_property.x_coord)
-            this.$set(item, 'y_coord_upd', item.pict_property.y_coord)
-            this.$set(item, 'radius_upd', item.pict_property.radius)
-            document.getElementById('g_circle').classList.add('draggable')
+            this.$set(item, 'diag_upd', item.pict_property.anomaly)
+            // document.getElementById('g_circle').classList.add('draggable')
         },
         diagnosisCancel(item) {
             this.$set(item, 'diagnosisEditing', false)
-             document.getElementById('g_circle').classList.remove('draggable')
+            //  document.getElementById('g_circle').classList.remove('draggable')
         },
         diagnosisConfirm(item){
             var data = {
-                new_x: item.x_coord_upd,
-                new_y: item.y_coord_upd,
-                new_r: item.radius_upd,
+                new_diag: item.diag_upd,
                 pict_id: item.pict_id,
                 patient_id: this.patient.patient_id,
                 user: this.$auth.user.name
             }
+            console.log(data)
             this.$store.dispatch('changeDiagnosisCoords', data)
             this.diagnosisCancel(item)
         },
