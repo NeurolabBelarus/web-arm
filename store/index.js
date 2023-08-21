@@ -29,6 +29,7 @@ const store = () => new Vuex.Store({
             var user = this.$auth.user.name
             state.connection.onopen = function(event){
                 dispatch('getPatients', user)
+                dispatch('open_message', user)
             }
             state.connection.onerror = function(event){
                 console.log(event)
@@ -101,38 +102,73 @@ const store = () => new Vuex.Store({
                     // console.log(state.patients_json)
                 }
                 else{
-                    state.waitPDF = false
-                    var file_name = Math.random().toString(36).substring(6) + '_name.pdf'; //e.g ueq6ge1j_name.pdf
-                    var file_object = new File([event.data], file_name, {type: 'application/pdf'});
-                    // console.log(file_object); //Output
+                    if(state.waitPDF == true){
+                        state.waitPDF = false
+                        var file_name = Math.random().toString(36).substring(6) + '_name.pdf'; //e.g ueq6ge1j_name.pdf
+                        var file_object = new File([event.data], file_name, {type: 'application/pdf'});
+                        // console.log(file_object); //Output
 
-                
-                    // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
-                    const blobUrl = URL.createObjectURL(file_object);
                     
-                    // Create a link element
-                    const link = document.createElement("a");
+                        // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
+                        const blobUrl = URL.createObjectURL(file_object);
+                        
+                        // Create a link element
+                        const link = document.createElement("a");
+                        
+                        // Set link's href to point to the Blob URL
+                        link.href = blobUrl;
+                        link.target = "_blank";
+                        // link.download = file_name;
+                        
+                        // Append link to the body
+                        document.body.appendChild(link);
+                        
+                        // Dispatch click event on the link
+                        // This is necessary as link.click() does not work on the latest firefox
+                        link.dispatchEvent(
+                            new MouseEvent('click', { 
+                            bubbles: true, 
+                            cancelable: true, 
+                            view: window 
+                            })
+                        );
+                        
+                        // Remove link from body
+                        document.body.removeChild(link);
+                    }
+                    else if(state.waitPDF == false){
+                        var file_name = Math.random().toString(36).substring(6) + '_name.dcm'; //e.g ueq6ge1j_name.pdf
+                        var file_object = new File([event.data], file_name, {type: 'application/octet-stream'});
+                        // console.log(file_object); //Output
+
                     
-                    // Set link's href to point to the Blob URL
-                    link.href = blobUrl;
-                    link.target = "_blank";
-                    // link.download = file_name;
-                    
-                    // Append link to the body
-                    document.body.appendChild(link);
-                    
-                    // Dispatch click event on the link
-                    // This is necessary as link.click() does not work on the latest firefox
-                    link.dispatchEvent(
-                        new MouseEvent('click', { 
-                        bubbles: true, 
-                        cancelable: true, 
-                        view: window 
-                        })
-                    );
-                    
-                    // Remove link from body
-                    document.body.removeChild(link);
+                        // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
+                        const blobUrl = URL.createObjectURL(file_object);
+                        
+                        // Create a link element
+                        const link = document.createElement("a");
+                        
+                        // Set link's href to point to the Blob URL
+                        link.href = blobUrl;
+                        // link.target = "_blank";
+                        link.download = file_name;
+                        
+                        // Append link to the body
+                        document.body.appendChild(link);
+                        
+                        // Dispatch click event on the link
+                        // This is necessary as link.click() does not work on the latest firefox
+                        link.dispatchEvent(
+                            new MouseEvent('click', { 
+                            bubbles: true, 
+                            cancelable: true, 
+                            view: window 
+                            })
+                        );
+                        
+                        // Remove link from body
+                        document.body.removeChild(link);
+                    }
                 }
             }
 
@@ -259,6 +295,13 @@ const store = () => new Vuex.Store({
             }
             this.state.connection.send(JSON.stringify(message))
         },
+        async open_message({commit}, user){
+            var message = {
+                type: 'open_message',
+                user: user
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
         async changeDiagnosisCoords({commit}, data){
             var message = {
                 type: 'changeDiagnosisCoords',
@@ -314,6 +357,51 @@ const store = () => new Vuex.Store({
                 data: data
             }
             this.state.connection.send(JSON.stringify(message))
+        },
+        async downloadOriginal({commit}, data){
+            var message = {
+                type: 'downloadOriginal',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
+        async pullNewPict({commit}, data){
+            var message = {
+                type: 'pullNewPict',
+                pict_id: data.pict_id,
+                patient_id: data.patient_id,
+                file: {
+                    file_name: null,
+                    file_prefix: null,
+                    file: null,
+                },
+
+            }
+            function encodeImageFileAsURL(file) {
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    var file_array = reader.result.split(',')
+                    message.file = {
+                        file_name: file.name,
+                        file_prefix: file_array[0] + ',',
+                        file: file_array[1]
+                    }
+                }
+                reader.readAsDataURL(file)
+            }
+            encodeImageFileAsURL(data.form)
+            setTimeout(() => {
+                this.state.connection.send(JSON.stringify(message))
+                var interval = setInterval(() => {
+                    if(this.state.connection.bufferedAmount > 0){
+                        this.state.status = 'Идет загрузка...'
+                    }
+                    else{
+                        this.state.status = ''
+                        clearInterval(interval);
+                    }
+                }, 100);
+            }, "1000")
         },
         async getEventLog({commit}, data){
             var message = {

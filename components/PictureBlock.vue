@@ -57,7 +57,7 @@
         </div>
 
 
-        <b-modal id="modal-1" title="Добавить изображение" hide-footer>
+        <b-modal id="modal-1" title="Добавить изображения" hide-footer>
             <b-form @submit="onSubmit">
                 <label for="file1">Проекция R-CC:</label>
                 <b-row id="file1" class="m-0" align-h="center">
@@ -81,7 +81,7 @@
                     required
                     ></b-form-file>
                 </b-row>
-                <label for="file3">Проекция R-ML:</label>
+                <label for="file3">Проекция R-MLO:</label>
                 <b-row id="file3" class="m-0" align-h="center">
                     <b-form-file
                     accept="image/*, .dcm"
@@ -92,7 +92,7 @@
                     required
                     ></b-form-file>
                 </b-row>
-                <label for="file4">Проекция L-ML:</label>
+                <label for="file4">Проекция L-MLO:</label>
                 <b-row id="file4" class="m-0" align-h="center">
                     <b-form-file
                     accept="image/*, .dcm"
@@ -132,7 +132,7 @@
                     ></b-form-radio-group>
                 </b-row> -->
                 <b-row class="m-0 pt-3" align-h="center">
-                    <b-button size="sm" type="submit">Добавить изображение</b-button>
+                    <b-button size="sm" type="submit">Добавить изображения</b-button>
                 </b-row>
             </b-form>
         </b-modal>
@@ -143,8 +143,21 @@
 
         <b-modal id="modal-3" title="Картинка" size="xl" hide-footer hide-header v-if="zoom_image_index != null">
             <b-tabs content-class="mt-3">
-                <b-tab title="First" active>
+                <b-tab title="Изображение" active>
                     <img :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%">
+                    <div v-if="$auth.user.role == 'admin'">
+                        <b-row id="file1" class="m-0 mt-3" align-h="center">
+                            <b-button class="mr-3" v-on:click="downloadOriginal(patient.pictures[zoom_image_index])">Скачать оригинальное изображение</b-button>
+                            <b-form-file
+                            accept="image/*, .dcm"
+                            v-model="form_edit"
+                            placeholder="Выберите файл или перетащите его сюда..."
+                            drop-placeholder="Перетащите файл сюда..."
+                            required
+                            ></b-form-file>
+                            <b-button class="ml-3" v-on:click="pullNewPict(patient.pictures[zoom_image_index])">Залить новое изображение</b-button>
+                        </b-row>
+                    </div>
                 </b-tab>
                 <b-tab title="Этапы обработки">
                     <img @click="zoomStep(patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict)" :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%" id="zoomStep" style="cursor: pointer;">
@@ -195,6 +208,7 @@ export default {
             patient_id: null,
             change: false,
             newDiagnosis: '',
+            form_edit: null,
             form: {
                 file1: null,
                 file2: null,
@@ -258,6 +272,22 @@ export default {
         }
     },
     methods: {
+        pullNewPict(item){
+            var p_data = {
+                form: this.form_edit,
+                pict_id: item.pict_id,
+                patient_id: this.patient.patient_id
+            }
+            this.$store.dispatch('pullNewPict', p_data)
+            this.$bvModal.hide('modal-2')
+        },
+        downloadOriginal(item){
+            var data = {
+                patient_id: this.patient.patient_id,
+                pict_id: item.pict_id
+            }
+            this.$store.dispatch('downloadOriginal', data)
+        },
         zoomStep(blobUrl){
             // const blobUrl = document.getElementById('zoomStep').getAttribute('src')
             // const link = document.createElement("a");
