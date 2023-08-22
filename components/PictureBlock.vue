@@ -20,6 +20,9 @@
                         <b>(В архиве:</b> {{patient.pictures_count.archived}})
                     </span> -->
                 </div>
+                <div>
+                    <b-button @click="printPDF">Печать pdf</b-button>
+                </div>
                 <!-- <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div> -->
                 <!-- <div class="pr-3 d-flex"><b>Комментарий: </b>{{patient.comment}}</div> -->
                     <!-- <div v-if="!change"> {{patient.diagnosis}}</div>
@@ -52,6 +55,23 @@
                         </div>
                     </b-row>
                 </b-col>
+                <b-row class="w-100">
+                    <b-row class="w-100" v-if="$auth.user.role == 'admin'">
+                        <b-form-textarea
+                        id="textarea"
+                        v-model="result_text"
+                        placeholder="Введите результат..."
+                        rows="3"
+                        max-rows="6"
+                        ></b-form-textarea>
+                    </b-row>
+                    <b-row class="w-100" v-if="$auth.user.role == 'admin'">
+                        <b-button @click="sendResult">Сохранить результат</b-button>
+                    </b-row>
+                    <b-row class="w-100" v-if="patient.ai_diagnosis != '-'">
+                        <pre class="my-3 w-100" style="color: black; background-color: white; font-size: 1.5rem;">{{ patient.ai_diagnosis }}</pre>
+                    </b-row>
+                </b-row>
                 <b-row align-v="center" class="add-picture-button p-3 m-0" v-if="!archive && patient.pictures_count.all < 4"><b-button v-b-modal.modal-1>+</b-button></b-row>
             </b-row>
         </div>
@@ -220,6 +240,7 @@ export default {
             change: false,
             newDiagnosis: '',
             form_edit: null,
+            result_text: null,
             form: {
                 file1: null,
                 file2: null,
@@ -283,6 +304,19 @@ export default {
         }
     },
     methods: {
+        printPDF(){
+            var data = {
+                patient_id: this.patient.patient_id
+            }
+            this.$store.dispatch('printPDF', data)
+        },
+        sendResult(){
+            var data = {
+                patient_id: this.patient.patient_id,
+                result: this.result_text
+            }
+            this.$store.dispatch('sendResult', data)
+        },
         pullNewPict(item){
             var p_data = {
                 form: this.form_edit,
@@ -290,7 +324,7 @@ export default {
                 patient_id: this.patient.patient_id
             }
             this.$store.dispatch('pullNewPict', p_data)
-            this.$bvModal.hide('modal-2')
+            this.$bvModal.hide('modal-3')
         },
         downloadOriginal(item){
             var data = {

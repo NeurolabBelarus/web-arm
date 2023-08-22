@@ -53,6 +53,7 @@ const store = () => new Vuex.Store({
                                     if(p_item.pictures != null){
                                         element.pictures = p_item.pictures
                                         element.diagnosis = p_item.diagnosis
+                                        element.ai_diagnosis = p_item.ai_diagnosis
                                         element.status = p_item.status
                                         element.picture_count = p_item.pictures_count
                                     }
@@ -302,6 +303,13 @@ const store = () => new Vuex.Store({
             }
             this.state.connection.send(JSON.stringify(message))
         },
+        async sendResult({commit}, data){
+            var message = {
+                type: 'sendResult',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
         async changeDiagnosisCoords({commit}, data){
             var message = {
                 type: 'changeDiagnosisCoords',
@@ -354,6 +362,13 @@ const store = () => new Vuex.Store({
         async printDocument({commit}, data){
             var message = {
                 type: 'printDocument',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
+        async printPDF({commit}, data){
+            var message = {
+                type: 'printPDF',
                 data: data
             }
             this.state.connection.send(JSON.stringify(message))

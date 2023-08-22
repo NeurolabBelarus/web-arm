@@ -152,10 +152,10 @@
                     "key": "statusConfirm",
                     "label": "Вычитка 2"
                 },
-                {
-                    "key": "diagnosis",
-                    "label": "Диагноз"
-                },
+                // {
+                //     "key": "diagnosis",
+                //     "label": "Диагноз"
+                // },
                 // {
                 //     "key": "ai_diagnosis",
                 //     "label": "AI-Диагноз"
