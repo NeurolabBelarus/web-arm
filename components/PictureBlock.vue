@@ -6,8 +6,10 @@
             <h3 v-else>Записи о пациенте</h3>
         </b-row>
         <nuxt-link to="/">На главную</nuxt-link>
-        <b-alert :show="on_load" variant="info" class="alert_block">Загрузка</b-alert>
-        <b-alert :show="wait_pdf" variant="info" class="alert_block">Идет создание pdf файла</b-alert>
+        <b-alert :show="on_load" variant="info" class="alert_block" style="z-index: 100;">Загрузка</b-alert>
+        <b-alert :show="wait_pdf" variant="info" class="alert_block" style="z-index: 100;">Идет создание pdf файла</b-alert>
+        <b-alert :show="wait_zip" variant="info" class="alert_block" style="z-index: 100;">Идет скачивание zip файла</b-alert>
+        <b-alert :show="error_message" variant="danger" class="alert_block" style="z-index: 100;">Ошибка</b-alert>
         <b-row align-v="center" align-h="between" class="m-0 p-3" v-if="patient != null">
             <b-row class="m-0">
                 <div class="pr-3"><b>ID:</b> {{patient.patient_id}}</div>
@@ -16,42 +18,29 @@
                 <div class="mr-6 circle" v-for="element in patient.status" :key="element.id" :style="[element.status == 'Не обработан' ? {'background': 'red'} : element.status == 'В обработке' ? {'background': 'yellow'} : {'background': 'green'}, {'margin-right': '10px'}]"></div>
                 <div class="pr-3">
                     <b>Записей:</b> {{patient.pictures_count.all}}
-                    <!-- <span v-if="patient.pictures_count.all != 0">
-                        <b>(В архиве:</b> {{patient.pictures_count.archived}})
-                    </span> -->
                 </div>
                 <div>
                     <b-button @click="printPDF">Печать pdf</b-button>
                 </div>
-                <!-- <div class="pr-3 d-flex"><b>Диагноз: </b>{{patient.diagnosis}}</div> -->
-                <!-- <div class="pr-3 d-flex"><b>Комментарий: </b>{{patient.comment}}</div> -->
-                    <!-- <div v-if="!change"> {{patient.diagnosis}}</div>
-                    <div v-else>
-                        <b-form-input v-model="newDiagnosis" placeholder="Enter new diagnosis"></b-form-input>
-                    </div> -->
-                <!-- <div v-if="!change" class="change-btn">
-                    <img @click="changeMode()" src="@/assets/img/change.png">
+                <div v-if="$auth.user.role == 'admin'">
+                    <b-button @click="downloadZip">Скачать оригинальные изображения</b-button>
                 </div>
-                <div v-else class="change-btn">
-                    <img @click="confirm()" src="@/assets/img/confirm.png">
-                    <img @click="changeMode()" src="@/assets/img/cancel.png">
-                </div> -->
             </b-row>
-            <!-- <div class="change-btn">
-                <img v-if="!archive" @click="showArchive()" src="@/assets/img/docs.png" title="Показать архивные записи">
-                <img v-else @click="hideArchive()" src="@/assets/img/hideArchive.png" title="Скрыть архивные записи">
-            </div> -->
         </b-row>
         <div v-if="patient != null">
             <b-row align-h="center" class="m-0 img-list">
                 <b-col cols="6" v-for="(item, index) in patient.pictures" :key="item.id" class="p-0 img-item">
                     <b-row class="m-0" :align-h="index % 2 == 0 ? 'end': 'start'">
                         <div style="position: relative;">
-                            <span v-if="index == 0" style="position: absolute; left: 0; font-weight: bold;">R-CC</span>
-                            <span v-else-if="index == 1" style="position: absolute; right: 0; font-weight: bold;">L-CC</span>
-                            <span v-else-if="index == 2" style="position: absolute; left: 0; font-weight: bold;">R-MLO</span>
-                            <span v-else-if="index == 3" style="position: absolute; right: 0; font-weight: bold;">L-MLO</span>
-                            <img @click="zoomImg(index)" :src="item.pict_prefix + item.pict" alt="" width="auto" height="400px" style="cursor: pointer;">
+                            <span v-if="item.pict_property.selectedBreastType == 'R-CC'" style="position: absolute; left: 75px; top: 50px; font-weight: bold; font-size: 1.5rem;">R-CC</span>
+                            <span v-else-if="item.pict_property.selectedBreastType == 'L-CC'" style="position: absolute; right: 75px; top: 50px; font-weight: bold; font-size: 1.5rem;">L-CC</span>
+                            <span v-else-if="item.pict_property.selectedBreastType == 'R-MLO'" style="position: absolute; left: 75px; top: 50px; font-weight: bold; font-size: 1.5rem;">R-MLO</span>
+                            <span v-else-if="item.pict_property.selectedBreastType == 'L-MLO'" style="position: absolute; right: 75px; top: 50px; font-weight: bold; font-size: 1.5rem;">L-MLO</span>
+                            <!-- <img @click="zoomImg(index)" :src="item.pict_prefix + item.pict" alt="" width="auto" height="400px" style="cursor: pointer;"> -->
+                            <div @click="zoomImg(index)" style="cursor: pointer;">
+                                <SvgRect :img="item.pict_prefix + item.pict" :data="item.pict_property" :p_prop="item"/>
+                            </div>
+                            <!-- <b-button>Увеличить изображение</b-button> -->
                         </div>
                     </b-row>
                 </b-col>
@@ -71,6 +60,15 @@
                     <b-row class="w-100" v-if="patient.ai_diagnosis != '-'">
                         <pre class="my-3 w-100" style="color: black; background-color: white; font-size: 1.5rem;">{{ patient.ai_diagnosis }}</pre>
                     </b-row>
+                    <b-row class="w-100" v-if="$auth.user.role == 'admin'">
+                        <b-form-file
+                        v-model="form_json"
+                        placeholder="Выберите файл или перетащите его сюда..."
+                        drop-placeholder="Перетащите файл сюда..."
+                        required
+                        ></b-form-file>
+                        <b-button @click="sendJson">Добавить аномалии</b-button>
+                    </b-row>
                 </b-row>
                 <b-row align-v="center" class="add-picture-button p-3 m-0" v-if="!archive && patient.pictures_count.all < 4"><b-button v-b-modal.modal-1>+</b-button></b-row>
             </b-row>
@@ -82,7 +80,6 @@
                 <label for="file1">Проекция R-CC:</label>
                 <b-row id="file1" class="m-0" align-h="center">
                     <b-form-file
-                    accept="image/*, .dcm"
                     v-model="form.file1"
                     size="sm"
                     placeholder="Выберите файл или перетащите его сюда..."
@@ -93,7 +90,6 @@
                 <label for="file2">Проекция L-CC:</label>
                 <b-row id="file2" class="m-0" align-h="center">
                     <b-form-file
-                    accept="image/*, .dcm"
                     v-model="form.file2"
                     size="sm"
                     placeholder="Выберите файл или перетащите его сюда..."
@@ -104,7 +100,6 @@
                 <label for="file3">Проекция R-MLO:</label>
                 <b-row id="file3" class="m-0" align-h="center">
                     <b-form-file
-                    accept="image/*, .dcm"
                     v-model="form.file3"
                     size="sm"
                     placeholder="Выберите файл или перетащите его сюда..."
@@ -115,7 +110,6 @@
                 <label for="file4">Проекция L-MLO:</label>
                 <b-row id="file4" class="m-0" align-h="center">
                     <b-form-file
-                    accept="image/*, .dcm"
                     v-model="form.file4"
                     size="sm"
                     placeholder="Выберите файл или перетащите его сюда..."
@@ -161,15 +155,15 @@
             <b-table :items="events" :fields="fields" bordered></b-table>
         </b-modal>
 
-        <b-modal id="modal-3" title="Картинка" size="xl" hide-footer hide-header v-if="zoom_image_index != null">
+        <b-modal id="modal-3" title="Картинка" size="xl" hide-footer hide-header v-if="zoom_image_index != null" style="background-color: red;">
             <b-tabs content-class="mt-3">
                 <b-tab title="Изображение" active>
-                    <img :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%">
+                    <!-- <img :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%"> -->
+                    <SvgRect :img="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" :data="patient.pictures[zoom_image_index].pict_property" :p_prop="patient.pictures[zoom_image_index]" style="background-color: black;"/>
                     <div v-if="$auth.user.role == 'admin'">
                         <b-row id="file1" class="m-0 mt-3" align-h="center">
                             <b-button class="mr-3" v-on:click="downloadOriginal(patient.pictures[zoom_image_index])">Скачать оригинальное изображение</b-button>
                             <b-form-file
-                            accept="image/*, .dcm"
                             v-model="form_edit"
                             placeholder="Выберите файл или перетащите его сюда..."
                             drop-placeholder="Перетащите файл сюда..."
@@ -180,7 +174,8 @@
                     </div>
                 </b-tab>
                 <b-tab title="Этапы обработки">
-                    <img @click="zoomStep(patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict)" :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%" id="zoomStep" style="cursor: pointer;">
+                    <!-- <img @click="zoomStep(patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict)" :src="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" alt="" width="100%" id="zoomStep" style="cursor: pointer;"> -->
+                    <SvgRect :img="patient.pictures[zoom_image_index].pict_prefix + patient.pictures[zoom_image_index].pict" :data="patient.pictures[zoom_image_index].pict_property" :p_prop="patient.pictures[zoom_image_index]" style="background-color: black;"/>
                     <b-row v-if="!patient.pictures[zoom_image_index].remarkEditing" class="m-0 py-3">
                         <b>Примечание:</b> {{patient.pictures[zoom_image_index].pict_property.remark}}
                         <div v-if="!archive" class="pl-3 change-btn">
@@ -234,6 +229,7 @@
 export default {
     data(){
         return{
+            form_json: null,
             archive: false,
             zoom_image_index: null,
             patient_id: null,
@@ -301,9 +297,36 @@ export default {
         },
         wait_pdf(){
             return this.$store.state.waitPDF
+        },
+        wait_zip(){
+            return this.$store.state.waitZip
+        },
+        error_message(){
+            return this.$store.state.error
         }
     },
     methods: {
+        downloadZip(){
+            var data = {
+                patient_id: this.patient.patient_id
+            }
+            this.$store.dispatch('downloadZip', data)
+        },
+        sendJson(){
+            // console.log(this.form_json)
+            var reader = new FileReader();
+            reader.onload = onReaderLoad;
+            reader.readAsText(this.form_json);
+            var that = this
+            function onReaderLoad(event){
+                var obj = JSON.parse(event.target.result);
+                var data = {
+                    patient_id: that.patient.patient_id,
+                    json_obj: obj
+                }
+                that.$store.dispatch('sendJson', data)
+            }
+        },
         printPDF(){
             var data = {
                 patient_id: this.patient.patient_id

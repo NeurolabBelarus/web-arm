@@ -13,6 +13,8 @@ const store = () => new Vuex.Store({
         status: '',
         load: false,
         waitPDF: false,
+        waitZip: false,
+        error: false,
         events: []
     },
     mutations: {
@@ -23,6 +25,7 @@ const store = () => new Vuex.Store({
     actions: {
         async openConnection({commit, dispatch, state}){
             state.connection = new WebSocket("ws://localhost:8081/ws")
+            // state.connection = new WebSocket("wss://st9.nlab.work/ws")
             // state.connection = new WebSocket("ws://95.143.188.184:8081/ws")
             // state.connection = new WebSocket("wss://test.nlab.work/ws")
             // state.connection = new WebSocket("wss://faust.metatron.by/ws")
@@ -56,6 +59,11 @@ const store = () => new Vuex.Store({
                                         element.ai_diagnosis = p_item.ai_diagnosis
                                         element.status = p_item.status
                                         element.picture_count = p_item.pictures_count
+                                        element.pictures.forEach(item =>{
+                                            if(item.pict_property.type != '-'){
+                                                item.pict_property.type = JSON.parse(item.pict_property.type)
+                                            }
+                                        })
                                     }
                                 }
                         })
@@ -70,6 +78,12 @@ const store = () => new Vuex.Store({
                     else if(JSON.parse(event.data).type == 'onLoad'){
                         // if(JSON.parse(event.data).count > 0){
                             state.load = true
+                            state.error = false
+                        // }
+                    }
+                    else if(JSON.parse(event.data).type == 'ErrorLoad'){
+                        // if(JSON.parse(event.data).count > 0){
+                            state.error = true
                         // }
                     }
                     else if(JSON.parse(event.data).type == 'waitPDF'){
@@ -80,66 +94,28 @@ const store = () => new Vuex.Store({
                         var data = JSON.parse(event.data)
                         state.events = data.event_list
                     }
-                    // else if(JSON.parse(event.data).type == 'get_archived_patient'){
-                    //     var p_item = JSON.parse(event.data).patient
-                    //     console.log(p_item)
-                    //     state.load = false
-
-                    //     // if(p_item.pictures != null){
-                    //     //     state.patients_json.patients_list = state.patients_json.patients_list.concat(p_item.pictures)
-                    //     // }
-
-                    //     state.patients_json.patients_list.forEach(element =>{
-                            
-                    //         if(element.patient_id == p_item.patient_id){
-                    //             if(p_item.pictures != null){
-                    //                 element.pictures = element.pictures.concat(p_item.pictures)
-                    //             }
-                    //         }
-                    //     })
-                    // }
-                    // console.log(JSON.parse(event.data))
-                    
-                    // console.log(state.patients_json)
-                }
-                else{
-                    if(state.waitPDF == true){
-                        state.waitPDF = false
-                        var file_name = Math.random().toString(36).substring(6) + '_name.pdf'; //e.g ueq6ge1j_name.pdf
-                        var file_object = new File([event.data], file_name, {type: 'application/pdf'});
-                        // console.log(file_object); //Output
-
-                    
-                        // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
-                        const blobUrl = URL.createObjectURL(file_object);
-                        
-                        // Create a link element
-                        const link = document.createElement("a");
-                        
-                        // Set link's href to point to the Blob URL
-                        link.href = blobUrl;
-                        link.target = "_blank";
-                        // link.download = file_name;
-                        
-                        // Append link to the body
-                        document.body.appendChild(link);
-                        
-                        // Dispatch click event on the link
-                        // This is necessary as link.click() does not work on the latest firefox
-                        link.dispatchEvent(
-                            new MouseEvent('click', { 
-                            bubbles: true, 
-                            cancelable: true, 
-                            view: window 
-                            })
-                        );
-                        
-                        // Remove link from body
-                        document.body.removeChild(link);
-                    }
-                    else if(state.waitPDF == false){
-                        var file_name = Math.random().toString(36).substring(6) + '_name.dcm'; //e.g ueq6ge1j_name.pdf
-                        var file_object = new File([event.data], file_name, {type: 'application/octet-stream'});
+                    else if(JSON.parse(event.data).type == 'downloadOriginal'){
+                        var file_name = JSON.parse(event.data).pict_name; 
+                        const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+                            const byteCharacters = atob(b64Data);
+                            const byteArrays = [];
+                          
+                            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                              const slice = byteCharacters.slice(offset, offset + sliceSize);
+                          
+                              const byteNumbers = new Array(slice.length);
+                              for (let i = 0; i < slice.length; i++) {
+                                byteNumbers[i] = slice.charCodeAt(i);
+                              }
+                          
+                              const byteArray = new Uint8Array(byteNumbers);
+                              byteArrays.push(byteArray);
+                            }
+                          
+                            const blob = new Blob(byteArrays, {type: contentType});
+                            return blob;
+                        }
+                        var file_object = new File([b64toBlob(JSON.parse(event.data).pict, 'application/octet-stream')], file_name, {type: 'application/octet-stream'});
                         // console.log(file_object); //Output
 
                     
@@ -170,6 +146,151 @@ const store = () => new Vuex.Store({
                         // Remove link from body
                         document.body.removeChild(link);
                     }
+                    else if(JSON.parse(event.data).type == 'waitZip'){
+                        state.waitZip = true
+                    }
+                    else if(JSON.parse(event.data).type == 'downloadZip'){
+                        state.waitZip = false
+                        var file_name = '' + JSON.parse(event.data).patient_id + '.zip'
+                        const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+                            const byteCharacters = atob(b64Data);
+                            const byteArrays = [];
+                          
+                            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                              const slice = byteCharacters.slice(offset, offset + sliceSize);
+                          
+                              const byteNumbers = new Array(slice.length);
+                              for (let i = 0; i < slice.length; i++) {
+                                byteNumbers[i] = slice.charCodeAt(i);
+                              }
+                          
+                              const byteArray = new Uint8Array(byteNumbers);
+                              byteArrays.push(byteArray);
+                            }
+                          
+                            const blob = new Blob(byteArrays, {type: contentType});
+                            return blob;
+                        }
+                        var file_object = new File([b64toBlob(JSON.parse(event.data).zip, 'application/octet-stream')], file_name, {type: 'application/octet-stream'});
+                        // console.log(file_object); //Output
+
+                    
+                        // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
+                        const blobUrl = URL.createObjectURL(file_object);
+                        
+                        // Create a link element
+                        const link = document.createElement("a");
+                        
+                        // Set link's href to point to the Blob URL
+                        link.href = blobUrl;
+                        // link.target = "_blank";
+                        link.download = file_name;
+                        
+                        // Append link to the body
+                        document.body.appendChild(link);
+                        
+                        // Dispatch click event on the link
+                        // This is necessary as link.click() does not work on the latest firefox
+                        link.dispatchEvent(
+                            new MouseEvent('click', { 
+                            bubbles: true, 
+                            cancelable: true, 
+                            view: window 
+                            })
+                        );
+                        
+                        // Remove link from body
+                        document.body.removeChild(link);
+                    }
+                    // else if(JSON.parse(event.data).type == 'get_archived_patient'){
+                    //     var p_item = JSON.parse(event.data).patient
+                    //     console.log(p_item)
+                    //     state.load = false
+
+                    //     // if(p_item.pictures != null){
+                    //     //     state.patients_json.patients_list = state.patients_json.patients_list.concat(p_item.pictures)
+                    //     // }
+
+                    //     state.patients_json.patients_list.forEach(element =>{
+                            
+                    //         if(element.patient_id == p_item.patient_id){
+                    //             if(p_item.pictures != null){
+                    //                 element.pictures = element.pictures.concat(p_item.pictures)
+                    //             }
+                    //         }
+                    //     })
+                    // }
+                    // console.log(JSON.parse(event.data))
+                    
+                    // console.log(state.patients_json)
+                }
+                else{
+                    state.waitPDF = false
+                    var file_name = Math.random().toString(36).substring(6) + '_name.pdf'; //e.g ueq6ge1j_name.pdf
+                    var file_object = new File([event.data], file_name, {type: 'application/pdf'});
+                    console.log(event.data); //Output
+                    // console.log(file_object); //Output
+
+                
+                    // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
+                    const blobUrl = URL.createObjectURL(file_object);
+                    
+                    // Create a link element
+                    const link = document.createElement("a");
+                    
+                    // Set link's href to point to the Blob URL
+                    link.href = blobUrl;
+                    link.target = "_blank";
+                    // link.download = file_name;
+                    
+                    // Append link to the body
+                    document.body.appendChild(link);
+                    
+                    // Dispatch click event on the link
+                    // This is necessary as link.click() does not work on the latest firefox
+                    link.dispatchEvent(
+                        new MouseEvent('click', { 
+                        bubbles: true, 
+                        cancelable: true, 
+                        view: window 
+                        })
+                    );
+                    
+                    // Remove link from body
+                    document.body.removeChild(link);
+                    // else if(state.waitPDF == false){
+                    //     var file_name = Math.random().toString(36).substring(6) + '_name.dcm'; //e.g ueq6ge1j_name.pdf
+                    //     var file_object = new File([event.data], file_name, {type: 'application/octet-stream'});
+                    //     // console.log(file_object); //Output
+
+                    
+                    //     // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
+                    //     const blobUrl = URL.createObjectURL(file_object);
+                        
+                    //     // Create a link element
+                    //     const link = document.createElement("a");
+                        
+                    //     // Set link's href to point to the Blob URL
+                    //     link.href = blobUrl;
+                    //     // link.target = "_blank";
+                    //     link.download = file_name;
+                        
+                    //     // Append link to the body
+                    //     document.body.appendChild(link);
+                        
+                    //     // Dispatch click event on the link
+                    //     // This is necessary as link.click() does not work on the latest firefox
+                    //     link.dispatchEvent(
+                    //         new MouseEvent('click', { 
+                    //         bubbles: true, 
+                    //         cancelable: true, 
+                    //         view: window 
+                    //         })
+                    //     );
+                        
+                    //     // Remove link from body
+                    //     document.body.removeChild(link);
+                    // }
                 }
             }
 
@@ -188,25 +309,25 @@ const store = () => new Vuex.Store({
                         file_name: null,
                         file_prefix: null,
                         file: null,
-                        selectedBreastType: 'right'
+                        selectedBreastType: 'R-CC'
                     },
                     file2: {
                         file_name: null,
                         file_prefix: null,
                         file: null,
-                        selectedBreastType: 'left'
+                        selectedBreastType: 'L-CC'
                     },
                     file3: {
                         file_name: null,
                         file_prefix: null,
                         file: null,
-                        selectedBreastType: 'right'
+                        selectedBreastType: 'R-MLO'
                     },
                     file4: {
                         file_name: null,
                         file_prefix: null,
                         file: null,
-                        selectedBreastType: 'left'
+                        selectedBreastType: 'L-MLO'
                     }
                 },
                 files_property:{
@@ -233,10 +354,15 @@ const store = () => new Vuex.Store({
                 }
                 reader.readAsDataURL(file);
             }
-            encodeImageFileAsURL(data.form.file1, 'file1', 'right')
-            encodeImageFileAsURL(data.form.file2, 'file2', 'left')
-            encodeImageFileAsURL(data.form.file3, 'file3', 'right')
-            encodeImageFileAsURL(data.form.file4, 'file4', 'left')
+            this.state.status = 'Подготовка файла(1/4)'
+            encodeImageFileAsURL(data.form.file1, 'file1', 'R-CC')
+            this.state.status = 'Подготовка файла(2/4)'
+            encodeImageFileAsURL(data.form.file2, 'file2', 'L-CC')
+            this.state.status = 'Подготовка файла(3/4)'
+            encodeImageFileAsURL(data.form.file3, 'file3', 'R-MLO')
+            this.state.status = 'Подготовка файла(4/4)'
+            encodeImageFileAsURL(data.form.file4, 'file4', 'L-MLO')
+            this.state.status = 'Подготовка к отправке'
             setTimeout(() => {
                 state.connection.send(JSON.stringify(message))
                 var interval = setInterval(function () {
@@ -310,6 +436,13 @@ const store = () => new Vuex.Store({
             }
             this.state.connection.send(JSON.stringify(message))
         },
+        async sendJson({commit}, data){
+            var message = {
+                type: 'sendJson',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
         async changeDiagnosisCoords({commit}, data){
             var message = {
                 type: 'changeDiagnosisCoords',
@@ -376,6 +509,13 @@ const store = () => new Vuex.Store({
         async downloadOriginal({commit}, data){
             var message = {
                 type: 'downloadOriginal',
+                data: data
+            }
+            this.state.connection.send(JSON.stringify(message))
+        },
+        async downloadZip({commit}, data){
+            var message = {
+                type: 'downloadZip',
                 data: data
             }
             this.state.connection.send(JSON.stringify(message))
